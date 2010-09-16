@@ -11,12 +11,14 @@ sudo yum install ctags-etags pyflakes subversion
 Getting the config
 =================
 
-    mv ~/.vim ~/.vim_old # clear old
+    $ mv ~/.vim ~/.vim_old
+    $ mv ~/.vimrc ~/.vimrc_old
 
-    $ git clone git@github.com:epeli/vimconfig.git ~/.vim
 
+    $ git clone http://github.com/epeli/vimconfig.git ~/.vim
 or
     $ svn checkout http://svn.github.com/epeli/vimconfig.git ~/.vim
+
 
     $ cd ~/.vim
     $ make
