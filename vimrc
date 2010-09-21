@@ -19,6 +19,8 @@ set modeline
 set gdefault
 
 
+
+
 " tab inserts normal tab for makefiles instead of spaces
 au BufRead,BufNewFile Makefile* set noexpandtab
 
@@ -32,6 +34,12 @@ set smartcase
 " normal regexes.
 nnoremap / /\v
 vnoremap / /\v
+
+"work together to highlight search results (as you type). It’s really quite
+"handy, as long as you have the next line as well.
+set incsearch
+set showmatch
+set hlsearch
 
 
 set pastetoggle=<F2>
