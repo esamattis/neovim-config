@@ -1,7 +1,5 @@
 colorscheme peachpuff
 
-
-
 syntax on
 set tabstop=4
 set shiftwidth=4
@@ -12,6 +10,9 @@ set autoindent
 set ai
 set modeline
 
+
+
+
 " tab inserts normal tab for makefiles instead of spaces
 au BufRead,BufNewFile Makefile* set noexpandtab
 
@@ -19,6 +20,13 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 " make searches case-insensitive, unless they contain upper-case letters:
 set ignorecase
 set smartcase
+
+
+" This turns off Vim’s crazy default regex characters and makes searches use
+" normal regexes.
+nnoremap / /\v
+vnoremap / /\v
+
 
 set pastetoggle=<F2>
 
