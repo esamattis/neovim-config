@@ -149,6 +149,12 @@ nnoremap <C-l> <C-w>>
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 nnoremap <leader>a :Ack
 
+
+" tabs
+nnoremap <leader>t :tabnew<CR>
+nnoremap <leader>n :tabnext<CR>
+nnoremap <leader>p :tabprevious<CR>
+
 " Investegate http://github.com/rstacruz/sparkup
 
 " Learn mode!
