@@ -163,23 +163,17 @@ nnoremap <leader>w :vertical sp<CR>
 " new horizontal split
 nnoremap <leader>wh :sp<CR>
 
-" Easily move between split windows using <leader>jkll
+" Easily move between split windows using <leader>hjkl
 nnoremap <leader>h <C-w>h
 nnoremap <leader>j <C-w>j
 nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
 
-" Easily resize split windows
+" Easily resize split windows with Ctrl+hjkl
 nnoremap <C-j> <C-w>+
 nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
-
-" Ack 
-" http://betterthangrep.com/
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-nnoremap <leader>a :Ack
-
 
 " tabs
 nnoremap <leader>t :tabnew<CR>
@@ -190,12 +184,15 @@ nnoremap <leader>p :tabprevious<CR>
 nnoremap j gj
 nnoremap k gk
 
+" Ack 
+" http://betterthangrep.com/
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+nnoremap <leader>a :Ack
+
 " Learn mode!
-" Disables arrow keys even in inset mode!
+" Disables arrow keys even in insert mode!
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
 inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
