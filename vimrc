@@ -1,5 +1,19 @@
 " Influences from
 " http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+" http://nvie.com/posts/how-i-boosted-my-vim/
+
+
+" Cool plugins installed
+" http://github.com/msanders/snipmate.vim
+" http://www.vim.org/scripts/script.php?script_id=1234
+" http://github.com/scrooloose/nerdcommenter
+" http://github.com/mileszs/ack.vim
+" + more
+"
+" Not installed, but seems cool http://github.com/rstacruz/sparkup
+" Investegate! 
+
+
 colorscheme peachpuff
 
 syntax on
@@ -11,6 +25,8 @@ set expandtab
 set autoindent
 set ai
 set modeline
+
+" Vi stuff anymore
 set nocompatible
 
 
@@ -32,10 +48,11 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 set ignorecase
 set smartcase
 
-"make vim save and load the folding of the document each time it loads
-""also places the cursor in the last place that it was left.
+" make vim save and load the folding of the document each time it loads
+" also places the cursor in the last place that it was left.
 au BufWinLeave * mkview
 au BufWinEnter * silent loadview
+" TODO: Bug when opening without file
 
 " use :w!! to write to a file using sudo if you forgot to "sudo vim file" 
 cmap w!! %!sudo tee > /dev/null %
@@ -52,14 +69,17 @@ set showmatch
 set hlsearch
 
 
+" Toggle pastemode easily in insert and command mode
 set pastetoggle=<F2>
 
 
+" Show trailing whitespace characters
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
 
-" Use Q for formatting the current paragraph (or selection)
+" Use Q for formatting the current paragraph (or selection).
+" Forces 80 character lines.
 vmap Q gq
 nmap Q gqap
 
@@ -138,24 +158,25 @@ nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 nnoremap <leader>v V`]
 
 "" Window management
-" new vertical
-nnoremap <leader>w <C-w><C-v><C-l>
-" new horizontal
+" new vertical split
+nnoremap <leader>w :vertical sp<CR>
+" new horizontal split
 nnoremap <leader>wh :sp<CR>
 
-" Easily move between windows
+" Easily move between split windows using <leader>jkll
 nnoremap <leader>h <C-w>h
 nnoremap <leader>j <C-w>j
 nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
 
-" Easily resize windows
+" Easily resize split windows
 nnoremap <C-j> <C-w>+
 nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 " Ack 
+" http://betterthangrep.com/
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 nnoremap <leader>a :Ack
 
@@ -165,7 +186,9 @@ nnoremap <leader>t :tabnew<CR>
 nnoremap <leader>n :tabnext<CR>
 nnoremap <leader>p :tabprevious<CR>
 
-" Investegate http://github.com/rstacruz/sparkup
+" Move by screen live instead of file line. Nice with long lines.
+nnoremap j gj
+nnoremap k gk
 
 " Learn mode!
 nnoremap <up> <nop>
@@ -176,6 +199,4 @@ inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
-nnoremap j gj
-nnoremap k gk
 
