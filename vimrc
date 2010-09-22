@@ -26,7 +26,7 @@ set autoindent
 set ai
 set modeline
 
-" Vi stuff anymore
+" No Vi stuff anymore
 set nocompatible
 
 
