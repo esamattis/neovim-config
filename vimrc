@@ -32,6 +32,12 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 set ignorecase
 set smartcase
 
+"make vim save and load the folding of the document each time it loads
+""also places the cursor in the last place that it was left.
+au BufWinLeave * mkview
+au BufWinEnter * silent loadview
+
+
 
 " This turns off Vim’s crazy default regex characters and makes searches use
 " normal regexes.
