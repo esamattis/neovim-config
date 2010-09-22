@@ -1,3 +1,5 @@
+" Influences from
+" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
 colorscheme peachpuff
 
 syntax on
@@ -9,6 +11,7 @@ set expandtab
 set autoindent
 set ai
 set modeline
+set nocompatible
 
 
 " Apply  substitutions globally on lines. For example, instead of
