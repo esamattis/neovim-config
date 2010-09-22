@@ -37,7 +37,8 @@ set smartcase
 au BufWinLeave * mkview
 au BufWinEnter * silent loadview
 
-
+" use :w!! to write to a file using sudo if you forgot to "sudo vim file" 
+cmap w!! %!sudo tee > /dev/null %
 
 " This turns off Vim’s crazy default regex characters and makes searches use
 " normal regexes.
