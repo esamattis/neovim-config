@@ -5,8 +5,14 @@ Install
 =======
 Get Vim with python support.
 Get exuberant-ctags.
-sudo apt-get install vim-nox exuberant-ctags pyflakes tidy
-sudo yum install ctags-etags pyflakes subversion
+
+Debian and friends
+
+    sudo apt-get install vim-nox exuberant-ctags pyflakes ack-grep
+
+Fedora
+
+    sudo yum install ctags-etags pyflakes subversion
 
 Getting the config
 =================
@@ -23,7 +29,11 @@ or
     $ cd ~/.vim
     $ make
 
-:helptags .
+
+For ack
+
+    $ :helptags ~/.vim/doc
+
 
 Tutorials
 =========

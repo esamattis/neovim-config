@@ -140,6 +140,9 @@ nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
 
 
+" Ack 
+let g:ackprg="ack-grep -H --nocolor --nogroup --column"
+nnoremap <leader>a :Ack
 
 " Learn mode!
 nnoremap <up> <nop>
