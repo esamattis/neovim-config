@@ -144,6 +144,8 @@ nnoremap <leader>l <C-w>l
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 nnoremap <leader>a :Ack
 
+" Investegate http://github.com/rstacruz/sparkup
+
 " Learn mode!
 nnoremap <up> <nop>
 nnoremap <down> <nop>
