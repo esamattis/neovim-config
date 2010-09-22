@@ -153,4 +153,3 @@ inoremap <right> <nop>
 nnoremap j gj
 nnoremap k gk
 
-
