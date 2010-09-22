@@ -8,7 +8,7 @@ Get exuberant-ctags.
 
 Debian and friends
 
-    sudo apt-get install vim-nox exuberant-ctags pyflakes ack-grep
+    sudo apt-get install vim-nox exuberant-ctags pyflakes ack-grep par
 
 Fedora
 
