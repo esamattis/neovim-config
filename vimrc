@@ -139,6 +139,11 @@ nnoremap <leader>j <C-w>j
 nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
 
+" Easily resize windows
+nnoremap <C-j> <C-w>+
+nnoremap <C-k> <C-w>-
+nnoremap <C-h> <C-w><
+nnoremap <C-l> <C-w>>
 
 " Ack 
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
