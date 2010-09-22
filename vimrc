@@ -191,6 +191,7 @@ nnoremap j gj
 nnoremap k gk
 
 " Learn mode!
+" Disables arrow keys even in inset mode!
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
