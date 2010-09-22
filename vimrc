@@ -186,7 +186,7 @@ nnoremap <leader>t :tabnew<CR>
 nnoremap <leader>n :tabnext<CR>
 nnoremap <leader>p :tabprevious<CR>
 
-" Move by screen live instead of file line. Nice with long lines.
+" Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
 nnoremap k gk
 
@@ -198,5 +198,3 @@ nnoremap <right> <nop>
 inoremap <up> <nop>
 inoremap <down> <nop>
 inoremap <left> <nop>
-inoremap <right> <nop>
-
