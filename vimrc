@@ -97,9 +97,8 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
 
 " Hilight long lines
-autocmd BufRead *.markdown,*.txt,*.py,*.cgi :let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
-autocmd BufRead *.markdown,*.txt,*.py,*.cgi :let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-
+autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
+autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 
 
 
@@ -113,3 +112,45 @@ filetype plugin on
 " Clojure 
 let g:clj_highlight_builtins=1      " Highlight Clojure's builtins
 let g:clj_paren_rainbow=1           " Rainbow parentheses'!
+
+
+
+
+
+"" Leader mappings
+let mapleader = ","
+
+" strip all trailing whitespace in the current file
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+"  to reselect the text that was just pasted so I can perform commands (like
+"  indentation) on it
+nnoremap <leader>v V`]
+
+"" Window management
+" new vertical
+nnoremap <leader>w <C-w><C-v><C-l>
+" new horizontal
+nnoremap <leader>wh :sp<CR>
+
+" Easily move between windows
+nnoremap <leader>h <C-w>h
+nnoremap <leader>j <C-w>j
+nnoremap <leader>k <C-w>k
+nnoremap <leader>l <C-w>l
+
+
+
+" Learn mode!
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
+nnoremap j gj
+nnoremap k gk
+
+
