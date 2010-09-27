@@ -14,7 +14,7 @@
 " Investegate! 
 
 
-colorscheme peachpuff
+" colorscheme peachpuff
 
 syntax on
 set tabstop=4
@@ -196,3 +196,8 @@ nnoremap <down> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
 inoremap <up> <nop>
+
+if executable("par")
+    set formatprg=par\ -w80
+endif
+

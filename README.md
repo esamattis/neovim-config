@@ -11,6 +11,10 @@ Debian and friends
     sudo apt-get install vim-nox exuberant-ctags pyflakes ack-grep par
 
 
+Caps Lock to Esc
+
+    xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+
 Getting the config
 =================
 
