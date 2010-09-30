@@ -8,6 +8,7 @@
 " http://www.vim.org/scripts/script.php?script_id=1234
 " http://github.com/scrooloose/nerdcommenter
 " http://github.com/mileszs/ack.vim
+" http://www.vim.org/scripts/script.php?script_id=301
 " + more
 "
 " Not installed, but seems cool http://github.com/rstacruz/sparkup
@@ -149,6 +150,7 @@ let g:clj_paren_rainbow=1           " Rainbow parentheses'!
 
 "" Leader mappings
 let mapleader = ","
+let maplocalleader = ";"
 
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
