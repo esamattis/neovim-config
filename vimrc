@@ -9,10 +9,12 @@
 " http://github.com/scrooloose/nerdcommenter
 " http://github.com/mileszs/ack.vim
 " http://www.vim.org/scripts/script.php?script_id=301
+" http://www.vim.org/scripts/script.php?script_id=2050
 " + more
 "
 " Not installed, but seems cool http://github.com/rstacruz/sparkup
 " Investegate! 
+
 
 
 " colorscheme peachpuff
@@ -26,9 +28,17 @@ set expandtab
 set autoindent
 set ai
 set modeline
+set wildignore=*.swp,*.bak,*.pyc,*.class
+set title                " change the terminal's title
+set noerrorbells         " don't beep
+
+" hide buffers instead of closing them
+set hidden
 
 " No Vi stuff anymore
 set nocompatible
+
+
 
 
 " Apply  substitutions globally on lines. For example, instead of
@@ -177,10 +187,16 @@ nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
+nnoremap <C-1> :tabn 1<CR>
+
 " tabs
-nnoremap <leader>t :tabnew<CR>
-nnoremap <leader>n :tabnext<CR>
-nnoremap <leader>p :tabprevious<CR>
+"nnoremap <leader>t :tabnew<CR>
+"nnoremap <leader>n :tabnext<CR>
+"nnoremap <leader>p :tabprevious<CR>
+
+
+" Buffer manipulator
+nmap <Leader>b :LustyJuggler<CR>
 
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
