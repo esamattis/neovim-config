@@ -190,10 +190,6 @@ nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 
-" tabs
-"nnoremap <leader>t :tabnew<CR>
-"nnoremap <leader>n :tabnext<CR>
-"nnoremap <leader>p :tabprevious<CR>
 
 
 " Buffer manipulator
