@@ -167,6 +167,11 @@ let maplocalleader = ";"
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
+"" reStructured Text Stuff
+" Set heading
+nnoremap <leader>rt yypVr
+
+
 "  to reselect the text that was just pasted so I can perform commands (like
 "  indentation) on it
 nnoremap <leader>v V`]
@@ -194,11 +199,14 @@ nnoremap <C-l> <C-w>>
 
 " Buffer manipulator
 nmap <Leader>, :LustyJuggler<CR>
-nmap <Leader>f :FufBuffer<CR>
+nmap <Leader>fb :FufBuffer<CR>
+" open new buffers from the directory where current file is in
+nmap <Leader>ff :FufFileWithCurrentBufferDir<CR>
 
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
 nnoremap k gk
+
 
 " Ack 
 " http://betterthangrep.com/
