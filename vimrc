@@ -8,8 +8,9 @@
 " http://www.vim.org/scripts/script.php?script_id=1234
 " http://github.com/scrooloose/nerdcommenter
 " http://github.com/mileszs/ack.vim
-" http://www.vim.org/scripts/script.php?script_id=301
-" http://www.vim.org/scripts/script.php?script_id=2050
+" xmledit http://www.vim.org/scripts/script.php?script_id=301
+" LustyJuggler http://www.vim.org/scripts/script.php?script_id=2050
+" FuzzyFinder http://www.vim.org/scripts/script.php?script_id=1984
 " + more
 "
 " Not installed, but seems cool http://github.com/rstacruz/sparkup
@@ -187,7 +188,6 @@ nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
-nnoremap <C-1> :tabn 1<CR>
 
 " tabs
 "nnoremap <leader>t :tabnew<CR>
@@ -196,7 +196,8 @@ nnoremap <C-1> :tabn 1<CR>
 
 
 " Buffer manipulator
-nmap <Leader>b :LustyJuggler<CR>
+nmap <Leader>, :LustyJuggler<CR>
+nmap <Leader>f :FufBuffer<CR>
 
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
