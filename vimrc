@@ -5,9 +5,10 @@
 
 " Cool plugins installed
 " http://github.com/msanders/snipmate.vim
-" http://www.vim.org/scripts/script.php?script_id=1234
+" YankRing http://www.vim.org/scripts/script.php?script_id=1234
 " http://github.com/scrooloose/nerdcommenter
 " http://github.com/mileszs/ack.vim
+" The NERD tree http://www.vim.org/scripts/script.php?script_id=1658
 " xmledit http://www.vim.org/scripts/script.php?script_id=301
 " LustyJuggler http://www.vim.org/scripts/script.php?script_id=2050
 " FuzzyFinder http://www.vim.org/scripts/script.php?script_id=1984
