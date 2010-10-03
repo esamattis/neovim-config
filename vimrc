@@ -115,10 +115,10 @@ set wildmode=longest,list
 
 
 " Folding
-set foldmethod=indent     
-set foldlevel=9999        " initially open all folds
-command FoldAll set foldlevel=0
-command FoldOne set foldlevel=1
+"set foldmethod=indent     
+"set foldlevel=9999        " initially open all folds
+"command FoldAll set foldlevel=0
+"command FoldOne set foldlevel=1
 
 
 if has("python")
