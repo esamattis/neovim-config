@@ -1,2 +1,7 @@
 *.swp
 .netrwhist
+.VimballRecord
+doc/tags
+doc/tags-ja
+view/
+
