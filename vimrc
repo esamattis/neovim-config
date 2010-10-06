@@ -133,6 +133,16 @@ set laststatus=2
 " python stuff
 autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
+let python_highlight_all = 1
+
+" Execute a selection of code (very cool!)
+" Use VISUAL to select a range and then hit ctrl-h to execute it.
+python << EOL
+import vim
+def EvaluateCurrentRange():
+    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
+EOL
+map <C-h> :py EvaluateCurrentRange()<CR>
 
 
 " php
