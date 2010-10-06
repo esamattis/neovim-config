@@ -19,6 +19,17 @@
 
 
 
+" ProTips to remember:
+" diw to delete the current word
+" di( to delete within the current parens
+" di" to delete the text between the quotes
+"
+" replace d with v to select
+"
+" replace i with a to select parens also
+"
+
+
 " colorscheme peachpuff
 
 syntax on
