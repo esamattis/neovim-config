@@ -84,6 +84,7 @@ set hlsearch
 
 " Toggle pastemode easily in insert and command mode
 set pastetoggle=<F2>
+set pastetoggle=<C-v>
 
 
 " Show trailing whitespace characters
