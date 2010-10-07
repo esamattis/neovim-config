@@ -51,7 +51,7 @@ set hidden
 " No Vi stuff anymore
 set nocompatible
 
-
+colorscheme mydefault
 
 
 " Apply  substitutions globally on lines. For example, instead of
