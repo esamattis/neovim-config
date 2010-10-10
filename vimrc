@@ -12,10 +12,12 @@
 " xmledit http://www.vim.org/scripts/script.php?script_id=301
 " LustyJuggler http://www.vim.org/scripts/script.php?script_id=2050
 " FuzzyFinder http://www.vim.org/scripts/script.php?script_id=1984
+" Matchit http://www.vim.org/scripts/download_script.php?src_id=8196
 " + more
 "
 " Not installed, but seems cool http://github.com/rstacruz/sparkup
 " Investegate! 
+" Also TComment, MRU and 
 
 
 
@@ -28,6 +30,9 @@
 "
 " replace i with a to select parens also
 "
+" Surround
+" Surround with tag: Vs<tag>
+" Change the surrounding tag: cst<tag>
 
 
 " colorscheme peachpuff
@@ -47,6 +52,9 @@ set noerrorbells         " don't beep
 
 " hide buffers instead of closing them
 set hidden
+
+
+set backspace=2 " make backspace work like most other apps
 
 " No Vi stuff anymore
 set nocompatible
@@ -95,7 +103,7 @@ set hlsearch
 
 " Toggle pastemode easily in insert and command mode
 set pastetoggle=<F2>
-set pastetoggle=<C-v>
+"set pastetoggle=<C-v>
 
 
 " Show trailing whitespace characters
