@@ -50,10 +50,8 @@ set wildignore=*.swp,*.bak,*.pyc,*.class
 set title                " change the terminal's title
 set noerrorbells         " don't beep
 
-" hide buffers instead of closing them
-set hidden
 
-
+set hidden " hide buffers instead of closing them
 set backspace=2 " make backspace work like most other apps
 
 " No Vi stuff anymore
@@ -115,6 +113,16 @@ set listchars=tab:>.,trail:.,extends:#,nbsp:.
 " Forces 80 character lines.
 vmap Q gq
 nmap Q gqap
+
+
+if executable("jslint")
+    autocmd BufWritePost *.js :!jslint %
+endif
+
+" Format with par if we have it.
+if executable("par")
+    set formatprg=par\ -w80
+endif
 
 " Execute file being edited
 map <F5> :! %:p <CR>
@@ -179,8 +187,6 @@ autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m2=matchadd('ErrorMsg', '\%>80v.\+'
 " Plugins
 filetype plugin on
 
-"JSlint
-"let g:JSLintHighlightErrorLine = 0
 
 " Clojure 
 let g:clj_highlight_builtins=1      " Highlight Clojure's builtins
@@ -251,7 +257,4 @@ nnoremap <left> <nop>
 nnoremap <right> <nop>
 inoremap <up> <nop>
 
-if executable("par")
-    set formatprg=par\ -w80
-endif
 
