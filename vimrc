@@ -19,7 +19,7 @@
 "
 " Not installed, but seems cool http://github.com/rstacruz/sparkup
 " Investegate! 
-" Also TComment, MRU and 
+" Also TComment
 
 
 " ProTips to remember:
