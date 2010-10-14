@@ -4,21 +4,22 @@
 
 
 " Cool plugins installed
-" http://github.com/msanders/snipmate.vim
+" snipMate http://github.com/msanders/snipmate.vim
 " YankRing http://www.vim.org/scripts/script.php?script_id=1234
-" http://github.com/scrooloose/nerdcommenter
-" http://github.com/mileszs/ack.vim
+" The NERD Commenter http://www.vim.org/scripts/script.php?script_id=1218
 " The NERD tree http://www.vim.org/scripts/script.php?script_id=1658
 " xmledit http://www.vim.org/scripts/script.php?script_id=301
 " LustyJuggler http://www.vim.org/scripts/script.php?script_id=2050
 " FuzzyFinder http://www.vim.org/scripts/script.php?script_id=1984
 " Matchit http://www.vim.org/scripts/download_script.php?src_id=8196
+" closetag http://www.vim.org/scripts/script.php?script_id=13
+" MRU http://www.vim.org/scripts/script.php?script_id=521
+" Surround http://www.vim.org/scripts/script.php?script_id=1697
 " + more
 "
 " Not installed, but seems cool http://github.com/rstacruz/sparkup
 " Investegate! 
 " Also TComment, MRU and 
-
 
 
 " ProTips to remember:
@@ -78,11 +79,20 @@ au BufRead,BufNewFile Makefile* set noexpandtab
 set ignorecase
 set smartcase
 
+
+
+call pathogen#runtime_append_all_bundles() 
+
+
+
+
+
 " make vim save and load the folding of the document each time it loads
 " also places the cursor in the last place that it was left.
 au BufWinLeave * mkview
 au BufWinEnter * silent loadview
 " TODO: Bug when opening without file
+
 
 " use :w!! to write to a file using sudo if you forgot to "sudo vim file" 
 cmap w!! %!sudo tee > /dev/null %
@@ -149,12 +159,9 @@ set wildmode=longest,list
 "command FoldOne set foldlevel=1
 
 
-if has("python")
-    set statusline=%<%f\ %{TagInStatusLine()}\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
-else
-    set statusline=%<%f\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
-endif
-set laststatus=2 
+set statusline=%<%f\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
+
+set laststatus=2 " Show statusline always
 
 
 " python stuff
