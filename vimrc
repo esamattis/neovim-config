@@ -257,11 +257,11 @@ let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 nnoremap <leader>a :Ack
 
 " Learn mode!
-" Disables arrow keys even in insert mode!
+" Disables arrow keys
 nnoremap <up> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
-inoremap <up> <nop>
+nnoremap <up> <nop>
 
 
