@@ -201,8 +201,6 @@ let g:clj_paren_rainbow=1           " Rainbow parentheses'!
 
 
 
-
-
 "" Leader mappings
 let mapleader = ","
 let maplocalleader = ";"
@@ -249,6 +247,9 @@ nmap <Leader>ff :FufFileWithCurrentBufferDir<CR>
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
 nnoremap k gk
+
+" Copy whole file to OS clipboard
+nmap <Leader>x :%y+<CR>
 
 
 " Ack 
