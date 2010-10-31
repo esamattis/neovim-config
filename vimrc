@@ -81,7 +81,9 @@ set smartcase
 
 
 
+" Activate all plugins from the bundle
 call pathogen#runtime_append_all_bundles() 
+
 
 
 
