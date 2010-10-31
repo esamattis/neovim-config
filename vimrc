@@ -32,7 +32,7 @@
 " replace i with a to select parens also
 "
 " Surround
-" Surround with tag: Vs<tag>
+" Surround with tag: <select>S<tag>
 " Change the surrounding tag: cst<tag>
 
 
