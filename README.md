@@ -18,17 +18,14 @@ Caps Lock to Esc
 Getting the config
 =================
 
-    $ mv ~/.vim ~/.vim_old
-    $ mv ~/.vimrc ~/.vimrc_old
+    mv ~/.vim ~/.vim_old
+    mv ~/.vimrc ~/.vimrc_old
+    mv ~/.gvimrc ~/.gvimrc_old
 
-    $ git clone http://github.com/epeli/vimconfig.git ~/.vim
+    git clone http://github.com/epeli/vimconfig.git ~/.vim
 
-    $ cd ~/.vim
-    $ make
-
-For ack in vim
-
-    :helptags ~/.vim/doc
+    cd ~/.vim
+    make install
 
 
 Tutorials
