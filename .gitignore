@@ -2,4 +2,6 @@
 .netrwhist
 .VimballRecord
 view/
+bundle/*/doc/tags
+bundle/*/doc/tags-ja
 
