@@ -85,7 +85,9 @@ set smartcase
 call pathogen#runtime_append_all_bundles() 
 
 
-
+" When editing a file in folder under this dir, vim-session will consider a
+" project. So it will save sessions when saving and exiting vim.
+let g:sessions_project_path = "$HOME/ohjelmointi"
 
 
 
