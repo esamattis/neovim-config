@@ -251,6 +251,9 @@ nnoremap k gk
 " Copy whole file to OS clipboard
 nmap <Leader>x :%y+<CR>
 
+" Easily change directory to the file being edited.
+nmap <Leader>cd :cd %:p:h<CR>
+
 
 " Ack 
 " http://betterthangrep.com/
