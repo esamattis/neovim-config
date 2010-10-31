@@ -91,6 +91,7 @@ let g:sessions_project_path = "$HOME/ohjelmointi"
 
 
 
+
 " make vim save and load the folding of the document each time it loads
 " also places the cursor in the last place that it was left.
 au BufWinLeave * mkview
@@ -158,10 +159,15 @@ set wildmode=longest,list
 
 " Folding
 "set foldmethod=indent     
-"set foldlevel=9999        " initially open all folds
+set foldlevel=9999        " initially open all folds
 "command FoldAll set foldlevel=0
 "command FoldOne set foldlevel=1
 
+
+
+" Close buffer without closing window
+command Bc Bclose
+command BC Bclose
 
 set statusline=%<%f\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
@@ -195,6 +201,7 @@ autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m2=matchadd('ErrorMsg', '\%>80v.\+'
 
 
 
+
 " Plugins
 filetype plugin on
 
@@ -208,6 +215,8 @@ let g:clj_paren_rainbow=1           " Rainbow parentheses'!
 "" Leader mappings
 let mapleader = ","
 let maplocalleader = ";"
+
+
 
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
