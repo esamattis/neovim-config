@@ -3,25 +3,6 @@
 " http://nvie.com/posts/how-i-boosted-my-vim/
 
 
-" Cool plugins installed
-" snipMate http://github.com/msanders/snipmate.vim
-" YankRing http://www.vim.org/scripts/script.php?script_id=1234
-" The NERD Commenter http://www.vim.org/scripts/script.php?script_id=1218
-" The NERD tree http://www.vim.org/scripts/script.php?script_id=1658
-" xmledit http://www.vim.org/scripts/script.php?script_id=301
-" LustyJuggler http://www.vim.org/scripts/script.php?script_id=2050
-" FuzzyFinder http://www.vim.org/scripts/script.php?script_id=1984
-" Matchit http://www.vim.org/scripts/download_script.php?src_id=8196
-" closetag http://www.vim.org/scripts/script.php?script_id=13
-" MRU http://www.vim.org/scripts/script.php?script_id=521
-" Surround http://www.vim.org/scripts/script.php?script_id=1697
-" + more
-"
-" Not installed, but seems cool http://github.com/rstacruz/sparkup
-" Investegate! 
-" Also TComment
-
-
 " ProTips to remember:
 " diw to delete the current word
 " di( to delete within the current parens
@@ -54,6 +35,13 @@ set noerrorbells         " don't beep
 
 set hidden " hide buffers instead of closing them
 set backspace=2 " make backspace work like most other apps
+
+
+" If you’re editing anything important, it should be in version control.
+" Vim’s defaults are awful messy, leaving .swp files everywhere if the editor
+" isn’t closed properly. This can save you a lot of time.
+set nobackup
+set noswapfile
 
 " No Vi stuff anymore
 set nocompatible
@@ -116,7 +104,6 @@ set hlsearch
 
 " Toggle pastemode easily in insert and command mode
 set pastetoggle=<F2>
-"set pastetoggle=<C-v>
 
 
 " Show trailing whitespace characters
@@ -249,6 +236,11 @@ nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 
+" Open file tree 
+nnoremap <Leader>n :NERDTreeToggle<CR>
+
+" Open bufexplorer 
+nnoremap <Leader>m :BufExplorer<CR>
 
 
 " Buffer manipulator
