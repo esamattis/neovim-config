@@ -17,8 +17,6 @@
 " Change the surrounding tag: cst<tag>
 
 
-" colorscheme peachpuff
-
 syntax on
 set tabstop=4
 set shiftwidth=4
@@ -29,15 +27,21 @@ set autoindent
 set ai
 set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class
-set title                " change the terminal's title
-set noerrorbells         " don't beep
+colorscheme mydefault
+
+" change the terminal's title
+set title                
+
+" don't beep
+set noerrorbells         
+
+" hide buffers instead of closing them
+set hidden 
+
+" make backspace work like most other apps
+set backspace=2 
 
 
-set hidden " hide buffers instead of closing them
-set backspace=2 " make backspace work like most other apps
-
-
-" If you’re editing anything important, it should be in version control.
 " Vim’s defaults are awful messy, leaving .swp files everywhere if the editor
 " isn’t closed properly. This can save you a lot of time.
 set nobackup
@@ -46,7 +50,6 @@ set noswapfile
 " No Vi stuff anymore
 set nocompatible
 
-colorscheme mydefault
 
 
 " Apply  substitutions globally on lines. For example, instead of
@@ -95,8 +98,8 @@ cmap w!! %!sudo tee > /dev/null %
 nnoremap / /\v
 vnoremap / /\v
 
-"work together to highlight search results (as you type). It’s really quite
-"handy, as long as you have the next line as well.
+" work together to highlight search results (as you type). It’s really quite
+" handy, as long as you have the next line as well.
 set incsearch
 set showmatch
 set hlsearch
@@ -117,6 +120,7 @@ vmap Q gq
 nmap Q gqap
 
 
+" Execute jslint on save for .js files
 if executable("jslint")
     autocmd BufWritePost *.js :!jslint %
 endif
@@ -147,18 +151,20 @@ set wildmode=longest,list
 " Folding
 "set foldmethod=indent     
 set foldlevel=9999        " initially open all folds
-"command FoldAll set foldlevel=0
-"command FoldOne set foldlevel=1
+command FoldAll set foldlevel=0
+command FoldOne set foldlevel=1
 
 
 
-" Close buffer without closing window
+" Close buffer without closing window. Requires bclose.vim
 command Bc Bclose
 command BC Bclose
 
 set statusline=%<%f\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
-set laststatus=2 " Show statusline always
+
+" Show statusline always
+set laststatus=2 
 
 
 " python stuff
@@ -217,9 +223,12 @@ nnoremap <leader>rt yypVr
 "  indentation) on it
 nnoremap <leader>v V`]
 
+
+
 "" Window management
 " new vertical split
 nnoremap <leader>w :vertical sp<CR>
+
 " new horizontal split
 nnoremap <leader>wh :sp<CR>
 
