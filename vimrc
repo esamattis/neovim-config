@@ -268,6 +268,8 @@ nmap <Leader>x :%y+<CR>
 " Easily change directory to the file being edited.
 nmap <Leader>cd :cd %:p:h<CR>
 
+" Delete last linebreak, leading spaces and trailing spaces 
+nnoremap <Leader>dl I<C-c>vk$x
 
 " Ack 
 " http://betterthangrep.com/
