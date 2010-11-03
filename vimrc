@@ -8,6 +8,10 @@
 " di( to delete within the current parens
 " di" to delete the text between the quotes
 "
+" vt) select everything up to )
+" vT( select everything up before (
+" f/F is a greedy version
+"
 " replace d with v to select
 "
 " replace i with a to select parens also
@@ -269,7 +273,7 @@ nmap <Leader>x :%y+<CR>
 nmap <Leader>cd :cd %:p:h<CR>
 
 " Delete last linebreak, leading spaces and trailing spaces 
-nnoremap <Leader>dl I<C-c>vk$x
+nnoremap <Leader>dl I" <C-c>hvk$x
 
 " Ack 
 " http://betterthangrep.com/
