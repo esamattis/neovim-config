@@ -33,17 +33,20 @@ set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class
 colorscheme mydefault
 
+" set custom file types I've configured
+au BufNewFile,BufRead *.pt  setf xml
+
 " change the terminal's title
-set title                
+set title
 
 " don't beep
-set noerrorbells         
+set noerrorbells
 
 " hide buffers instead of closing them
-set hidden 
+set hidden
 
 " make backspace work like most other apps
-set backspace=2 
+set backspace=2
 
 
 " Vim’s defaults are awful messy, leaving .swp files everywhere if the editor
@@ -77,7 +80,7 @@ set smartcase
 
 
 " Activate all plugins from the bundle
-call pathogen#runtime_append_all_bundles() 
+call pathogen#runtime_append_all_bundles()
 
 
 " When editing a file in folder under this dir, vim-session will consider a
@@ -94,7 +97,7 @@ au BufWinEnter * silent loadview
 " TODO: Bug when opening without file
 
 
-" use :w!! to write to a file using sudo if you forgot to "sudo vim file" 
+" use :w!! to write to a file using sudo if you forgot to "sudo vim file"
 cmap w!! %!sudo tee > /dev/null %
 
 " This turns off Vim’s crazy default regex characters and makes searches use
@@ -153,7 +156,7 @@ set wildmode=longest,list
 
 
 " Folding
-"set foldmethod=indent     
+"set foldmethod=indent
 set foldlevel=9999        " initially open all folds
 command FoldAll set foldlevel=0
 command FoldOne set foldlevel=1
@@ -168,7 +171,7 @@ set statusline=%<%f\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
 
 " Show statusline always
-set laststatus=2 
+set laststatus=2
 
 
 " python stuff
@@ -203,7 +206,7 @@ autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m2=matchadd('ErrorMsg', '\%>80v.\+'
 filetype plugin on
 
 
-" Clojure 
+" Clojure
 let g:clj_highlight_builtins=1      " Highlight Clojure's builtins
 let g:clj_paren_rainbow=1           " Rainbow parentheses'!
 
@@ -249,10 +252,10 @@ nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 
-" Open file tree 
+" Open file tree
 nnoremap <Leader>n :NERDTreeToggle<CR>
 
-" Open bufexplorer 
+" Open bufexplorer
 nnoremap <Leader>m :BufExplorer<CR>
 
 
@@ -272,10 +275,11 @@ nmap <Leader>x :%y+<CR>
 " Easily change directory to the file being edited.
 nmap <Leader>cd :cd %:p:h<CR>
 
-" Delete last linebreak, leading spaces and trailing spaces 
-nnoremap <Leader>dl I" <C-c>hvk$x
+" Delete last linebreak, leading spaces and trailing spaces
+nnoremap <Leader>u I" <C-c>hvk$xh " up
+nnoremap <Leader>d jI" <C-c>hvk$xh " Down
 
-" Ack 
+" Ack
 " http://betterthangrep.com/
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 nnoremap <leader>a :Ack
