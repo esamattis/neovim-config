@@ -293,3 +293,5 @@ nnoremap <right> <nop>
 nnoremap <up> <nop>
 
 
+" diff will be opened automatically after the git commit.
+autocmd FileType gitcommit DiffGitCached | wincmd p
