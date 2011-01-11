@@ -292,3 +292,19 @@ nnoremap <up> <nop>
 " diff will be opened automatically after the git commit.
 autocmd FileType gitcommit DiffGitCached | wincmd p
 
+
+
+
+" Function for reloading snipMate snippets
+" http://code.google.com/p/snipmate/issues/detail?id=67#c4
+function! ReloadSnippets( snippets_dir, ft )
+    if strlen( a:ft ) == 0
+        let filetype = "_"
+    else
+        let filetype = a:ft
+    endif
+
+    call ResetSnippets()
+    call GetSnippets( a:snippets_dir, filetype )
+endfunction
+nmap <Leader>rs :call ReloadSnippets(snippets_dir, &filetype)<CR>
