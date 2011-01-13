@@ -143,7 +143,7 @@ command WQ wq
 command Wq wq
 
 " :MM to save and make
-command MM w|make
+command MM wall|make
 
 
 " Cooler tab completion for vim commands
