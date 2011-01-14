@@ -145,6 +145,8 @@ command Wq wq
 " :MM to save and make
 command MM wall|make
 
+" Show unsaved changes
+command ShowUnsaved w !diff -u % -
 
 " Cooler tab completion for vim commands
 " http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
