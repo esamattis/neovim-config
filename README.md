@@ -18,17 +18,10 @@ Caps Lock to Esc
 
 Can't live without it.
 
-Getting the config
+Installing the config
 ==================
 
-    mv ~/.vim ~/.vim_old
-    mv ~/.vimrc ~/.vimrc_old
-    mv ~/.gvimrc ~/.gvimrc_old
-
-    git clone http://github.com/epeli/vimconfig.git ~/.vim
-
-    cd ~/.vim
-    make install
+    wget -q -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | bash -eu
 
 
 Tutorials
