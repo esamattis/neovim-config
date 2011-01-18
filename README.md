@@ -9,7 +9,7 @@ Get exuberant-ctags.
 
 Debian and friends
 
-    sudo apt-get install vim-nox exuberant-ctags pyflakes ack-grep par
+    sudo apt-get install vim-nox exuberant-ctags pyflakes ack-grep par python2.6-doc python-django-doc
 
 
 Caps Lock to Esc

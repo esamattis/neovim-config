@@ -310,3 +310,7 @@ function! ReloadSnippets( snippets_dir, ft )
     call GetSnippets( a:snippets_dir, filetype )
 endfunction
 nmap <Leader>rs :call ReloadSnippets(snippets_dir, &filetype)<CR>
+
+" for pyref
+let g:pyref_index = '~/.vim/bundle/pyref/pyref/index'
+let g:pyref_mapping = 'K'
