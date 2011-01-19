@@ -69,8 +69,8 @@ set gdefault
 
 
 
-" tab inserts normal tab for makefiles instead of spaces
-au BufRead,BufNewFile Makefile* set noexpandtab
+" Tab insertion exceptions
+au BufRead,BufNewFile Makefile* *.git/config set noexpandtab
 
 " * Search & Replace
 " make searches case-insensitive, unless they contain upper-case letters:
@@ -165,7 +165,7 @@ command FoldOne set foldlevel=1
 command Bc Bclose
 command BC Bclose
 
-set statusline=%<%f\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
+set statusline=%<%f%y\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
 
 " Show statusline always
