@@ -34,7 +34,7 @@ set wildignore=*.swp,*.bak,*.pyc,*.class
 colorscheme mydefault
 
 " set custom file types I've configured
-au BufNewFile,BufRead *.pt  setf xml
+au BufNewFile,BufRead *.pt *.zcml  setfiletype xml
 
 " change the terminal's title
 set title
@@ -192,16 +192,17 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
 
 
+
 " Hilight long lines
 autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
 autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
 
 
 
-
-
 " Plugins
 filetype plugin on
+
+
 
 
 " Clojure
