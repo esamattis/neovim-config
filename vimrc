@@ -121,10 +121,6 @@ set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
 
-" Use Q for formatting the current paragraph (or selection).
-" Forces 80 character lines.
-vmap Q gq
-nmap Q gqap
 
 
 " Execute jslint on save for .js files
@@ -193,9 +189,14 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
 
 " Hilight long lines
-autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m1=matchadd('Search', '\%<81v.\%>77v', -1)
-autocmd BufRead *.md,*.txt,*.py,*.cgi :let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+command LongLinesShow let w:m1=matchadd('Search', '\%<81v.\%>77v', -1) | let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
+command LongLinesHide call matchdelete(w:m1) | call matchdelete(w:m2)
+autocmd BufRead,BufNewFile *.md,*.txt,*.py,*.cgi :LongLinesShow
 
+" Use Q for formatting the current paragraph (or selection).
+" Forces 80 character lines.
+vmap Q gq
+nmap Q gqap
 
 
 
@@ -314,3 +315,8 @@ nmap <Leader>rs :call ReloadSnippets(snippets_dir, &filetype)<CR>
 " for pyref
 let g:pyref_index = '~/.vim/bundle/pyref/pyref/index'
 let g:pyref_mapping = 'K'
+
+
+" spellchecking 
+set spelllang=en_us
+nmap <silent> <leader>s :set spell!<CR>
