@@ -251,6 +251,9 @@ nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
+" Force redraw to C-l
+nnoremap <C-l> :redraw!<CR>
+
 
 " Open file tree
 nnoremap <Leader>n :NERDTreeToggle<CR>
