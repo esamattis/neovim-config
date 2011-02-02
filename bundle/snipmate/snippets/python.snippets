@@ -86,5 +86,7 @@ snippet _
 	__${1:init}__${2}
 snippet bp
 	import pdb; pdb.set_trace()
+snippet rbp
+	import rpdb; debugger = rpdb.Rpdb(${1:4444}); debugger.set_trace()
 snippet co
 	# -*- coding: utf-8 -*-
