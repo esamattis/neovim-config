@@ -324,3 +324,6 @@ let g:pyref_mapping = 'K'
 " spell checking 
 set spelllang=en_us
 nmap <silent> <leader>s :set spell!<CR>
+
+
+let coffee_compile_on_save = 1
