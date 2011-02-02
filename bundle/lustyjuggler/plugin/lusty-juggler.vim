@@ -483,7 +483,7 @@ class LustyJuggler
       VIM::command "noremap <silent> <C-c> :call <SID>LustyJugglerCancel()<CR>"
       VIM::command "noremap <silent> <BS>  :call <SID>LustyJugglerCancel()<CR>"
       VIM::command "noremap <silent> <Del> :call <SID>LustyJugglerCancel()<CR>"
-      VIM::command "noremap <silent> <C-h> :call <SID>LustyJugglerCancel()<CR>"
+#      VIM::command "noremap <silent> <C-h> :call <SID>LustyJugglerCancel()<CR>"
 
       print_buffer_list()
     end
@@ -522,7 +522,7 @@ class LustyJuggler
       VIM::command "unmap <silent> <C-c>"
       VIM::command "unmap <silent> <BS>"
       VIM::command "unmap <silent> <Del>"
-      VIM::command "unmap <silent> <C-h>"
+#      VIM::command "unmap <silent> <C-h>"
 
       @running = false
       VIM::message ''
