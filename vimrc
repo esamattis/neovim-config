@@ -75,6 +75,7 @@ set gdefault
 
 
 " Bubble single lines
+" http://vimcasts.org/episodes/bubbling-text/
 nmap <C-Up> [e
 nmap <C-Down> ]e
 " Bubble multiple lines
