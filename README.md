@@ -23,10 +23,13 @@ Installing the config
 
     wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | bash -eu
 
-
-Tutorials
+Influences from
 =========
-http://www.cyberciti.biz/faq/vim-editing-multiple-files-with-windows-buffers/
+http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+
+http://nvie.com/posts/how-i-boosted-my-vim/
+
+http://net.tutsplus.com/articles/general/top-10-pitfalls-when-switching-to-vim
 
 http://stackoverflow.com/questions/95072/what-are-your-favorite-vim-tricks
 

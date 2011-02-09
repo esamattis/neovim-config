@@ -1,6 +1,3 @@
-" Influences from
-" http://stevelosh.com/blog/2010/09/coming-home-to-vim/
-" http://nvie.com/posts/how-i-boosted-my-vim/
 
 
 " ProTips to remember:
@@ -36,6 +33,7 @@ colorscheme mydefault
 " set custom file types I've configured
 au BufNewFile,BufRead *.pt *.zcml  setfiletype xml
 
+
 " change the terminal's title
 set title
 
@@ -58,6 +56,15 @@ set noswapfile
 set nocompatible
 
 
+" Write the old file out when switching between files
+set autowrite
+
+"Map escape key to jj -- much faster
+imap jj <esc>
+
+"Ever notice a slight lag after typing the leader key + command? This lowers
+""the timeout.
+set timeoutlen=500
 
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
@@ -67,10 +74,23 @@ set nocompatible
 set gdefault
 
 
+" Bubble single lines
+nmap <C-Up> [e
+nmap <C-Down> ]e
+" Bubble multiple lines
+vmap <C-Up> [egv
+vmap <C-Down> ]egv
 
+" Backups TODO: tutki
+set backupdir=~/.vim/tmp/backup// " backups
+set directory=~/.vim/tmp/swap// " swap files
+set backup " enable backup
 
 " Tab insertion exceptions
 au BufRead,BufNewFile Makefile* *.git/config set noexpandtab
+
+
+
 
 " * Search & Replace
 " make searches case-insensitive, unless they contain upper-case letters:
@@ -245,6 +265,7 @@ nnoremap <leader>j <C-w>j
 nnoremap <leader>k <C-w>k
 nnoremap <leader>l <C-w>l
 
+
 " Easily resize split windows with Ctrl+hjkl
 nnoremap <C-j> <C-w>+
 nnoremap <C-k> <C-w>-
@@ -287,17 +308,11 @@ nnoremap <Leader>d jI" <C-c>hvk$xh " Down
 let g:ackprg="ack-grep -H --nocolor --nogroup --column"
 nnoremap <leader>a :Ack
 
-" Learn mode!
-" Disables arrow keys
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-nnoremap <up> <nop>
 
 
 " diff will be opened automatically after the git commit.
 autocmd FileType gitcommit DiffGitCached | wincmd p
+
 
 
 
@@ -327,3 +342,5 @@ nmap <silent> <leader>s :set spell!<CR>
 
 
 let coffee_compile_on_save = 1
+
+
