@@ -40,6 +40,7 @@ au BufNewFile,BufRead *.json setfiletype javascript
 
 
 
+
 " change the terminal's title
 set title
 
@@ -169,6 +170,10 @@ command MM wall|make
 
 " Show unsaved changes
 command ShowUnsaved w !diff -u % -
+
+command SessionSave mksession .session.vim
+command SessionLoad source .session.vim
+
 
 " Cooler tab completion for vim commands
 " http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
