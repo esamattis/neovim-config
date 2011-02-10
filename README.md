@@ -11,7 +11,7 @@ Debian and friends
 
 For command-t
 
-    sudo apt-get install rake ruby1.8-dev
+    sudo apt-get install ruby1.8-dev
 
 Caps Lock to Esc
 
