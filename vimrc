@@ -18,7 +18,6 @@
 " Change the surrounding tag: cst<tag>
 
 
-syntax on
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
@@ -30,8 +29,15 @@ set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class
 colorscheme mydefault
 
-" set custom file types I've configured
-au BufNewFile,BufRead *.pt *.zcml  setfiletype xml
+syntax on
+filetype on
+filetype plugin on
+" set custom file types
+au BufNewFile,BufRead *.zcml  setfiletype xml
+au BufNewFile,BufRead *.pt  setfiletype xml
+au BufNewFile,BufRead *.coffee  setfiletype coffee
+au BufNewFile,BufRead *.json setfiletype javascript
+
 
 
 " change the terminal's title
@@ -82,7 +88,7 @@ nmap <C-Down> ]e
 vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
-" Backups TODO: tutki
+" Backups
 set backupdir=~/.vim/tmp/backup// " backups
 set directory=~/.vim/tmp/swap// " swap files
 set backup " enable backup
@@ -104,11 +110,10 @@ set smartcase
 call pathogen#runtime_append_all_bundles()
 
 
-" When editing a file in folder under this dir, vim-session will consider a
-" project. So it will save sessions when saving and exiting vim.
-let g:sessions_project_path = "$HOME/ohjelmointi"
-
-
+" do not store global and local values in a session 
+set ssop-=options 
+" do not store folds
+set ssop-=folds  
 
 
 " make vim save and load the folding of the document each time it loads
@@ -221,8 +226,6 @@ vmap Q gq
 nmap Q gqap
 
 
-" Plugins
-filetype plugin on
 
 
 
@@ -343,5 +346,6 @@ nmap <silent> <leader>s :set spell!<CR>
 
 
 let coffee_compile_on_save = 1
+
 
 
