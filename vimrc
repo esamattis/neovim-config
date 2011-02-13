@@ -42,6 +42,7 @@ au BufNewFile,BufRead *.zcml  setfiletype xml
 au BufNewFile,BufRead *.pt  setfiletype xml
 au BufNewFile,BufRead *.coffee  setfiletype coffee
 au BufNewFile,BufRead *.json setfiletype javascript
+au BufNewFile,BufRead *.ru setfiletype ruby
 
 
 " Ruby uses 2 spaces as indentation
@@ -343,19 +344,8 @@ autocmd FileType gitcommit DiffGitCached | wincmd p
 
 
 
-" Function for reloading snipMate snippets
-" http://code.google.com/p/snipmate/issues/detail?id=67#c4
-function! ReloadSnippets( snippets_dir, ft )
-    if strlen( a:ft ) == 0
-        let filetype = "_"
-    else
-        let filetype = a:ft
-    endif
-
-    call ResetSnippets()
-    call GetSnippets( a:snippets_dir, filetype )
-endfunction
-nmap <Leader>rs :call ReloadSnippets(snippets_dir, &filetype)<CR>
+" Command for reloading snipMate snippets
+command ReloadAllSnippets call ReloadAllSnippets()
 
 " for pyref
 let g:pyref_index = '~/.vim/bundle/pyref/pyref/index'
