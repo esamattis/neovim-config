@@ -32,6 +32,8 @@ colorscheme mydefault
 syntax on
 filetype on
 filetype plugin on
+
+
 " set custom file types
 au BufNewFile,BufRead *.zcml  setfiletype xml
 au BufNewFile,BufRead *.pt  setfiletype xml
@@ -39,6 +41,13 @@ au BufNewFile,BufRead *.coffee  setfiletype coffee
 au BufNewFile,BufRead *.json setfiletype javascript
 
 
+" Ruby uses 2 spaces as indentation
+au FileType ruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" Also for xmly stuff
+au FileType html,xml,xhtml setlocal  shiftwidth=2 tabstop=2 softtabstop=2
+
+" Tab insertion exceptions
+au FileType make,gitconfig setlocal noexpandtab
 
 
 " change the terminal's title
@@ -94,8 +103,6 @@ set backupdir=~/.vim/tmp/backup// " backups
 set directory=~/.vim/tmp/swap// " swap files
 set backup " enable backup
 
-" Tab insertion exceptions
-au BufRead,BufNewFile Makefile* *.git/config set noexpandtab
 
 
 
@@ -347,10 +354,11 @@ let g:pyref_mapping = 'K'
 
 " spell checking 
 set spelllang=en_us
+" Toggle spelling 
 nmap <silent> <leader>s :set spell!<CR>
 
 
-let coffee_compile_on_save = 1
 
-
+" Show Syntastic side bar on errors
+let g:syntastic_enable_signs=1
 
