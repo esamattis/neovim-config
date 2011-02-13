@@ -33,6 +33,9 @@ syntax on
 filetype on
 filetype plugin on
 
+"" Leader mappings
+let mapleader = ","
+let maplocalleader = ";"
 
 " set custom file types
 au BufNewFile,BufRead *.zcml  setfiletype xml
@@ -48,6 +51,21 @@ au FileType html,xml,xhtml setlocal  shiftwidth=2 tabstop=2 softtabstop=2
 
 " Tab insertion exceptions
 au FileType make,gitconfig setlocal noexpandtab
+
+
+
+" My status lines
+" set statusline=%<%f%y\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
+" With Syntastic
+set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
+
+
+nnoremap <leader>e :Errors<CR>
+
+
+" Show statusline always
+set laststatus=2
+
 
 
 " change the terminal's title
@@ -198,11 +216,7 @@ command FoldOne set foldlevel=1
 command Bc Bclose
 command BC Bclose
 
-set statusline=%<%f%y\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
-
-" Show statusline always
-set laststatus=2
 
 
 " python stuff
@@ -247,9 +261,6 @@ let g:clj_paren_rainbow=1           " Rainbow parentheses'!
 
 
 
-"" Leader mappings
-let mapleader = ","
-let maplocalleader = ";"
 
 
 
@@ -358,6 +369,4 @@ nmap <silent> <leader>s :set spell!<CR>
 
 
 
-" Show Syntastic side bar on errors
-let g:syntastic_enable_signs=1
 
