@@ -123,12 +123,11 @@ set ssop-=options
 " do not store folds
 set ssop-=folds  
 
-
-" make vim save and load the folding of the document each time it loads
-" also places the cursor in the last place that it was left.
-au BufWinLeave * mkview
-au BufWinEnter * silent loadview
-" TODO: Bug when opening without file
+" When editing a file, always jump to the last cursor position
+autocmd BufReadPost *
+\ if line("'\"") > 0 && line ("'\"") <= line("$") |
+\   exe "normal g'\"" |
+\ endif
 
 
 " use :w!! to write to a file using sudo if you forgot to "sudo vim file"
