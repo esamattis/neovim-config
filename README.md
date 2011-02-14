@@ -7,11 +7,11 @@ Get exuberant-ctags.
 
 Debian and friends
 
-    sudo apt-get install vim-nox exuberant-ctags  ack-grep par python2.6-doc python-django-doc
+    sudo apt-get install vim-nox exuberant-ctags python2.6-doc python-django-doc
 
 For command-t
 
-    sudo apt-get install ruby1.8-dev
+    sudo apt-get install ruby ruby1.8-dev
 
 For syntastic
 
