@@ -46,7 +46,7 @@ au BufNewFile,BufRead *.ru setfiletype ruby
 
 
 " Ruby uses 2 spaces as indentation
-au FileType ruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
+au FileType ruby,haml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 " Also for xmly stuff
 au FileType html,xml,xhtml setlocal  shiftwidth=2 tabstop=2 softtabstop=2
 
@@ -173,12 +173,6 @@ set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:.
 
 
-
-
-" Execute jslint on save for .js files
-if executable("jslint")
-    autocmd BufWritePost *.js :!jslint %
-endif
 
 
 " Execute file being edited
