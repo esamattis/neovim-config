@@ -44,6 +44,8 @@ au BufNewFile,BufRead *.coffee  setfiletype coffee
 au BufNewFile,BufRead *.json setfiletype javascript
 au BufNewFile,BufRead *.ru setfiletype ruby
 
+" TODO: why does modula2 overrides this?
+au BufNewFile,BufRead *.md setfiletype markdown
 
 " Ruby uses 2 spaces as indentation
 au FileType ruby,haml setlocal shiftwidth=2 tabstop=2 softtabstop=2
