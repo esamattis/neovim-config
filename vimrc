@@ -341,7 +341,10 @@ autocmd FileType gitcommit DiffGitCached | wincmd p
 
 
 " Command for reloading snipMate snippets
-command ReloadAllSnippets call ReloadAllSnippets()
+command SnippetsReload call ReloadAllSnippets()
+command SnippetsEdit e ~/.vim/bundle/snipmate/snippets/
+
+
 
 " for pyref
 let g:pyref_index = '~/.vim/bundle/pyref/pyref/index'
