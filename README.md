@@ -7,15 +7,7 @@ Get exuberant-ctags.
 
 Debian and friends
 
-    sudo apt-get install vim-nox exuberant-ctags python2.6-doc python-django-doc
-
-For command-t
-
-    sudo apt-get install ruby ruby1.8-dev
-
-For syntastic
-
-    sudo apt-get install tidy pyflakes
+    sudo apt-get install vim-nox exuberant-ctags git-core ruby ruby1.8-dev tidy pyflakes python2.6-doc python-django-doc
 
 Caps Lock to Esc
 
