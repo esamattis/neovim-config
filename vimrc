@@ -46,7 +46,7 @@ au BufNewFile,BufRead *.ru setfiletype ruby
 
 
 " Ruby uses 2 spaces as indentation
-au FileType ruby,haml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
 " Also for xmly stuff
 au FileType html,xml,xhtml setlocal  shiftwidth=2 tabstop=2 softtabstop=2
 
@@ -60,6 +60,8 @@ au FileType make,gitconfig setlocal noexpandtab
 " With Syntastic
 set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
+
+let g:syntastic_enable_signs=1
 
 nnoremap <leader>e :Errors<CR>
 
@@ -97,9 +99,6 @@ set autowrite
 "Map escape key to jj -- much faster
 imap jj <esc>
 
-"Ever notice a slight lag after typing the leader key + command? This lowers
-""the timeout.
-set timeoutlen=500
 
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
