@@ -46,6 +46,7 @@ au BufNewFile,BufRead *.ru setfiletype ruby
 
 " TODO: why does modula2 overrides this?
 au BufNewFile,BufRead *.md setfiletype markdown
+au BufNewFile,BufRead *.markdown setfiletype markdown
 
 " Ruby uses 2 spaces as indentation
 au FileType ruby,haml,eruby,coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
