@@ -48,7 +48,7 @@ au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.md setfiletype markdown
 
 " Ruby uses 2 spaces as indentation
-au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
+au FileType ruby,haml,eruby,coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
 " Also for xmly stuff
 au FileType html,xml,xhtml setlocal  shiftwidth=2 tabstop=2 softtabstop=2
 
@@ -168,6 +168,8 @@ set hlsearch
 " Toggle pastemode easily in insert and command mode
 set pastetoggle=<F2>
 
+" Always disable paste mode when leaving insert mode
+au InsertLeave * set nopaste
 
 " Show trailing whitespace characters
 set list
