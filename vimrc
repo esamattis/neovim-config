@@ -18,12 +18,6 @@
 " Change the surrounding tag: cst<tag>
 
 
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
-set smarttab
-set expandtab
-set autoindent
 set ai
 set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class
@@ -33,9 +27,27 @@ syntax on
 filetype on
 filetype plugin on
 
+
+" Use smart indenting
+set smarttab expandtab autoindent
+
+" By default use 4 spaces as indentation
+set tabstop=4 shiftwidth=4 softtabstop=4
+
+" Ruby uses 2 spaces as indentation
+au FileType ruby,haml,eruby,coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
+" Also for xmly stuff
+au FileType html,xml,xhtml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+" Makefiles and gitconfig require tab
+au FileType make,gitconfig setlocal noexpandtab
+
+
 "" Leader mappings
 let mapleader = ","
 let maplocalleader = ";"
+
+
 
 " set custom file types
 au BufNewFile,BufRead *.zcml  setfiletype xml
@@ -48,13 +60,8 @@ au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.md setfiletype markdown
 au BufNewFile,BufRead *.markdown setfiletype markdown
 
-" Ruby uses 2 spaces as indentation
-au FileType ruby,haml,eruby,coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
-" Also for xmly stuff
-au FileType html,xml,xhtml setlocal  shiftwidth=2 tabstop=2 softtabstop=2
 
-" Tab insertion exceptions
-au FileType make,gitconfig setlocal noexpandtab
+
 
 
 
