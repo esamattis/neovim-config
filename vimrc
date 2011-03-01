@@ -43,6 +43,7 @@ au BufNewFile,BufRead *.pt  setfiletype xml
 au BufNewFile,BufRead *.coffee  setfiletype coffee
 au BufNewFile,BufRead *.json setfiletype javascript
 au BufNewFile,BufRead *.ru setfiletype ruby
+au BufNewFile,BufRead *.conf setfiletype conf
 
 " TODO: why does modula2 overrides this?
 au BufNewFile,BufRead *.md setfiletype markdown
