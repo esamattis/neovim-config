@@ -35,7 +35,7 @@ set smarttab expandtab autoindent
 set tabstop=4 shiftwidth=4 softtabstop=4
 
 " Ruby uses 2 spaces as indentation
-au FileType ruby,haml,eruby,coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
+au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
 " Also for xmly stuff
 au FileType html,xml,xhtml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
@@ -56,6 +56,7 @@ au BufNewFile,BufRead *.coffee  setfiletype coffee
 au BufNewFile,BufRead *.json setfiletype javascript
 au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.conf setfiletype conf
+au BufNewFile,BufRead *.pde setfiletype arduino
 
 " TODO: why does modula2 overrides this?
 au BufNewFile,BufRead *.md setfiletype markdown
