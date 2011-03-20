@@ -373,4 +373,9 @@ nmap <silent> <leader>s :set spell!<CR>
 
 
 
+" Compile selected Coffeescript to Javascript and print it to stdout
+vmap <leader>c <esc>:'<,'>:w !coffee -scb<CR>
+
+
+
 
