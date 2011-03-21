@@ -373,9 +373,12 @@ nmap <silent> <leader>s :set spell!<CR>
 
 
 
-" Compile selected Coffeescript to Javascript and print it to stdout
-vmap <leader>c <esc>:'<,'>:w !coffee -scb<CR>
-
-
+"" Use ,c to compile selected text to corresponding output and print it to stdout
+" CoffeeScript to Javascript
+au FileType coffee vmap <leader>c <esc>:'<,'>:w !coffee -scb<CR>
+" Jade to HTML
+au FileType jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
+" Haml to HTML
+au FileType haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 
 
