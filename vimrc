@@ -57,6 +57,7 @@ au BufNewFile,BufRead *.json setfiletype javascript
 au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.conf setfiletype conf
 au BufNewFile,BufRead *.pde setfiletype arduino
+au BufNewFile,BufRead *.jade setfiletype jade
 
 " TODO: why does modula2 overrides this?
 au BufNewFile,BufRead *.md setfiletype markdown
@@ -375,10 +376,10 @@ nmap <silent> <leader>s :set spell!<CR>
 
 "" Use ,c to compile selected text to corresponding output and print it to stdout
 " CoffeeScript to Javascript
-au FileType coffee vmap <leader>c <esc>:'<,'>:w !coffee -scb<CR>
+au BufEnter *.coffee vmap <leader>c <esc>:'<,'>:w !coffee -scb<CR>
 " Jade to HTML
-au FileType jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
+au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 " Haml to HTML
-au FileType haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
+au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 
 
