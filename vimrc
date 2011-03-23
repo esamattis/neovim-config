@@ -376,7 +376,7 @@ nmap <silent> <leader>s :set spell!<CR>
 
 "" Use ,c to compile selected text to corresponding output and print it to stdout
 " CoffeeScript to Javascript
-au BufEnter *.coffee vmap <leader>c <esc>:'<,'>:w !coffee -scb<CR>
+au BufEnter *.coffee vmap <leader>c :CoffeeCompile<CR>
 " Jade to HTML
 au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 " Haml to HTML
