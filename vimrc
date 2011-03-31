@@ -320,11 +320,10 @@ nnoremap <Leader>m :BufExplorer<CR>
 " Search buffers with Command-T
 nnoremap <Leader>, :CommandTBuffer<CR>
 
-" Use separate working directory for Command-T instead of Vim's cwd.
-" Use CommandTSetWorkingDirectory to reset the dir to current cwd of
-" Vim.
+" Use separate working directory for Command-T instead of Vim's cwd.  Use
+" CommandTSetWorkingDirectory to reset the dir to cwd of Vim.
 command CommandTSetWorkingDirectory let g:CommandTWorkingDirectory = getcwd()
-CommandTSetWorkingDirectory
+CommandTSetWorkingDirectory " Set up initially
 nnoremap <Leader>t :exec  "CommandT" . g:CommandTWorkingDirectory  <CR>
 
 
