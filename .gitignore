@@ -7,4 +7,4 @@ bundle/*/doc/tags-ja
 spell/*.spl
 *~
 .git
-
+tmp/*
