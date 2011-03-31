@@ -316,9 +316,16 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Open bufexplorer
 nnoremap <Leader>m :BufExplorer<CR>
+
+" Search buffers with Command-T
 nnoremap <Leader>, :CommandTBuffer<CR>
 
-
+" Use separate working directory for Command-T instead of Vim's cwd.
+" Use CommandTSetWorkingDirectory to reset the dir to current cwd of
+" Vim.
+command CommandTSetWorkingDirectory let g:CommandTWorkingDirectory = getcwd()
+CommandTSetWorkingDirectory
+nnoremap <Leader>t :exec  "CommandT" . g:CommandTWorkingDirectory  <CR>
 
 
 " Move by screen lines instead of file line. Nice with long lines.
@@ -378,5 +385,8 @@ au BufEnter *.coffee vmap <leader>c :CoffeeCompile<CR>
 au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 " Haml to HTML
 au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
+
+
+
 
 
