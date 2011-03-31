@@ -53,7 +53,7 @@ let maplocalleader = ";"
 au BufNewFile,BufRead *.zcml  setfiletype xml
 au BufNewFile,BufRead *.pt  setfiletype xml
 au BufNewFile,BufRead *.coffee  setfiletype coffee
-au BufNewFile,BufRead *.json setfiletype javascript
+au BufNewFile,BufRead *.json setfiletype json
 au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.conf setfiletype conf
 au BufNewFile,BufRead *.pde setfiletype arduino
