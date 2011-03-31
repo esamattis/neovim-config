@@ -316,13 +316,10 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 
 " Open bufexplorer
 nnoremap <Leader>m :BufExplorer<CR>
+nnoremap <Leader>, :CommandTBuffer<CR>
 
 
-" Buffer manipulator
-nmap <Leader>, :LustyJuggler<CR>
-nmap <Leader>fb :FufBuffer<CR>
-" open new buffers from the directory where current file is in
-nmap <Leader>ff :FufFileWithCurrentBufferDir<CR>
+
 
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
