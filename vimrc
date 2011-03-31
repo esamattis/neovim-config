@@ -149,10 +149,10 @@ set smartcase
 call pathogen#runtime_append_all_bundles()
 
 
-" do not store global and local values in a session 
-set ssop-=options 
+" do not store global and local values in a session
+set ssop-=options
 " do not store folds
-set ssop-=folds  
+set ssop-=folds
 
 " When editing a file, always jump to the last cursor position
 autocmd BufReadPost *
@@ -276,9 +276,6 @@ let g:clj_paren_rainbow=1           " Rainbow parentheses'!
 " strip all trailing whitespace in the current file
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 
-"" reStructured Text Stuff
-" Set heading
-nnoremap <leader>rt yypVr
 
 
 "  to reselect the text that was just pasted so I can perform commands (like
@@ -366,9 +363,9 @@ let g:pyref_index = '~/.vim/bundle/pyref/pyref/index'
 let g:pyref_mapping = 'K'
 
 
-" spell checking 
+" spell checking
 set spelllang=en_us
-" Toggle spelling 
+" Toggle spelling
 nmap <silent> <leader>s :set spell!<CR>
 
 
