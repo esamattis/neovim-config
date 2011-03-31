@@ -1,6 +1,14 @@
+all: update install
+
 .PHONY install: vimrc
 	chmod -v +x ~/.vim/bin/*
 	ln -fvs ~/.vim/vimrc ~/.vimrc
 	ln -fvs ~/.vim/gvimrc ~/.gvimrc
-	cd ~/.vim/bundle/command-t/ruby/command-t && ruby 'extconf.rb' && make clean && make
+	~/.vim/bin/buildcommandt
 	vim -c 'call pathogen#helptags()' -c 'qa!'
+	vim -version || exit 0 
+
+.PHONY update:
+	git pull
+
+
