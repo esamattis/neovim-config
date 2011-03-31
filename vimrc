@@ -341,10 +341,6 @@ nmap <Leader>cd :cd %:p:h<CR>
 nnoremap <Leader>u I" <C-c>hvk$xh " up
 nnoremap <Leader>d jI" <C-c>hvk$xh " Down
 
-" Ack
-" http://betterthangrep.com/
-let g:ackprg="ack-grep -H --nocolor --nogroup --column"
-nnoremap <leader>a :Ack
 
 
 
@@ -386,6 +382,14 @@ au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 
 
+" ,f to start precise jump
+" http://www.vim.org/scripts/script.php?script_id=3437
+map <Leader>f _f
+
+" ,i for line start
+map <Leader>i 0
+" ,a for line end
+map <Leader>a $
 
 
 
