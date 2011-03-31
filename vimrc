@@ -380,6 +380,8 @@ au BufEnter *.coffee vmap <leader>c :CoffeeCompile<CR>
 au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 " Haml to HTML
 au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
+" Markdown to HTML
+au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
 
 
 " ,f to start precise jump
