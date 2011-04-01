@@ -1,9 +1,23 @@
-#!/bin/bash -eu
+#!/bin/bash
+
+DISABLE_FLAG=~/.vim/bundle/command-t/ruby/command-t/disable
+
 
 cd ~/.vim/bundle/command-t/ruby/command-t
 /usr/bin/ruby 'extconf.rb'
 #ruby 'extconf.rb'
 make clean
-make
+make 
+
+# Test if vim is broken
+vim -c "q"
+if [  $? -eq 0 ]
+then
+	[ -f $DISABLE_FLAG ] && rm $DISABLE_FLAG
+else
+	touch $DISABLE_FLAG
+fi
+
+
 
 

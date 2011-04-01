@@ -1,4 +1,8 @@
-
+let g:pathogen_disabled = []
+" Disable command-t if it is broken
+if filereadable($HOME . '/.vim/bundle/command-t/ruby/command-t/disable')
+   call add(g:pathogen_disabled, 'command-t')
+endif
 
 " ProTips to remember:
 " diw to delete the current word
