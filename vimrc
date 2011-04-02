@@ -201,6 +201,10 @@ command W w
 command Q q
 command WQ wq
 command Wq wq
+command Qa qa
+command QA qa
+command Wa wa
+command WA wa
 
 " :MM to save and make
 command MM wall|make
