@@ -1,23 +1,25 @@
 #!/bin/bash
 
-DISABLE_FLAG=~/.vim/bundle/command-t/ruby/command-t/disable
+DISABLE_FLAG=~/.vim/bundle/command-t/disable
 
+[ -f $DISABLE_FLAG ] && rm $DISABLE_FLAG
 
 cd ~/.vim/bundle/command-t/ruby/command-t
 /usr/bin/ruby 'extconf.rb'
-#ruby 'extconf.rb'
+# ruby 'extconf.rb'
 make clean
 make 
 
 # Test if vim is broken
 vim -c "q"
-if [  $? -eq 0 ]
+
+if [ ! $? -eq 0 ]
 then
-	[ -f $DISABLE_FLAG ] && rm $DISABLE_FLAG
-else
-	touch $DISABLE_FLAG
+    echo
+    echo "Command-T is broken!!!"
+    echo
+    touch $DISABLE_FLAG
 fi
 
-
-
+exit 0
 

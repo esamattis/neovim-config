@@ -1,9 +1,3 @@
-let g:pathogen_disabled = []
-" Disable command-t if it is broken
-if filereadable($HOME . '/.vim/bundle/command-t/ruby/command-t/disable')
-   call add(g:pathogen_disabled, 'command-t')
-endif
-
 " ProTips to remember:
 " diw to delete the current word
 " di( to delete within the current parens
@@ -20,6 +14,30 @@ endif
 " Surround
 " Surround with tag: <select>S<tag>
 " Change the surrounding tag: cst<tag>
+"
+"
+let g:pathogen_disabled = []
+
+" Disable command-t if it is broken
+if filereadable($HOME . '/.vim/bundle/command-t/ruby/command-t/disable')
+   call add(g:pathogen_disabled, 'command-t')
+else
+    " Search buffers with Command-T
+    nnoremap <Leader>, :CommandTBuffer<CR>
+
+    " Use separate working directory for Command-T instead of Vim's cwd.  Use
+    " CommandTSetWorkingDirectory to reset the dir to cwd of Vim.
+    command CommandTSetWorkingDirectory let g:CommandTWorkingDirectory = getcwd()
+    CommandTSetWorkingDirectory " Set up initially
+
+    " remove easy :call EasyMotionT(0, 0)<CR>
+    au VimEnter *  unmap <Leader>t
+    au VimEnter * map <Leader>t :exec  "CommandT" . g:CommandTWorkingDirectory  <CR>
+endif
+
+" Activate all plugins from the bundle
+call pathogen#runtime_append_all_bundles()
+
 
 
 set ai
@@ -149,8 +167,6 @@ set smartcase
 
 
 
-" Activate all plugins from the bundle
-call pathogen#runtime_append_all_bundles()
 
 
 " do not store global and local values in a session
@@ -226,12 +242,6 @@ set wildmode=longest,list
 set foldlevel=9999        " initially open all folds
 command FoldAll set foldlevel=0
 command FoldOne set foldlevel=1
-
-
-
-" Close buffer without closing window. Requires bclose.vim
-command Bc Bclose
-command BC Bclose
 
 
 
@@ -317,14 +327,6 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 " Open bufexplorer
 nnoremap <Leader>m :BufExplorer<CR>
 
-" Search buffers with Command-T
-nnoremap <Leader>, :CommandTBuffer<CR>
-
-" Use separate working directory for Command-T instead of Vim's cwd.  Use
-" CommandTSetWorkingDirectory to reset the dir to cwd of Vim.
-command CommandTSetWorkingDirectory let g:CommandTWorkingDirectory = getcwd()
-CommandTSetWorkingDirectory " Set up initially
-nnoremap <Leader>t :exec  "CommandT" . g:CommandTWorkingDirectory  <CR>
 
 
 " Move by screen lines instead of file line. Nice with long lines.
@@ -389,6 +391,18 @@ au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
 map <Leader>h 0
 " ,l for line end
 map <Leader>l $
+
+
+" Remove crappy keymappings set by plugings
+
+" :BufExplorerVerticalSplit<CR>
+au VimEnter * unmap <Leader>bv
+" :BufExplorerHorizontalSplit<CR>
+au VimEnter * unmap <Leader>bs
+" :BufExplorer<CR>
+au VimEnter * unmap <Leader>be
+" BClose
+au VimEnter * unmap <Leader>bd
 
 
 
