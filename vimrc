@@ -290,16 +290,11 @@ nnoremap <leader>v V`]
 
 "" Window management
 " new vertical split
-nnoremap <leader>w :vertical sp<CR>
+command Vertical vertical sp
 
 " new horizontal split
-nnoremap <leader>wh :sp<CR>
+command Horizontal sp
 
-" Easily move between split windows using <leader>hjkl
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
 
 
 " Easily resize split windows with Ctrl+hjkl
@@ -309,7 +304,7 @@ nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 " Force redraw to C-l
-nnoremap <C-l> :redraw!<CR>
+nnoremap <Leader>r :redraw!<CR>
 
 
 " Open file tree
@@ -385,14 +380,11 @@ au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
 
 
-" ,f to start precise jump
-" http://www.vim.org/scripts/script.php?script_id=3437
-map <Leader>f _f
 
-" ,i for line start
-map <Leader>i 0
-" ,a for line end
-map <Leader>a $
+" h, for line start
+map <Leader>h 0
+" ,l for line end
+map <Leader>l $
 
 
 
