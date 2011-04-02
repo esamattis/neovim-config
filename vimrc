@@ -42,7 +42,7 @@ call pathogen#runtime_append_all_bundles()
 
 set ai
 set modeline
-set wildignore=*.swp,*.bak,*.pyc,*.class
+set wildignore=*.swp,*.bak,*.pyc,*.class,*~
 colorscheme mydefault
 
 syntax on
