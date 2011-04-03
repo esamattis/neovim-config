@@ -327,7 +327,7 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 " Open bufexplorer
 nnoremap <Leader>m :BufExplorer<CR>
 
-
+map <Leader>p :echo expand('%:p') <CR>
 
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
