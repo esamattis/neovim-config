@@ -1,9 +1,3 @@
-let g:pathogen_disabled = []
-" Disable command-t if it is broken
-if filereadable($HOME . '/.vim/bundle/command-t/ruby/command-t/disable')
-   call add(g:pathogen_disabled, 'command-t')
-endif
-
 " ProTips to remember:
 " diw to delete the current word
 " di( to delete within the current parens
@@ -20,11 +14,35 @@ endif
 " Surround
 " Surround with tag: <select>S<tag>
 " Change the surrounding tag: cst<tag>
+"
+"
+let g:pathogen_disabled = []
+
+" Disable command-t if it is broken
+if filereadable($HOME . '/.vim/bundle/command-t/ruby/command-t/disable')
+   call add(g:pathogen_disabled, 'command-t')
+else
+    " Search buffers with Command-T
+    nnoremap <Leader>, :CommandTBuffer<CR>
+
+    " Use separate working directory for Command-T instead of Vim's cwd.  Use
+    " CommandTSetWorkingDirectory to reset the dir to cwd of Vim.
+    command CommandTSetWorkingDirectory let g:CommandTWorkingDirectory = getcwd()
+    CommandTSetWorkingDirectory " Set up initially
+
+    " remove easy :call EasyMotionT(0, 0)<CR>
+    au VimEnter *  unmap <Leader>t
+    au VimEnter * map <Leader>t :exec  "CommandT" . g:CommandTWorkingDirectory  <CR>
+endif
+
+" Activate all plugins from the bundle
+call pathogen#runtime_append_all_bundles()
+
 
 
 set ai
 set modeline
-set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info
+set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~
 colorscheme mydefault
 
 syntax on
@@ -38,6 +56,9 @@ set smarttab expandtab autoindent
 " By default use 4 spaces as indentation
 set tabstop=4 shiftwidth=4 softtabstop=4
 
+" Command for resetting tab width
+command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=<args>
+
 " Ruby uses 2 spaces as indentation
 au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
 " Also for xmly stuff
@@ -50,7 +71,6 @@ au FileType make,gitconfig setlocal noexpandtab
 "" Leader mappings
 let mapleader = ","
 let maplocalleader = ";"
-
 
 
 " set custom file types
@@ -149,8 +169,6 @@ set smartcase
 
 
 
-" Activate all plugins from the bundle
-call pathogen#runtime_append_all_bundles()
 
 
 " do not store global and local values in a session
@@ -201,6 +219,10 @@ command W w
 command Q q
 command WQ wq
 command Wq wq
+command Qa qa
+command QA qa
+command Wa wa
+command WA wa
 
 " :MM to save and make
 command MM wall|make
@@ -222,12 +244,6 @@ set wildmode=longest,list
 set foldlevel=9999        " initially open all folds
 command FoldAll set foldlevel=0
 command FoldOne set foldlevel=1
-
-
-
-" Close buffer without closing window. Requires bclose.vim
-command Bc Bclose
-command BC Bclose
 
 
 
@@ -290,16 +306,11 @@ nnoremap <leader>v V`]
 
 "" Window management
 " new vertical split
-nnoremap <leader>w :vertical sp<CR>
+command Vertical vertical sp
 
 " new horizontal split
-nnoremap <leader>wh :sp<CR>
+command Horizontal sp
 
-" Easily move between split windows using <leader>hjkl
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
 
 
 " Easily resize split windows with Ctrl+hjkl
@@ -309,7 +320,7 @@ nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 " Force redraw to C-l
-nnoremap <C-l> :redraw!<CR>
+nnoremap <Leader>r :redraw!<CR>
 
 
 " Open file tree
@@ -318,15 +329,7 @@ nnoremap <Leader>n :NERDTreeToggle<CR>
 " Open bufexplorer
 nnoremap <Leader>m :BufExplorer<CR>
 
-" Search buffers with Command-T
-nnoremap <Leader>, :CommandTBuffer<CR>
-
-" Use separate working directory for Command-T instead of Vim's cwd.  Use
-" CommandTSetWorkingDirectory to reset the dir to cwd of Vim.
-command CommandTSetWorkingDirectory let g:CommandTWorkingDirectory = getcwd()
-CommandTSetWorkingDirectory " Set up initially
-nnoremap <Leader>t :exec  "CommandT" . g:CommandTWorkingDirectory  <CR>
-
+map <Leader>p :echo expand('%:p') <CR>
 
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
@@ -385,14 +388,23 @@ au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
 
 
-" ,f to start precise jump
-" http://www.vim.org/scripts/script.php?script_id=3437
-map <Leader>f _f
 
-" ,i for line start
-map <Leader>i 0
-" ,a for line end
-map <Leader>a $
+" h, for line start
+map <Leader>h 0
+" ,l for line end
+map <Leader>l $
+
+
+" Remove crappy keymappings set by plugings
+
+" :BufExplorerVerticalSplit<CR>
+au VimEnter * unmap <Leader>bv
+" :BufExplorerHorizontalSplit<CR>
+au VimEnter * unmap <Leader>bs
+" :BufExplorer<CR>
+au VimEnter * unmap <Leader>be
+" BClose
+au VimEnter * unmap <Leader>bd
 
 
 
