@@ -24,7 +24,7 @@ endif
 
 set ai
 set modeline
-set wildignore=*.swp,*.bak,*.pyc,*.class
+set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info
 colorscheme mydefault
 
 syntax on
