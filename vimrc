@@ -43,6 +43,9 @@ call pathogen#runtime_append_all_bundles()
 set ai
 set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~
+
+
+set t_Co=256
 colorscheme solarized
 set background=dark
 
@@ -397,6 +400,7 @@ map <Leader>l $
 
 
 " Remove crappy keymappings set by plugings
+" search bad plugings with :verbose imap <c-n>
 
 " :BufExplorerVerticalSplit<CR>
 au VimEnter * unmap <Leader>bv
