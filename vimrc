@@ -43,7 +43,8 @@ call pathogen#runtime_append_all_bundles()
 set ai
 set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~
-colorscheme mydefault
+colorscheme solarized
+set background=dark
 
 syntax on
 filetype on
