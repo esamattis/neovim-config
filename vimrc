@@ -383,7 +383,7 @@ nmap <silent> <leader>s :set spell!<CR>
 
 "" Use ,c to compile selected text to corresponding output and print it to stdout
 " CoffeeScript to Javascript
-au BufEnter *.coffee vmap <leader>c :CoffeeCompile<CR>
+au FileType coffee vmap <leader>c <esc>:'<,'>:w !coffee -scb \| pygmentize -l javascript<CR>
 " Jade to HTML
 au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 " Haml to HTML
@@ -411,4 +411,4 @@ au VimEnter * unmap <Leader>be
 " BClose
 au VimEnter * unmap <Leader>bd
 
-
+let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
