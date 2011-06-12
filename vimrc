@@ -328,10 +328,21 @@ nnoremap <Leader>r :redraw!<CR>
 
 
 " Open file tree
-nnoremap <Leader>n :NERDTreeToggle<CR>
-
+" nnoremap <Leader>n :NERDTreeToggle<CR>
 " Open bufexplorer
-nnoremap <Leader>m :BufExplorer<CR>
+" nnoremap <Leader>m :BufExplorer<CR>
+
+
+" Open file tree
+nnoremap <Leader>n :LustyFilesystemExplorer<CR>
+" Open bufexplorer
+nnoremap <Leader>m :LustyBufferExplorer <CR>
+" Opens filesystem explorer at the directory of the current file
+nnoremap <Leader>f :LustyFilesystemExplorerFromHere <CR>
+" Opens buffer grep
+nnoremap <Leader>g :LustyBufferGrep <CR>
+
+
 
 map <Leader>p :echo expand('%:p') <CR>
 
