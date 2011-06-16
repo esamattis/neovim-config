@@ -401,6 +401,7 @@ au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 " Markdown to HTML
 au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
+au BufEnter *.scss vmap <leader>c <esc>:'<,'>:w !sass --stdin --scss<CR>
 
 
 
@@ -421,5 +422,16 @@ au VimEnter * unmap <Leader>bs
 au VimEnter * unmap <Leader>be
 " BClose
 au VimEnter * unmap <Leader>bd
+
+
+" LustyExplorer
+au VimEnter * unmap <Leader>lf
+au VimEnter * unmap <Leader>lb
+au VimEnter * unmap <Leader>lj
+au VimEnter * unmap <Leader>lg
+au VimEnter * unmap <Leader>lr
+
+
+
 
 let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
