@@ -1,9 +1,9 @@
 snippet bp
 	debugger;
-
+snippet l
+	console.log(${1});
 snippet #!
 	#!/usr/bin/env node
-
 # Prototype
 snippet proto
 	${1:class_name}.prototype.${2:method_name} =
@@ -11,10 +11,14 @@ snippet proto
 		${4:// body...}
 	};
 # Function
-snippet fun
+snippet f;
 	function ${1}(${2}) {
 		${3}
 	};
+snippet f)
+	function ${1}(${2}) {
+		${3}
+	});
 # Anonymous Function
 snippet f
 	function(${1}) {${2}}
