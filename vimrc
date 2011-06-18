@@ -328,10 +328,21 @@ nnoremap <Leader>r :redraw!<CR>
 
 
 " Open file tree
-nnoremap <Leader>n :NERDTreeToggle<CR>
-
+" nnoremap <Leader>n :NERDTreeToggle<CR>
 " Open bufexplorer
-nnoremap <Leader>m :BufExplorer<CR>
+" nnoremap <Leader>m :BufExplorer<CR>
+
+
+" Open file tree
+nnoremap <Leader>n :LustyFilesystemExplorer<CR>
+" Open bufexplorer
+nnoremap <Leader>m :LustyBufferExplorer <CR>
+" Opens filesystem explorer at the directory of the current file
+nnoremap <Leader>f :LustyFilesystemExplorerFromHere <CR>
+" Opens buffer grep
+nnoremap <Leader>g :LustyBufferGrep <CR>
+
+
 
 map <Leader>p :echo expand('%:p') <CR>
 
@@ -383,13 +394,14 @@ nmap <silent> <leader>s :set spell!<CR>
 
 "" Use ,c to compile selected text to corresponding output and print it to stdout
 " CoffeeScript to Javascript
-au BufEnter *.coffee vmap <leader>c :CoffeeCompile<CR>
+au FileType coffee vmap <leader>c <esc>:'<,'>:w !coffee -scb \| pygmentize -l javascript<CR>
 " Jade to HTML
 au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 " Haml to HTML
 au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 " Markdown to HTML
 au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
+au BufEnter *.scss vmap <leader>c <esc>:'<,'>:w !sass --stdin --scss<CR>
 
 
 
@@ -412,4 +424,14 @@ au VimEnter * unmap <Leader>be
 au VimEnter * unmap <Leader>bd
 
 
+" LustyExplorer
+au VimEnter * unmap <Leader>lf
+au VimEnter * unmap <Leader>lb
+au VimEnter * unmap <Leader>lj
+au VimEnter * unmap <Leader>lg
+au VimEnter * unmap <Leader>lr
 
+
+
+
+let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
