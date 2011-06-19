@@ -42,7 +42,7 @@ call pathogen#runtime_append_all_bundles()
 
 set ai
 set modeline
-set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~
+set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_modules
 
 
 set t_Co=256
