@@ -228,6 +228,9 @@ command QA qa
 command Wa wa
 command WA wa
 
+
+
+
 " :MM to save and make
 command MM wall|make
 
@@ -284,7 +287,8 @@ vmap Q gq
 nmap Q gqap
 
 
-
+" Makes Caps Lock work as Esc
+command EscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 
 
