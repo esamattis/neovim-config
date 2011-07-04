@@ -441,6 +441,7 @@ au VimEnter * unmap <Leader>lr
 let g:EasyGrepMode=0
 let g:EasyGrepRecursive=1
 let g:EasyGrepIgnoreCase=1
+let g:EasyGrepCommand=1
 
 
 let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
