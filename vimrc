@@ -401,7 +401,7 @@ au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
 au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
 " Markdown to HTML
 au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
-au BufEnter *.scss vmap <leader>c <esc>:'<,'>:w !sass --stdin --scss<CR>
+" au FileType scss vmap <leader>c <esc>:'<,'>:w !sass --stdin --scss<CR>
 
 
 
@@ -432,6 +432,11 @@ au VimEnter * unmap <Leader>lg
 au VimEnter * unmap <Leader>lr
 
 
+" EasyGrep
+" https://github.com/vim-scripts/EasyGrep
+let g:EasyGrepMode=0
+let g:EasyGrepRecursive=1
+let g:EasyGrepIgnoreCase=1
 
 
 let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
