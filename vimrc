@@ -443,5 +443,7 @@ let g:EasyGrepRecursive=1
 let g:EasyGrepIgnoreCase=1
 let g:EasyGrepCommand=1
 
-
 let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
+
+" Show margin column
+set colorcolumn=80
