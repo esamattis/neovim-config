@@ -447,3 +447,22 @@ let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
 
 " Show margin column
 set colorcolumn=80
+
+
+" Find tags directory by going up from cwd
+py << EOF
+import os
+import sys
+import vim
+parts = os.getcwd().split("/")
+max = len(parts)
+for i in range(max):
+    i += 1
+    tags = "%s/tags" % "/".join(parts[:-i])
+    if os.path.isfile(tags):
+        print "Found tags from", tags
+        vim.command(r"set tags=%s" % tags)
+        break
+EOF
+
+
