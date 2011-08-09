@@ -457,8 +457,8 @@ import vim
 parts = os.getcwd().split("/")
 max = len(parts)
 for i in range(max):
-    i += 1
     tags = "%s/tags" % "/".join(parts[:-i])
+    # print i, tags
     if os.path.isfile(tags):
         print "Found tags from", tags
         vim.command(r"set tags=%s" % tags)
