@@ -47,6 +47,7 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_mo
 
 set t_Co=256
 colorscheme solarized
+set background=light
 set background=dark
 
 syntax on
@@ -446,7 +447,9 @@ let g:EasyGrepCommand=1
 let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
 
 " Show margin column
-set colorcolumn=80
+if exists('+colorcolumn')
+    set colorcolumn=80
+endif
 
 
 " Find tags directory by going up from cwd
