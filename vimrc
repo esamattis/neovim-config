@@ -260,6 +260,8 @@ autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,
 autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 let python_highlight_all = 1
 
+nmap <C-i> :!igor %<CR> <bar> :e!<CR>
+
 " Execute a selection of code (very cool!)
 " Use VISUAL to select a range and then hit ctrl-h to execute it.
 python << EOL
@@ -268,6 +270,22 @@ def EvaluateCurrentRange():
     eval(compile('\n'.join(vim.current.range),'','exec'),globals())
 EOL
 map <C-h> :py EvaluateCurrentRange()<CR>
+
+" Find tags directory by going up from cwd
+py << EOF
+import os
+import sys
+import vim
+parts = os.getcwd().split("/")
+max = len(parts)
+for i in range(max):
+    tags = "%s/tags" % "/".join(parts[:-i])
+    # print i, tags
+    if os.path.isfile(tags):
+        print "Found tags from", tags
+        vim.command(r"set tags=%s" % tags)
+        break
+EOF
 
 
 " php
@@ -449,20 +467,5 @@ let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
 set colorcolumn=80
 
 
-" Find tags directory by going up from cwd
-py << EOF
-import os
-import sys
-import vim
-parts = os.getcwd().split("/")
-max = len(parts)
-for i in range(max):
-    tags = "%s/tags" % "/".join(parts[:-i])
-    # print i, tags
-    if os.path.isfile(tags):
-        print "Found tags from", tags
-        vim.command(r"set tags=%s" % tags)
-        break
-EOF
 
 
