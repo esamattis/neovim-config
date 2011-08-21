@@ -35,10 +35,8 @@ endif
 
 if exists("b:eco_subtype") && b:eco_subtype != '' && b:eco_subtype != 'eco'
   exec "runtime! syntax/".b:eco_subtype.".vim"
-  let b:current_syntax = "eco"
+  syn include @coffeeTop syntax/coffee.vim
 endif
-
-syn include @coffeeTop syntax/coffee.vim
 
 syn cluster ecoRegions contains=ecoBlock,ecoExpression,ecoComment
 
