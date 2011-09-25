@@ -397,16 +397,8 @@ nmap <silent> <leader>s :set spell!<CR>
 
 
 "" Use ,c to compile selected text to corresponding output and print it to stdout
-" CoffeeScript to Javascript
-au FileType coffee map <leader>c :CoffeeCompile<CR>
-au FileType coffee vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
-" Jade to HTML
-au BufEnter *.jade vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| jade<CR>
-" Haml to HTML
-au BufEnter *.haml vmap <leader>c <esc>:'<,'>:w !~/.vim/bin/deindent \| haml<CR>
-" Markdown to HTML
-au BufEnter *.md,*.markdown vmap <leader>c <esc>:'<,'>:w !markdown<CR>
-" au FileType scss vmap <leader>c <esc>:'<,'>:w !sass --stdin --scss<CR>
+map <leader>c :CoffeeCompile<CR>
+vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
 
 
 
