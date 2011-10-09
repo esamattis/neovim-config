@@ -13,32 +13,15 @@ setlocal formatoptions-=t formatoptions+=croql
 setlocal comments=:#
 setlocal commentstring=#\ %s
 
-setlocal errorformat=Error:\ In\ %f\\,\ %m\ on\ line\ %l,
-                    \Error:\ In\ %f\\,\ Parse\ error\ on\ line\ %l:\ %m,
-                    \SyntaxError:\ In\ %f\\,\ %m,
-                    \%-G%.%#
-
-" DEPRECATED: Fold by indentation, but only if enabled.
-if exists("coffee_folding")
-  setlocal foldmethod=indent
-endif
-
 " Extra options passed to CoffeeMake
 if !exists("coffee_make_options")
   let coffee_make_options = ""
 endif
 
-" Update `makeprg` for the current filename. This is needed to support filenames
-" with spaces and quotes while also supporting generic `make`.
-function! s:SetMakePrg()
-  let &l:makeprg = "coffee -c " . g:coffee_make_options . ' $* '
-  \              . fnameescape(expand('%'))
-endfunction
-
-" Set `makeprg` initially.
-call s:SetMakePrg()
-" Reset `makeprg` on rename.
-autocmd BufFilePost,BufWritePost,FileWritePost <buffer> call s:SetMakePrg()
+" Enable CoffeeMake if it won't overwrite any settings.
+if !len(&l:makeprg)
+  compiler coffee
+endif
 
 " Reset the global variables used by CoffeeCompile.
 function! s:CoffeeCompileResetVars()
@@ -232,28 +215,5 @@ endif
 " Peek at compiled CoffeeScript.
 command! -range=% -bar -nargs=* -complete=customlist,s:CoffeeCompileComplete
 \        CoffeeCompile call s:CoffeeCompile(<line1>, <line2>, <q-args>)
-" Compile the current file.
-command! -bang -bar -nargs=* CoffeeMake make<bang> <args>
 " Run some CoffeeScript.
 command! -range=% -bar CoffeeRun <line1>,<line2>:w !coffee -s
-
-
-command! -complete=shellcmd -nargs=+ Shell call s:RunShellCommand(<q-args>)
-function! s:RunShellCommand(cmdline)
-  echo a:cmdline
-  let expanded_cmdline = a:cmdline
-  for part in split(a:cmdline, ' ')
-     if part[0] =~ '\v[%#<]'
-        let expanded_part = fnameescape(expand(part))
-        let expanded_cmdline = substitute(expanded_cmdline, part, expanded_part, '')
-     endif
-  endfor
-  botright new
-  setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile nowrap
-  call setline(1, 'You entered:    ' . a:cmdline)
-  call setline(2, 'Expanded Form:  ' .expanded_cmdline)
-  call setline(3,substitute(getline(2),'.','=','g'))
-  execute '$read !'. expanded_cmdline
-  setlocal nomodifiable
-  1
-endfunction
