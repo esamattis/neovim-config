@@ -3,8 +3,8 @@
 " @Website:     http://www.vim.org/account/profile.php?user_id=4037
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2007-09-17.
-" @Last Change: 2011-04-12.
-" @Revision:    0.0.407
+" @Last Change: 2011-08-06.
+" @Revision:    0.0.415
 
 " call tlog#Log('Load: '. expand('<sfile>')) " vimtlib-sfile
 
@@ -174,10 +174,28 @@ function! tcomment#DefineType(name, commentdef)
 endf
 
 " :nodoc:
+" Return comment definition
+function! tcomment#GetCommentDef(name)
+    return get(s:definitions, a:name, "")
+endf
+
+" :nodoc:
 " Return 1 if a comment type is defined.
 function! tcomment#TypeExists(name)
     return has_key(s:definitions, a:name)
 endf
+
+" :doc:
+" A dictionary of NAME => COMMENT DEFINITION (see |tcomment#DefineType|) 
+" that can be set in vimrc to override tcomment's default comment 
+" styles.
+" :read: let g:tcomment_types = {} "{{{2
+if exists('g:tcomment_types')
+    for [s:name, s:def] in items(g:tcomment_types)
+        call tcomment#DefineType(s:name, s:def)
+    endfor
+    unlet! s:name s:def
+endif
 
 call tcomment#DefineType('aap',              '# %s'             )
 call tcomment#DefineType('ada',              '-- %s'            )
@@ -198,6 +216,7 @@ call tcomment#DefineType('c_inline',         g:tcommentInlineC  )
 call tcomment#DefineType('c_block',          g:tcommentBlockC   )
 call tcomment#DefineType('cfg',              '# %s'             )
 call tcomment#DefineType('conf',             '# %s'             )
+call tcomment#DefineType('conkyrc',          '# %s'             )
 call tcomment#DefineType('crontab',          '# %s'             )
 call tcomment#DefineType('cs',               '// %s'            )
 call tcomment#DefineType('cs_inline',        g:tcommentInlineC  )
@@ -275,6 +294,7 @@ call tcomment#DefineType('prolog',           '%% %s'            )
 call tcomment#DefineType('python',           '# %s'             )
 call tcomment#DefineType('rc',               '// %s'            )
 call tcomment#DefineType('readline',         '# %s'             )
+call tcomment#DefineType('robots',           '# %s'             )
 call tcomment#DefineType('ruby',             '# %s'             )
 call tcomment#DefineType('ruby_3',           '### %s'           )
 call tcomment#DefineType('ruby_block',       "=begin rdoc%s=end")
@@ -445,6 +465,7 @@ function! tcomment#Comment(beg, end, ...)
         exec lbeg .','. lend .'s/\V'. 
                     \ s:StartPosRx(commentMode, lbeg, cbeg) . indentStr .'\zs\(\_.\{-}\)'. s:EndPosRx(commentMode, lend, cend) .'/'.
                     \ '\=s:ProcessedLine('. uncomment .', submatch(0), "'. cmtCheck .'", "'. cmtReplace .'")/ge'
+        call histdel('search', -1)
     endif
     " reposition cursor
     " TLogVAR commentMode
