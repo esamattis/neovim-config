@@ -94,7 +94,9 @@ au BufNewFile,BufRead *.markdown setfiletype markdown
 
 
 
-
+" Hilight == operator with red in CoffeeScript. Always use "is" instead of it.
+au BufNewFile,BufRead,BufEnter *.coffee syntax match BrightRed "=="
+hi BrightRed ctermfg=7 ctermbg=1
 
 
 " My status lines
