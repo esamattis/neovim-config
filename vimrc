@@ -350,6 +350,8 @@ nnoremap <C-l> <C-w>>
 
 " Force redraw to C-l
 nnoremap <Leader>r :redraw!<CR>
+nnoremap ö :redraw!<CR>
+nnoremap ä :redraw!<CR>
 
 
 " Open file tree

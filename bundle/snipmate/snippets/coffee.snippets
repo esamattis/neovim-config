@@ -18,7 +18,9 @@ snippet we
 snippet werr
 	return winston.error("${1}", err) if err
 snippet rerr
-	return cb? err if err
+	return cb err if err
+snippet lerr
+	return console.log err if err
 snippet req
 	require "${1}"${2}
 snippet #
