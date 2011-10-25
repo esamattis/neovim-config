@@ -471,3 +471,9 @@ endif
 
 map vp :exec "w !vpaste ft=".&ft<CR>
 vmap vp <ESC>:exec "'<,'>w !vpaste ft=".&ft<CR>
+
+
+if filereadable($HOME . "/.vim/localrc")
+    source $HOME/.vim/localrc
+endif
+

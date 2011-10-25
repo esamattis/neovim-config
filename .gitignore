@@ -8,3 +8,4 @@ spell/*.spl
 *~
 .git
 tmp/*
+localrc
