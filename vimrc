@@ -46,9 +46,7 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_mo
 
 
 set t_Co=256
-colorscheme solarized
-set background=light
-set background=dark
+colorscheme default
 
 syntax on
 filetype on
