@@ -1,7 +1,10 @@
 # #!/usr/bin/env ruby
 snippet #!
 	#!/usr/bin/env ruby
-
+snippet ifmain
+	if __FILE__ == $ 0
+		${1:main()}
+	end
 snippet bp
 	require 'ruby-debug/completion'; debugger
 # New Block
