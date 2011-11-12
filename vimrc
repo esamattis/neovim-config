@@ -36,7 +36,8 @@ else
 endif
 
 " Activate all plugins from the bundle
-call pathogen#runtime_append_all_bundles()
+" call pathogen#runtime_append_all_bundles()
+call pathogen#infect('~/.vim/bundle')
 
 
 
@@ -46,9 +47,7 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_mo
 
 
 set t_Co=256
-colorscheme solarized
-set background=light
-set background=dark
+colorscheme default
 
 syntax on
 filetype on
@@ -350,6 +349,8 @@ nnoremap <C-l> <C-w>>
 
 " Force redraw to C-l
 nnoremap <Leader>r :redraw!<CR>
+nnoremap ö :redraw!<CR>
+nnoremap ä :redraw!<CR>
 
 
 " Open file tree
@@ -469,3 +470,9 @@ endif
 
 map vp :exec "w !vpaste ft=".&ft<CR>
 vmap vp <ESC>:exec "'<,'>w !vpaste ft=".&ft<CR>
+
+
+if filereadable($HOME . "/.vim/localrc")
+    source $HOME/.vim/localrc
+endif
+

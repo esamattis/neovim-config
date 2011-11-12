@@ -1,9 +1,12 @@
 # #!/usr/bin/env ruby
 snippet #!
 	#!/usr/bin/env ruby
-
+snippet ifmain
+	if __FILE__ == $ 0
+		${1:main()}
+	end
 snippet bp
-	debugger
+	require 'ruby-debug/completion'; debugger
 # New Block
 snippet =b
 	=begin rdoc
