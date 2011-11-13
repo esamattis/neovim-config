@@ -93,9 +93,6 @@ au BufNewFile,BufRead *.markdown setfiletype markdown
 
 
 
-" Hilight == operator with red in CoffeeScript. Always use "is" instead of it.
-au BufNewFile,BufRead,BufEnter *.coffee syntax match BrightRed "=="
-hi BrightRed ctermfg=7 ctermbg=1
 
 
 " My status lines
@@ -422,6 +419,14 @@ nmap <silent> <leader>s :set spell!<CR>
 map <leader>c :CoffeeCompile<CR>
 vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
 
+" Hilight == operator with red in CoffeeScript. Always use "is" instead of it.
+au BufNewFile,BufRead,BufEnter *.coffee syntax match BrightRed "=="
+hi BrightRed ctermfg=7 ctermbg=1
+
+" CC <line number>
+" Compile CoffeeScript buffer and open it in scratch buffer on given line
+" number
+command -nargs=1 CC CoffeeCompile | :<args>
 
 
 " h, for line start
