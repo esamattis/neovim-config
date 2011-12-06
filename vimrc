@@ -344,11 +344,14 @@ nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
-" Force redraw to C-l
+
+" Ääkköset
 nnoremap <Leader>r :redraw!<CR>
-nnoremap ö :redraw!<CR>
+" nnoremap ö :redraw!<CR>
 nnoremap ä :redraw!<CR>
 
+" Start search
+nnoremap ö /\v
 
 " Open file tree
 " nnoremap <Leader>n :NERDTreeToggle<CR>
@@ -423,10 +426,10 @@ vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
 au BufNewFile,BufRead,BufEnter *.coffee syntax match BrightRed "=="
 hi BrightRed ctermfg=7 ctermbg=1
 
-" CC <line number>
+" :C<line number>
 " Compile CoffeeScript buffer and open it in scratch buffer on given line
 " number
-command -nargs=1 CC CoffeeCompile | :<args>
+command -nargs=1 C CoffeeCompile | :<args>
 
 
 " h, for line start
