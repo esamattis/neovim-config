@@ -7,7 +7,7 @@ Get exuberant-ctags.
 
 Debian and friends
 
-    sudo apt-get install vim-nox exuberant-ctags git-core ruby ruby1.8-dev tidy pyflakes python2.6-doc python-django-doc markdown
+    sudo apt-get install vim-nox exuberant-ctags git-core ruby ruby1.8-dev tidy pyflakes markdown
 
 Caps Lock to Esc
 
@@ -32,3 +32,5 @@ http://stackoverflow.com/questions/95072/what-are-your-favorite-vim-tricks
 http://superuser.com/questions/111016/vim-open-file-at-location-that-was-last-viewed
 
 http://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim
+
+http://mislav.uniqpath.com/2011/12/vim-revisited/
