@@ -16,10 +16,11 @@
 "               Matt Tolton, Björn Winckler, sowill, David Brown
 "               Brett DiFrischia, Ali Asad Lotia, Kenneth Love, Ben Boeckel,
 "               robquant, lilydjwg, Martin Wache, Johannes Holzfuß
-"               Donald Curtis, Jan Zwiener
+"               Donald Curtis, Jan Zwiener, Giuseppe Rota, Toby O'Connell,
+"               Göran Gustafsson, Joel Elkins
 "
-" Release Date: April 29, 2011
-"      Version: 4.1
+" Release Date: November 25, 2011
+"      Version: 4.2
 "
 "        Usage:
 "                 <Leader>lf  - Opens the filesystem explorer.
@@ -36,7 +37,9 @@
 "                 ":LustyBufferExplorer"
 "                 ":LustyBufferGrep"
 "
-"               (Personally, I map these to ,f ,r ,b and ,g)
+"               To suppress the default mappings, set this option:
+"
+"                 let g:LustyExplorerDefaultMappings = 0
 "
 "               When launched, a new window appears at bottom presenting a
 "               table of files/dirs or buffers, and in the status bar a
@@ -266,14 +269,22 @@ endfunction
 
 
 " Default mappings.
-nmap <silent> <Leader>lf :LustyFilesystemExplorer<CR>
-nmap <silent> <Leader>lr :LustyFilesystemExplorerFromHere<CR>
-nmap <silent> <Leader>lb :LustyBufferExplorer<CR>
-nmap <silent> <Leader>lg :LustyBufferGrep<CR>
+if !exists("g:LustyExplorerDefaultMappings")
+  let g:LustyExplorerDefaultMappings = 1
+endif
+
+if g:LustyExplorerDefaultMappings == 1
+  nmap <silent> <Leader>lf :LustyFilesystemExplorer<CR>
+  nmap <silent> <Leader>lr :LustyFilesystemExplorerFromHere<CR>
+  nmap <silent> <Leader>lb :LustyBufferExplorer<CR>
+  nmap <silent> <Leader>lg :LustyBufferGrep<CR>
+endif
 
 " Vim-to-ruby function calls.
 function! s:LustyFilesystemExplorerStart(path)
-  exec "ruby LustyE::profile() { $lusty_filesystem_explorer.run_from_path('".a:path."') }"
+  ruby LustyE::profile() {
+       \  $lusty_filesystem_explorer.run_from_path(VIM::evaluate("a:path"))
+       \}
 endfunction
 
 function! s:LustyBufferExplorerStart()

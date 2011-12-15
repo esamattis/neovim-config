@@ -11,10 +11,11 @@
 "  Description: Dynamic Buffer Switcher Vim Plugin
 "   Maintainer: Stephen Bach <this-file@sjbach.com>
 " Contributors: Juan Frias, Bartosz Leper, Marco Barberis, Vincent Driessen,
-"               Martin Wache, Johannes Holzfuß, Adam Rutkowski, Carlo Teubner
+"               Martin Wache, Johannes Holzfuß, Adam Rutkowski, Carlo Teubner,
+"               lilydjwg, Leonid Shevtsov, Giuseppe Rota, Göran Gustafsson
 "
-" Release Date: April 29, 2011
-"      Version: 1.3
+" Release Date: November 25, 2011
+"      Version: 1.4
 "
 "        Usage:
 "                 <Leader>lj  - Opens the buffer juggler.
@@ -23,7 +24,9 @@
 "
 "                 ":LustyJuggler"
 "
-"               (Personally, I map this to ,j)
+"               To suppress the default mapping, set this option:
+"
+"                 let g:LustyJugglerDefaultMappings = 0
 "
 "               When launched, the command bar at bottom is replaced with a
 "               new bar showing the names of currently-opened buffers in
@@ -42,7 +45,8 @@
 "
 "               If you want to switch to that buffer, press "f" or "4" again
 "               or press "<ENTER>".  Alternatively, press one of the other
-"               mapped keys to highlight another buffer.
+"               mapped keys to highlight another buffer.  To open the buffer
+"               in a new split, press "b" for horizontal or "v" for vertical.
 "
 "               To display the key with the name of the buffer, add one of
 "               the following lines to your .vimrc:
@@ -211,7 +215,13 @@ endfunction
 
 
 " Default mappings.
-nmap <silent> <Leader>lj :LustyJuggler<CR>
+if !exists("g:LustyJugglerDefaultMappings")
+  let g:LustyJugglerDefaultMappings = 1
+endif
+
+if g:LustyJugglerDefaultMappings == 1
+  nmap <silent> <Leader>lj :LustyJuggler<CR>
+endif
 
 " Vim-to-ruby function calls.
 function! s:LustyJugglerStart()
