@@ -73,7 +73,7 @@ function! s:GetIncludeDirs()
 endfunction
 
 function! SyntaxCheckers_c_GetLocList()
-    let makeprg = 'gcc -fsyntax-only '.shellescape(expand('%')).
+    let makeprg = 'gcc -fsyntax-only -std=gnu99 '.shellescape(expand('%')).
                \ ' '.s:GetIncludeDirs()
     let errorformat = '%-G%f:%s:,%-G%f:%l: %#error: %#(Each undeclared '.
                \ 'identifier is reported only%.%#,%-G%f:%l: %#error: %#for '.
@@ -98,10 +98,10 @@ function! SyntaxCheckers_c_GetLocList()
                     \ g:syntastic_c_no_include_search != 1
             if exists('g:syntastic_c_auto_refresh_includes') &&
                         \ g:syntastic_c_auto_refresh_includes != 0
-                let makeprg .= syntastic#SearchHeaders()
+                let makeprg .= syntastic#c#SearchHeaders()
             else
                 if !exists('b:syntastic_c_includes')
-                    let b:syntastic_c_includes = syntastic#SearchHeaders()
+                    let b:syntastic_c_includes = syntastic#c#SearchHeaders()
                 endif
                 let makeprg .= b:syntastic_c_includes
             endif

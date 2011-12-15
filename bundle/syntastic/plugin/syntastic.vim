@@ -2,8 +2,8 @@
 "File:        syntastic.vim
 "Description: vim plugin for on the fly syntax checking
 "Maintainer:  Martin Grenfell <martin.grenfell at gmail dot com>
-"Version:     1.2.0
-"Last Change: 28 Oct, 2010
+"Version:     2.1.0
+"Last Change: 14 Dec, 2011
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -23,16 +23,30 @@ if !s:running_windows
     let s:uname = system('uname')
 endif
 
-if !exists("g:syntastic_enable_signs") || !has('signs')
+if !exists("g:syntastic_enable_signs")
+    let g:syntastic_enable_signs = 1
+endif
+if !has('signs')
     let g:syntastic_enable_signs = 0
 endif
 
-if !exists("g:syntastic_enable_balloons") || !has('balloon_eval')
+if !exists("g:syntastic_enable_balloons")
+    let g:syntastic_enable_balloons = 1
+endif
+if !has('balloon_eval')
     let g:syntastic_enable_balloons = 0
 endif
 
+if !exists("g:syntastic_enable_highlighting")
+    let g:syntastic_enable_highlighting = 1
+endif
+
+if !exists("g:syntastic_echo_current_error")
+    let g:syntastic_echo_current_error = 1
+endif
+
 if !exists("g:syntastic_auto_loc_list")
-    let g:syntastic_auto_loc_list = 0
+    let g:syntastic_auto_loc_list = 2
 endif
 
 if !exists("g:syntastic_auto_jump")
@@ -43,28 +57,54 @@ if !exists("g:syntastic_quiet_warnings")
     let g:syntastic_quiet_warnings = 0
 endif
 
-if !exists("g:syntastic_disabled_filetypes")
-    let g:syntastic_disabled_filetypes = []
-endif
-
 if !exists("g:syntastic_stl_format")
     let g:syntastic_stl_format = '[Syntax: line:%F (%t)]'
 endif
 
+if !exists("g:syntastic_mode_map")
+    let g:syntastic_mode_map = {}
+endif
+
+if !has_key(g:syntastic_mode_map, "mode")
+    let g:syntastic_mode_map['mode'] = 'active'
+endif
+
+if !has_key(g:syntastic_mode_map, "active_filetypes")
+    let g:syntastic_mode_map['active_filetypes'] = []
+endif
+
+if !has_key(g:syntastic_mode_map, "passive_filetypes")
+    let g:syntastic_mode_map['passive_filetypes'] = []
+endif
+
+command! SyntasticToggleMode call s:ToggleMode()
+command! SyntasticCheck call s:UpdateErrors(0) <bar> redraw!
+command! Errors call s:ShowLocList()
+
+highlight link SyntasticError SpellBad
+highlight link SyntasticWarning SpellCap
+
+augroup syntastic
+    if g:syntastic_echo_current_error
+        autocmd cursormoved * call s:EchoCurrentError()
+    endif
+
+    autocmd bufreadpost,bufwritepost * call s:UpdateErrors(1)
+augroup END
+
+
 "refresh and redraw all the error info for this buf when saving or reading
-autocmd bufreadpost,bufwritepost * call s:UpdateErrors()
-function! s:UpdateErrors()
+function! s:UpdateErrors(auto_invoked)
     if &buftype == 'quickfix'
         return
     endif
-    call s:CacheErrors()
 
-    if g:syntastic_enable_balloons && has('balloon_eval')
-        let b:syntastic_balloons = {}
-        for i in b:syntastic_loclist
-            let b:syntastic_balloons[i['lnum']] = i['text']
-        endfor
-        set beval bexpr=syntastic#ErrorBalloonExpr()
+    if !a:auto_invoked || s:ModeMapAllowsAutoChecking()
+        call s:CacheErrors()
+    end
+
+    if g:syntastic_enable_balloons
+        call s:RefreshBalloons()
     endif
 
     if g:syntastic_enable_signs
@@ -74,7 +114,7 @@ function! s:UpdateErrors()
     if s:BufHasErrorsOrWarningsToDisplay()
         call setloclist(0, b:syntastic_loclist)
         if g:syntastic_auto_jump
-            silent!ll
+            silent! ll
         endif
     elseif g:syntastic_auto_loc_list == 2
         lclose
@@ -99,10 +139,50 @@ function! s:CacheErrors()
     let b:syntastic_loclist = []
 
     if filereadable(expand("%"))
-        for ft in split(&ft, '\.')
+
+        "sub - for _ in filetypes otherwise we cant name syntax checker
+        "functions legally for filetypes like "gentoo-metadata"
+        let fts = substitute(&ft, '-', '_', 'g')
+
+        for ft in split(fts, '\.')
             if s:Checkable(ft)
                 let b:syntastic_loclist = extend(b:syntastic_loclist, SyntaxCheckers_{ft}_GetLocList())
             endif
+        endfor
+    endif
+endfunction
+
+"toggle the g:syntastic_mode_map['mode']
+function! s:ToggleMode()
+    if g:syntastic_mode_map['mode'] == "active"
+        let g:syntastic_mode_map['mode'] = "passive"
+    else
+        let g:syntastic_mode_map['mode'] = "active"
+    endif
+
+    echo "Syntastic: " . g:syntastic_mode_map['mode'] . " mode enabled"
+endfunction
+
+"check the current filetypes against g:syntastic_mode_map to determine whether
+"active mode syntax checking should be done
+function! s:ModeMapAllowsAutoChecking()
+    if g:syntastic_mode_map['mode'] == 'passive'
+
+        "check at least one filetype is active
+        for ft in split(&ft, '\.')
+            if index(g:syntastic_mode_map['active_filetypes'], ft) != -1
+                return 1
+            endif
+            return 0
+        endfor
+    else
+
+        "check no filetypes are passive
+        for ft in split(&ft, '\.')
+            if index(g:syntastic_mode_map['passive_filetypes'], ft) != -1
+                return 0
+            endif
+            return 1
         endfor
     endif
 endfunction
@@ -203,7 +283,79 @@ function! s:ShowLocList()
     endif
 endfunction
 
-command Errors call s:ShowLocList()
+"remove all error highlights from the window
+function! s:ClearErrorHighlights()
+    for match in getmatches()
+        if stridx(match['group'], 'Syntastic') == 0
+            call matchdelete(match['id'])
+        endif
+    endfor
+endfunction
+
+"check if a syntax checker exists for the given filetype - and attempt to
+"load one
+function! s:Checkable(ft)
+    if !exists("g:loaded_" . a:ft . "_syntax_checker")
+        exec "runtime syntax_checkers/" . a:ft . ".vim"
+    endif
+
+    return exists("*SyntaxCheckers_". a:ft ."_GetLocList")
+endfunction
+
+"set up error ballons for the current set of errors
+function! s:RefreshBalloons()
+    let b:syntastic_balloons = {}
+    if s:BufHasErrorsOrWarningsToDisplay()
+        for i in b:syntastic_loclist
+            let b:syntastic_balloons[i['lnum']] = i['text']
+        endfor
+        set beval bexpr=SyntasticErrorBalloonExpr()
+    endif
+endfunction
+
+"print as much of a:msg as possible without "Press Enter" prompt appearing
+function! s:WideMsg(msg)
+    let old_ruler = &ruler
+    let old_showcmd = &showcmd
+
+    let msg = strpart(a:msg, 0, winwidth(0)-1)
+
+    "This is here because it is possible for some error messages to begin with
+    "\n which will cause a "press enter" prompt. I have noticed this in the
+    "javascript:jshint checker and have been unable to figure out why it
+    "happens
+    let msg = substitute(msg, "\n", "", "g")
+
+    set noruler noshowcmd
+    redraw
+
+    echo msg
+
+    let &ruler=old_ruler
+    let &showcmd=old_showcmd
+endfunction
+
+"echo out the first error we find for the current line in the cmd window
+function! s:EchoCurrentError()
+    if !exists('b:syntastic_loclist')
+        return
+    endif
+
+    "If we have an error or warning at the current line, show it
+    let lnum = line(".")
+    for i in b:syntastic_loclist
+        if lnum == i['lnum']
+            let b:syntastic_echoing_error = 1
+            return s:WideMsg(i['text'])
+        endif
+    endfor
+
+    "Otherwise, clear the status line
+    if exists("b:syntastic_echoing_error")
+        echo
+        unlet b:syntastic_echoing_error
+    endif
+endfunction
 
 "return a string representing the state of buffer according to
 "g:syntastic_stl_format
@@ -255,6 +407,9 @@ endfunction
 "
 "The corresponding options are set for the duration of the function call. They
 "are set with :let, so dont escape spaces.
+"
+"a:options may also contain:
+"   'defaults' - a dict containing default values for the returned errors
 function! SyntasticMake(options)
     let old_loclist = getloclist(0)
     let old_makeprg = &makeprg
@@ -286,48 +441,66 @@ function! SyntasticMake(options)
     let &shellpipe=old_shellpipe
     let &shell=old_shell
 
+    if !s:running_windows && s:uname =~ "FreeBSD"
+        redraw!
+    endif
+
+    if has_key(a:options, 'defaults')
+        call SyntasticAddToErrors(errors, a:options['defaults'])
+    endif
+
     return errors
 endfunction
 
-function! s:Checkable(ft)
-    if !exists("g:loaded_" . a:ft . "_syntax_checker")
-        exec "runtime syntax_checkers/" . a:ft . ".vim"
+"get the error balloon for the current mouse position
+function! SyntasticErrorBalloonExpr()
+    if !exists('b:syntastic_balloons')
+        return ''
     endif
-
-    return exists("*SyntaxCheckers_". a:ft ."_GetLocList") &&
-                \ index(g:syntastic_disabled_filetypes, a:ft) == -1
+    return get(b:syntastic_balloons, v:beval_lnum, '')
 endfunction
 
-command! -nargs=? SyntasticEnable call s:Enable(<f-args>)
-command! -nargs=? SyntasticDisable call s:Disable(<f-args>)
-
-"disable syntax checking for the given filetype (defaulting to current ft)
-function! s:Disable(...)
-    let ft = a:0 ? a:1 : &filetype
-
-    if !empty(ft) && index(g:syntastic_disabled_filetypes, ft) == -1
-        call add(g:syntastic_disabled_filetypes, ft)
+"highlight the list of errors (a:errors) using matchadd()
+"
+"a:termfunc is provided to highlight errors that do not have a 'col' key (and
+"hence cant be done automatically). This function must take one arg (an error
+"item) and return a regex to match that item in the buffer.
+"
+"an optional boolean third argument can be provided to force a:termfunc to be
+"used regardless of whether a 'col' key is present for the error
+function! SyntasticHighlightErrors(errors, termfunc, ...)
+    if !g:syntastic_enable_highlighting
+        return
     endif
 
-    "will cause existing errors to be cleared
-    call s:UpdateErrors()
+    call s:ClearErrorHighlights()
+
+    let force_callback = a:0 && a:1
+    for item in a:errors
+        let group = item['type'] == 'E' ? 'SyntasticError' : 'SyntasticWarning'
+        if item['col'] && !force_callback
+            let lastcol = col([item['lnum'], '$'])
+            let lcol = min([lastcol, item['col']])
+            call matchadd(group, '\%'.item['lnum'].'l\%'.lcol.'c')
+        else
+            let term = a:termfunc(item)
+            if len(term) > 0
+                call matchadd(group, '\%' . item['lnum'] . 'l' . term)
+            endif
+        endif
+    endfor
 endfunction
 
-"enable syntax checking for the given filetype (defaulting to current ft)
-function! s:Enable(...)
-    let ft = a:0 ? a:1 : &filetype
-
-    let i = index(g:syntastic_disabled_filetypes, ft)
-    if i != -1
-        call remove(g:syntastic_disabled_filetypes, i)
-    endif
-
-    if !&modified
-        call s:UpdateErrors()
-        redraw!
-    else
-        echom "Syntasic: enabled for the '" . ft . "' filetype. :write out to update errors"
-    endif
+"take a list of errors and add default values to them from a:options
+function! SyntasticAddToErrors(errors, options)
+    for i in range(0, len(a:errors)-1)
+        for key in keys(a:options)
+            if empty(a:errors[i][key])
+                let a:errors[i][key] = a:options[key]
+            endif
+        endfor
+    endfor
+    return a:errors
 endfunction
 
 " vim: set et sts=4 sw=4:
