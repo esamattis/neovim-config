@@ -257,38 +257,7 @@ command FoldOne set foldlevel=1
 " python stuff
 autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
-let python_highlight_all = 1
 
-nmap <C-i> :!igor %<CR> <bar> :e!<CR>
-
-" Execute a selection of code (very cool!)
-" Use VISUAL to select a range and then hit ctrl-h to execute it.
-python << EOL
-import vim
-def EvaluateCurrentRange():
-    eval(compile('\n'.join(vim.current.range),'','exec'),globals())
-EOL
-map <C-h> :py EvaluateCurrentRange()<CR>
-
-" Find tags directory by going up from cwd
-py << EOF
-import os
-import sys
-import vim
-parts = os.getcwd().split("/")
-max = len(parts)
-for i in range(max):
-    tags = "%s/tags" % "/".join(parts[:-i])
-    # print i, tags
-    if os.path.isfile(tags):
-        print "Found tags from", tags
-        vim.command(r"set tags=%s" % tags)
-        break
-EOF
-
-
-" php
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 
 
 
@@ -306,13 +275,6 @@ nmap Q gqap
 
 " Makes Caps Lock work as Esc
 command EscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
-
-
-
-" Clojure
-let g:clj_highlight_builtins=1      " Highlight Clojure's builtins
-let g:clj_paren_rainbow=1           " Rainbow parentheses'!
-
 
 
 
@@ -353,11 +315,6 @@ nnoremap ä :redraw!<CR>
 " Start search
 nnoremap ö /\v
 
-" Open file tree
-" nnoremap <Leader>n :NERDTreeToggle<CR>
-" Open bufexplorer
-" nnoremap <Leader>m :BufExplorer<CR>
-
 
 " Open file tree
 nnoremap <Leader>n :LustyFilesystemExplorer<CR>
@@ -370,14 +327,10 @@ nnoremap <Leader>g :LustyBufferGrep <CR>
 
 
 
-map <Leader>p :echo expand('%:p') <CR>
-
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
 nnoremap k gk
 
-" Copy whole file to OS clipboard
-nmap <Leader>x :%y+<CR>
 
 " Easily change directory to the file being edited.
 nmap <Leader>cd :cd %:p:h<CR>
@@ -385,7 +338,6 @@ nmap <Leader>cd :cd %:p:h<CR>
 " Delete last linebreak, leading spaces and trailing spaces
 nnoremap <Leader>u I" <C-c>hvk$xh " up
 nnoremap <Leader>d jI" <C-c>hvk$xh " Down
-
 
 
 
@@ -406,9 +358,6 @@ au BufWritePost *.snippets call ReloadAllSnippets()
 
 
 
-" for pyref
-let g:pyref_index = '~/.vim/bundle/pyref/pyref/index'
-let g:pyref_mapping = 'K'
 
 
 " spell checking
@@ -440,7 +389,7 @@ map <Leader>l $
 
 " Remove crappy keymappings set by plugings
 " search bad plugings with :verbose imap <c-n>
-
+"
 " :BufExplorerVerticalSplit<CR>
 au VimEnter * unmap <Leader>bv
 " :BufExplorerHorizontalSplit<CR>
@@ -459,14 +408,6 @@ au VimEnter * unmap <Leader>lg
 au VimEnter * unmap <Leader>lr
 
 
-" EasyGrep
-" https://github.com/vim-scripts/EasyGrep
-let g:EasyGrepMode=0
-let g:EasyGrepRecursive=1
-let g:EasyGrepIgnoreCase=1
-let g:EasyGrepCommand=1
-
-let coffee_pygmentize="/home/epeli/.virtualenvs/pygments/bin/pygmentize"
 
 " Show margin column
 if exists('+colorcolumn')
@@ -476,10 +417,7 @@ endif
 
 
 
-map vp :exec "w !vpaste ft=".&ft<CR>
-vmap vp <ESC>:exec "'<,'>w !vpaste ft=".&ft<CR>
-
-
+" Load local vim config file
 if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
