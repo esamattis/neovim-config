@@ -209,7 +209,7 @@ au InsertLeave * set nopaste
 
 " Show trailing whitespace characters
 set list
-set listchars=tab:>.,trail:.,extends:#,nbsp:.
+set listchars=tab:>.,trail:.,extends:#,nbsp:␣
 
 
 
@@ -374,6 +374,7 @@ vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
 " Hilight == operator with red in CoffeeScript. Always use "is" instead of it.
 au BufNewFile,BufRead,BufEnter *.coffee syntax match BrightRed "=="
 hi BrightRed ctermfg=7 ctermbg=1
+
 
 " :C<line number>
 " Compile CoffeeScript buffer and open it in scratch buffer on given line
