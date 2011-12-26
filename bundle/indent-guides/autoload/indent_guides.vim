@@ -70,7 +70,11 @@ function! indent_guides#clear_matches()
   if !empty(w:indent_guides_matches)
     let l:index = 0
     for l:match_id in w:indent_guides_matches
-      call matchdelete(l:match_id)
+      try
+        call matchdelete(l:match_id)
+      catch /E803:/
+        " Do nothing
+      endtry
       call remove(w:indent_guides_matches, l:index)
       let l:index += l:index
     endfor
@@ -182,11 +186,17 @@ function! indent_guides#init_script_vars()
   let s:debug             = g:indent_guides_debug
   let s:indent_levels     = g:indent_guides_indent_levels
   let s:auto_colors       = g:indent_guides_auto_colors
-  let s:change_percent    = g:indent_guides_color_change_percent / str2float("100.0")
   let s:color_hex_pat     = g:indent_guides_color_hex_pattern
   let s:color_hex_bg_pat  = g:indent_guides_color_hex_guibg_pattern
   let s:color_name_bg_pat = g:indent_guides_color_name_guibg_pattern
   let s:start_level       = g:indent_guides_start_level
+
+  " str2float not available in vim versions <= 7.1
+  if has('float')
+    let s:change_percent = g:indent_guides_color_change_percent / str2float('100.0')
+  else
+    let s:change_percent = g:indent_guides_color_change_percent / 100.0
+  endif
 
   if s:debug
     echo 's:indent_size = '       . s:indent_size
