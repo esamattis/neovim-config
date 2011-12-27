@@ -307,13 +307,10 @@ nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 
-" Ääkköset
-nnoremap <Leader>r :redraw!<CR>
-" nnoremap ö :redraw!<CR>
-nnoremap ä :redraw!<CR>
 
-" Start search
-nnoremap ö /\v
+" Use macros from ä and ö
+nnoremap ä @
+nnoremap ö @@
 
 
 " Open file tree
