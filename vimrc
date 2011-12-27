@@ -308,8 +308,11 @@ nnoremap <C-l> <C-w>>
 
 
 
-" Use macros from ä and ö
+" Macros-fu
+
+" Invoke a certain macro
 nnoremap ä @
+" Invoke last macro
 nnoremap ö @@
 
 
