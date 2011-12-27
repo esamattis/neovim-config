@@ -307,13 +307,16 @@ nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
 
-" Ääkköset
-nnoremap <Leader>r :redraw!<CR>
-" nnoremap ö :redraw!<CR>
-nnoremap ä :redraw!<CR>
 
-" Start search
-nnoremap ö /\v
+" Macros-fu
+
+" Invoke a certain macro
+nnoremap ä @
+" Invoke last macro
+nnoremap ö @@
+
+" Redraw broken Vim
+nnoremap å :redraw!<CR>
 
 
 " Open file tree
