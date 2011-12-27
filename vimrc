@@ -312,6 +312,9 @@ nnoremap <C-l> <C-w>>
 nnoremap ä @
 nnoremap ö @@
 
+" Redraw broken Vim
+nnoremap å :redraw!<CR>
+
 
 " Open file tree
 nnoremap <Leader>n :LustyFilesystemExplorer<CR>
