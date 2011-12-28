@@ -2,12 +2,13 @@
 
 ## Install
 
-Get Vim with python support.
-Get exuberant-ctags.
-
 Debian and friends
 
-    sudo apt-get install vim-nox exuberant-ctags git-core ruby ruby1.8-dev tidy pyflakes markdown
+    sudo apt-get install vim-nox exuberant-ctags git-core ruby ruby1.8-dev
+
+Some nice tools to have
+
+    sudo apt-get install hexer tmux screen ipython
 
 Caps Lock to Esc
 
