@@ -350,15 +350,10 @@ autocmd FileType gitcommit DiffGitCached | wincmd p
 
 
 
-
-" Command for reloading snipMate snippets
-command SnippetsReload call ReloadAllSnippets()
-command SnippetsEditSelect e ~/.vim/bundle/snipmate/snippets/
-" Open corresponding snipets file
+" Open snippet file of the filetype currently being edited
 command SnippetsEdit execute "edit ~/.vim/bundle/snipmate/snippets/" . &ft . ".snippets"
 " Reload snippets after saving
 au BufWritePost *.snippets call ReloadAllSnippets()
-
 
 
 
