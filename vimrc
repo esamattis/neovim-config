@@ -414,6 +414,9 @@ if exists('+colorcolumn')
 endif
 
 
+" NeoComplCache config
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
 
 
 " Load local vim config file
