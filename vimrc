@@ -88,6 +88,7 @@ au FileType make,gitconfig setlocal noexpandtab
 au BufNewFile,BufRead *.zcml  setfiletype xml
 au BufNewFile,BufRead *.pt  setfiletype xml
 au BufNewFile,BufRead *.coffee  setfiletype coffee
+au BufNewFile,BufRead *.cson  setfiletype coffee
 au BufNewFile,BufRead *.json setfiletype json
 au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.conf setfiletype conf
@@ -205,8 +206,9 @@ set showmatch
 set hlsearch
 
 
-" Toggle pastemode easily in insert and command mode
-set pastetoggle=<F2>
+" Jump directly to insert mode with paste using F2 key
+map <F2> :set paste<CR>i
+imap <F2> <ESC>:set paste<CR>i
 
 " Always disable paste mode when leaving insert mode
 au InsertLeave * set nopaste
