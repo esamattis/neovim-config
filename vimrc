@@ -40,6 +40,9 @@ endif
 call pathogen#infect('~/.vim/bundle')
 
 
+"" Leader mappings
+let mapleader = ","
+let maplocalleader = ";"
 
 set ai
 set modeline
@@ -60,6 +63,14 @@ set smarttab expandtab autoindent
 " By default use 4 spaces as indentation
 set tabstop=4 shiftwidth=4 softtabstop=4
 
+" Show margin column
+if exists('+colorcolumn')
+    set colorcolumn=80
+endif
+
+
+
+
 " Command for resetting tab width
 command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=<args>
 
@@ -71,10 +82,6 @@ au FileType html,xml,xhtml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 " Makefiles and gitconfig require tab
 au FileType make,gitconfig setlocal noexpandtab
 
-
-"" Leader mappings
-let mapleader = ","
-let maplocalleader = ";"
 
 
 " set custom file types
@@ -101,14 +108,14 @@ au BufNewFile,BufRead *.markdown setfiletype markdown
 set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
 
+" Show error signs on left
 let g:syntastic_enable_signs=1
-
+" Shortcut for Syntastic error panel
 nnoremap <leader>e :Errors<CR>
 
 
 " Show statusline always
 set laststatus=2
-
 
 
 " change the terminal's title
@@ -136,7 +143,7 @@ set nocompatible
 " Write the old file out when switching between files
 set autowrite
 
-"Map escape key to jj -- much faster
+" Map escape key to jj -- much faster to exit insert mode
 imap jj <esc>
 
 
@@ -164,13 +171,10 @@ set backup " enable backup
 
 
 
-
 " * Search & Replace
 " make searches case-insensitive, unless they contain upper-case letters:
 set ignorecase
 set smartcase
-
-
 
 
 
@@ -254,14 +258,6 @@ command FoldOne set foldlevel=1
 
 
 
-" python stuff
-autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
-autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
-
-
-
-
-
 " Use Q for formatting the current paragraph (or selection).
 " Forces 80 character lines.
 vmap Q gq
@@ -269,7 +265,7 @@ nmap Q gqap
 
 
 " Makes Caps Lock work as Esc. X only.
-command EscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+command XEscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 
 
@@ -345,12 +341,10 @@ autocmd FileType gitcommit DiffGitCached | wincmd p
 
 
 
-" " Open snippet file of the filetype currently being edited
+" Open snippet file of the filetype currently being edited
 command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
-" " Reload snippets after saving
-" au BufWritePost *.snippets call ReloadAllSnippets()
 
-
+command Vimrc e ~/.vim/vimrc
 
 
 " spell checking
@@ -359,6 +353,14 @@ set spelllang=en_us
 nmap <silent> <leader>s :set spell!<CR>
 
 
+
+
+
+
+" CoffeeScript
+""""""""""""""
+
+autocmd BufRead,BufNewFile *.coffee set smartindent cinwords=if,else,for,while,try,loop,class
 
 "" Use ,c to compile selected text to corresponding output and print it to stdout
 map <leader>c :CoffeeCompile<CR>
@@ -375,14 +377,31 @@ hi BrightRed ctermfg=7 ctermbg=1
 command -nargs=1 C CoffeeCompile | :<args>
 
 
+
+
+" Ruby
+""""""
+autocmd BufRead,BufNewFile *.rb set smartindent cinwords=if,else,for,while,begin,class,do
+
+
+
+
+" Python
+""""""""
+autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
+
+
+
+
 " h, for line start
 map <Leader>h 0
 " ,l for line end
 map <Leader>l $
 
 
-" Remove crappy keymappings set by plugings
-" search bad plugings with :verbose imap <c-n>
+" Remove crappy keymappings set by plugings.
+" Protip: Search for bad plugings with :verbose imap <c-n>
 "
 " :BufExplorerVerticalSplit<CR>
 au VimEnter * unmap <Leader>bv
@@ -403,10 +422,6 @@ au VimEnter * unmap <Leader>lr
 
 
 
-" Show margin column
-if exists('+colorcolumn')
-    set colorcolumn=80
-endif
 
 
 " NeoComplCache config
