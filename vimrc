@@ -262,18 +262,13 @@ autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 
 
 
-" Hilight long lines
-command LongLinesShow let w:m1=matchadd('Search', '\%<81v.\%>77v', -1) | let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-command LongLinesHide call matchdelete(w:m1) | call matchdelete(w:m2)
-autocmd BufRead,BufNewFile *.md,*.txt,*.py,*.cgi :LongLinesShow
-
 " Use Q for formatting the current paragraph (or selection).
 " Forces 80 character lines.
 vmap Q gq
 nmap Q gqap
 
 
-" Makes Caps Lock work as Esc
+" Makes Caps Lock work as Esc. X only.
 command EscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 
@@ -369,7 +364,7 @@ nmap <silent> <leader>s :set spell!<CR>
 map <leader>c :CoffeeCompile<CR>
 vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
 
-" Hilight == operator with red in CoffeeScript. Always use "is" instead of it.
+" Hilight `==` operator with red in CoffeeScript. Always use `is` instead of it.
 au BufNewFile,BufRead,BufEnter *.coffee syntax match BrightRed "=="
 hi BrightRed ctermfg=7 ctermbg=1
 
