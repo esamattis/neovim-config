@@ -74,9 +74,8 @@ endif
 " Command for resetting tab width
 command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=<args>
 
-" Ruby uses 2 spaces as indentation
-au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
-" Also for xmly stuff
+
+" Small 2 spaces for indentation
 au FileType html,xml,xhtml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " Makefiles and gitconfig require tab
@@ -184,7 +183,7 @@ set ssop-=options
 " do not store folds
 set ssop-=folds
 
-" When editing a file, always jump to the last cursor position
+" When opening a file, always jump to the last cursor position
 autocmd BufReadPost *
 \ if line("'\"") > 0 && line ("'\"") <= line("$") |
 \   exe "normal g'\"" |
@@ -362,7 +361,11 @@ nmap <silent> <leader>s :set spell!<CR>
 " CoffeeScript
 """"""""""""""
 
+" Indent after if else etc
 autocmd BufRead,BufNewFile *.coffee set smartindent cinwords=if,else,for,while,try,loop,class
+
+au FileType coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
 
 "" Use ,c to compile selected text to corresponding output and print it to stdout
 map <leader>c :CoffeeCompile<CR>
@@ -385,6 +388,8 @@ command -nargs=1 C CoffeeCompile | :<args>
 """"""
 autocmd BufRead,BufNewFile *.rb set smartindent cinwords=if,else,for,while,begin,class,do
 
+" Ruby uses 2 spaces as indentation
+au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 
 
