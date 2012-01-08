@@ -208,7 +208,7 @@ set hlsearch
 
 " Jump directly to insert mode with paste using F2 key
 map <F2> :set paste<CR>i
-imap <F2> <ESC>:set paste<CR>i
+imap <F2> <ESC>:set paste<CR>i<Right>
 
 " Always disable paste mode when leaving insert mode
 au InsertLeave * set nopaste
