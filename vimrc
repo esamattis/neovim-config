@@ -40,6 +40,9 @@ endif
 call pathogen#infect('~/.vim/bundle')
 
 
+"" Leader mappings
+let mapleader = ","
+let maplocalleader = ";"
 
 set ai
 set modeline
@@ -60,27 +63,31 @@ set smarttab expandtab autoindent
 " By default use 4 spaces as indentation
 set tabstop=4 shiftwidth=4 softtabstop=4
 
+" Show margin column
+if exists('+colorcolumn')
+    set colorcolumn=80
+endif
+
+
+
+
 " Command for resetting tab width
 command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=<args>
 
-" Ruby uses 2 spaces as indentation
-au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
-" Also for xmly stuff
+
+" Small 2 spaces for indentation
 au FileType html,xml,xhtml setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " Makefiles and gitconfig require tab
 au FileType make,gitconfig setlocal noexpandtab
 
 
-"" Leader mappings
-let mapleader = ","
-let maplocalleader = ";"
-
 
 " set custom file types
 au BufNewFile,BufRead *.zcml  setfiletype xml
 au BufNewFile,BufRead *.pt  setfiletype xml
 au BufNewFile,BufRead *.coffee  setfiletype coffee
+au BufNewFile,BufRead *.cson  setfiletype coffee
 au BufNewFile,BufRead *.json setfiletype json
 au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.conf setfiletype conf
@@ -101,14 +108,14 @@ au BufNewFile,BufRead *.markdown setfiletype markdown
 set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
 
+" Show error signs on left
 let g:syntastic_enable_signs=1
-
+" Shortcut for Syntastic error panel
 nnoremap <leader>e :Errors<CR>
 
 
 " Show statusline always
 set laststatus=2
-
 
 
 " change the terminal's title
@@ -136,7 +143,7 @@ set nocompatible
 " Write the old file out when switching between files
 set autowrite
 
-"Map escape key to jj -- much faster
+" Map escape key to jj -- much faster to exit insert mode
 imap jj <esc>
 
 
@@ -164,13 +171,10 @@ set backup " enable backup
 
 
 
-
 " * Search & Replace
 " make searches case-insensitive, unless they contain upper-case letters:
 set ignorecase
 set smartcase
-
-
 
 
 
@@ -179,7 +183,7 @@ set ssop-=options
 " do not store folds
 set ssop-=folds
 
-" When editing a file, always jump to the last cursor position
+" When opening a file, always jump to the last cursor position
 autocmd BufReadPost *
 \ if line("'\"") > 0 && line ("'\"") <= line("$") |
 \   exe "normal g'\"" |
@@ -201,8 +205,9 @@ set showmatch
 set hlsearch
 
 
-" Toggle pastemode easily in insert and command mode
-set pastetoggle=<F2>
+" Jump directly to insert mode with paste using F2 key
+map <F2> :set paste<CR>i
+imap <F2> <ESC>:set paste<CR>i<Right>
 
 " Always disable paste mode when leaving insert mode
 au InsertLeave * set nopaste
@@ -254,27 +259,14 @@ command FoldOne set foldlevel=1
 
 
 
-" python stuff
-autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
-autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
-
-
-
-
-
-" Hilight long lines
-command LongLinesShow let w:m1=matchadd('Search', '\%<81v.\%>77v', -1) | let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-command LongLinesHide call matchdelete(w:m1) | call matchdelete(w:m2)
-autocmd BufRead,BufNewFile *.md,*.txt,*.py,*.cgi :LongLinesShow
-
 " Use Q for formatting the current paragraph (or selection).
 " Forces 80 character lines.
 vmap Q gq
 nmap Q gqap
 
 
-" Makes Caps Lock work as Esc
-command EscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+" Makes Caps Lock work as Esc. X only.
+command XEscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 
 
@@ -350,17 +342,10 @@ autocmd FileType gitcommit DiffGitCached | wincmd p
 
 
 
+" Open snippet file of the filetype currently being edited
+command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
 
-" Command for reloading snipMate snippets
-command SnippetsReload call ReloadAllSnippets()
-command SnippetsEditSelect e ~/.vim/bundle/snipmate/snippets/
-" Open corresponding snipets file
-command SnippetsEdit execute "edit ~/.vim/bundle/snipmate/snippets/" . &ft . ".snippets"
-" Reload snippets after saving
-au BufWritePost *.snippets call ReloadAllSnippets()
-
-
-
+command Vimrc e ~/.vim/vimrc
 
 
 " spell checking
@@ -370,11 +355,23 @@ nmap <silent> <leader>s :set spell!<CR>
 
 
 
+
+
+
+" CoffeeScript
+""""""""""""""
+
+" Indent after if else etc
+autocmd BufRead,BufNewFile *.coffee set smartindent cinwords=if,else,for,while,try,loop,class
+
+au FileType coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+
 "" Use ,c to compile selected text to corresponding output and print it to stdout
 map <leader>c :CoffeeCompile<CR>
 vmap <leader>c <esc>:'<,'>:CoffeeCompile<CR>
 
-" Hilight == operator with red in CoffeeScript. Always use "is" instead of it.
+" Hilight `==` operator with red in CoffeeScript. Always use `is` instead of it.
 au BufNewFile,BufRead,BufEnter *.coffee syntax match BrightRed "=="
 hi BrightRed ctermfg=7 ctermbg=1
 
@@ -385,14 +382,33 @@ hi BrightRed ctermfg=7 ctermbg=1
 command -nargs=1 C CoffeeCompile | :<args>
 
 
+
+
+" Ruby
+""""""
+autocmd BufRead,BufNewFile *.rb set smartindent cinwords=if,else,for,while,begin,class,do
+
+" Ruby uses 2 spaces as indentation
+au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+
+
+" Python
+""""""""
+autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
+
+
+
+
 " h, for line start
 map <Leader>h 0
 " ,l for line end
 map <Leader>l $
 
 
-" Remove crappy keymappings set by plugings
-" search bad plugings with :verbose imap <c-n>
+" Remove crappy keymappings set by plugings.
+" Protip: Search for bad plugings with :verbose imap <c-n>
 "
 " :BufExplorerVerticalSplit<CR>
 au VimEnter * unmap <Leader>bv
@@ -413,12 +429,17 @@ au VimEnter * unmap <Leader>lr
 
 
 
-" Show margin column
-if exists('+colorcolumn')
-    set colorcolumn=80
-endif
+" Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
+" refactor it. Navigate to more matches with `n` and `N` and redo refactoring
+" by hitting the dot key.
+map <Leader>r *Nciw
 
 
+
+
+" NeoComplCache config
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
 
 
 " Load local vim config file
