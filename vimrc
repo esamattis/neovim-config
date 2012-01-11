@@ -483,7 +483,9 @@ function! GetVisual() range
   return escaped_selection
 endfunction
 
-" Start the find and replace command across the entire file
+" Replace selection with string
 vmap <C-r> <Esc>:%s/<c-r>=GetVisual()<cr>/
+
+" Command mode like * and # for visual mode
 vmap * <Esc>/\v<c-r>=GetVisual()<cr>/<cr>
 vmap # <Esc>/\v<c-r>=GetVisual()<cr>/<cr>NN
