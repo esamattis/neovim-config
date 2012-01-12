@@ -77,6 +77,7 @@ command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=
 
 " Small 2 spaces for indentation
 au FileType html,xml,xhtml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+au FileType jade,stylus setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " Makefiles and gitconfig require tab
 au FileType make,gitconfig setlocal noexpandtab
