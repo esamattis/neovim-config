@@ -144,8 +144,21 @@ set nocompatible
 " Write the old file out when switching between files
 set autowrite
 
+"" Some crazy insert mode overrides
+"""""""""""""""""""""""""""""""""""
 " Map escape key to jj -- much faster to exit insert mode
 imap jj <esc>
+
+" Easier way to insert curly braces. Testing out for a while :)
+imap § {
+imap ½ }
+
+
+" For block navigation
+map § {
+map ½ }
+map Ö {
+map Ä }
 
 
 " Apply  substitutions globally on lines. For example, instead of
@@ -408,7 +421,7 @@ map <Leader>h 0
 map <Leader>l $
 
 
-" Remove crappy keymappings set by plugings.
+" Remove crappy key mappings set by plugings.
 " Protip: Search for bad plugings with :verbose imap <c-n>
 "
 " :BufExplorerVerticalSplit<CR>
@@ -443,10 +456,6 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 
 
-" Load local vim config file
-if filereadable($HOME . "/.vim/localrc")
-    source $HOME/.vim/localrc
-endif
 
 " Escape special characters in a string for exact matching.
 " This is useful to copying strings from the file to the search tool
@@ -492,6 +501,8 @@ vmap * <Esc>/\v<c-r>=GetVisual()<cr>/<cr>
 vmap # <Esc>/\v<c-r>=GetVisual()<cr>/<cr>NN
 
 
-map Ö {
-map Ä }
 
+" Load local vim config file
+if filereadable($HOME . "/.vim/localrc")
+    source $HOME/.vim/localrc
+endif
