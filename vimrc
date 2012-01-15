@@ -144,8 +144,11 @@ set nocompatible
 " Write the old file out when switching between files
 set autowrite
 
-"" Some crazy insert mode overrides
-"""""""""""""""""""""""""""""""""""
+
+
+
+" Some crazy insert mode overrides
+""""""""""""""""""""""""""""""""""
 " Map escape key to jj -- much faster to exit insert mode
 imap jj <esc>
 
@@ -161,12 +164,6 @@ map Ö {
 map Ä }
 
 
-" Apply  substitutions globally on lines. For example, instead of
-" :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
-" want (when was the last time you wanted to only replace the first occurrence
-" of a word on a line?) and if you need the previous behavior you just tack on
-" the g again.
-set gdefault
 
 
 " Bubble single lines
@@ -185,10 +182,6 @@ set backup " enable backup
 
 
 
-" * Search & Replace
-" make searches case-insensitive, unless they contain upper-case letters:
-set ignorecase
-set smartcase
 
 
 
@@ -204,9 +197,10 @@ autocmd BufReadPost *
 \ endif
 
 
-" use :w!! to write to a file using sudo if you forgot to "sudo vim file"
-cmap w!! %!sudo tee > /dev/null %
 
+
+" Search and replace
+""""""""""""""""""""
 " This turns off Vim’s crazy default regex characters and makes searches use
 " normal regexes.
 nnoremap / /\v
@@ -218,7 +212,24 @@ set incsearch
 set showmatch
 set hlsearch
 
+" * Search & Replace
+" make searches case-insensitive, unless they contain upper-case letters:
+set ignorecase
+set smartcase
 
+
+" Apply  substitutions globally on lines. For example, instead of
+" :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
+" want (when was the last time you wanted to only replace the first occurrence
+" of a word on a line?) and if you need the previous behavior you just tack on
+" the g again.
+set gdefault
+
+
+
+
+" Pasting
+"""""""""
 " Jump directly to insert mode with paste using F2 key
 map <F2> :set paste<CR>i
 imap <F2> <ESC>:set paste<CR>i<Right>
@@ -226,15 +237,17 @@ imap <F2> <ESC>:set paste<CR>i<Right>
 " Always disable paste mode when leaving insert mode
 au InsertLeave * set nopaste
 
+
+
+
 " Show trailing whitespace characters
 set list
 set listchars=tab:>.,trail:.,extends:#,nbsp:␣
 
 
 
-
 " Execute file being edited
-map <F5> :! %:p <CR>
+map <F10> :! %:p <CR>
 
 " Some aliases
 command W w
