@@ -246,8 +246,6 @@ set listchars=tab:>.,trail:.,extends:#,nbsp:␣
 
 
 
-" Execute file being edited
-map <F10> :! %:p <CR>
 
 " Some aliases
 command W w
@@ -330,22 +328,26 @@ nnoremap <C-l> <C-w>>
 " Macros-fu
 
 " Invoke a certain macro
-nnoremap ä @
+noremap ä @
 " Invoke last macro
-nnoremap ö @@
+noremap ö @@
 
 " Redraw broken Vim
-nnoremap å :redraw!<CR>
+map <F5> :redraw!<CR>
 
+" Execute file being edited
+map <F10> :! %:p <CR>
+
+map <F3> :Google<CR>
 
 " Open file tree
-nnoremap <Leader>n :LustyFilesystemExplorer<CR>
+map <Leader>n :LustyFilesystemExplorer<CR>
 " Open bufexplorer
-nnoremap <Leader>m :LustyBufferExplorer <CR>
+map <Leader>m :LustyBufferExplorer <CR>
 " Opens filesystem explorer at the directory of the current file
-nnoremap <Leader>f :LustyFilesystemExplorerFromHere <CR>
+map <Leader>f :LustyFilesystemExplorerFromHere <CR>
 " Opens buffer grep
-nnoremap <Leader>g :LustyBufferGrep <CR>
+map <Leader>g :LustyBufferGrep <CR>
 
 
 
@@ -432,6 +434,8 @@ autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 map <Leader>h 0
 " ,l for line end
 map <Leader>l $
+" å too
+map å $
 
 
 " Remove crappy key mappings set by plugings.
