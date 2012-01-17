@@ -153,15 +153,14 @@ set autowrite
 imap jj <esc>
 
 " Easier way to insert curly braces. Testing out for a while :)
-imap § {
-imap ½ }
-
-
-" For block navigation
 map § {
 map ½ }
-map Ö {
-map Ä }
+imap § {
+imap ½ }
+cmap § {
+cmap ½ }
+
+
 
 
 
