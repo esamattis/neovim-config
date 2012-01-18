@@ -8,7 +8,7 @@ Debian and friends
 
 Some nice tools to have
 
-    sudo apt-get install hexer bvi tmux screen ipython irb keychain curl
+    sudo apt-get install hexer bvi tmux screen ipython irb keychain curl elinks
 
 Caps Lock to Esc
 
