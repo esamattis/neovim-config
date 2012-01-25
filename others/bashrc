@@ -1,3 +1,4 @@
+
 export EDITOR=vim
 
 if [ -x $(which keychain) ] ; then
@@ -6,6 +7,7 @@ if [ -x $(which keychain) ] ; then
 fi
 
 
+# Thanks to https://gist.github.com/634750
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
