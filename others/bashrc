@@ -62,7 +62,7 @@ function parse_git_branch {
   if [[
     ${git_status}} =~ "Changed but not updated" || \
     ${git_status}} =~ "Changes not staged for commit" || \
-    ${git_status}} =~ "Changes to be committed"
+    ${git_status}} =~ "Changes to be committed" # Old git?
   ]]; then
     state="${RED}⚡"
   fi
