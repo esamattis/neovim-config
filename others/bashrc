@@ -66,6 +66,12 @@ function parse_git_branch {
   ]]; then
     state="${RED}⚡"
   fi
+
+  if [[ ${git_status}} =~ "Untracked files" ]]; then
+    state="${state}${RED}?"
+  fi
+
+
   # add an else if or two here if you want to get more specific
   if [[ ${git_status} =~ ${remote_pattern} ]]; then
     if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
