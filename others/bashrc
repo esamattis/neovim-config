@@ -6,6 +6,13 @@ if [ -x $(which keychain) ] ; then
         . ~/.keychain/`uname -n`-sh
 fi
 
+if [ -d ~/.vim/bin ] ; then
+    PATH=~/.vim/bin:"${PATH}"
+fi
+
+if [ -d ~/bin ] ; then
+    PATH=~/bin:"${PATH}"
+fi
 
 # Thanks to https://gist.github.com/634750
 
