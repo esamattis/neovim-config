@@ -1,0 +1,36 @@
+[user]
+  name = Esa-Matti Suuronen
+  email = esa-matti@suuronen.org
+[github]
+  user = epeli
+[apply]
+  whitespace = nowarn
+[branch]
+  autosetuprebase = always
+  autosetupmerge = always
+[color]
+  branch = auto
+  diff = auto
+  status = auto
+  ui = true
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+[color "diff"]
+  meta = yellow bold
+  frag = magenta bold
+  old = red bold
+  new = green bold
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
+[alias]
+  st = status
+  ci = commit
+  ca = commit -a -m
+  co = checkout
+  br = branch -a
+  branches = branch -a
+  pick = cherry-pick
