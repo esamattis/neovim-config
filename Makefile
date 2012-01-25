@@ -18,3 +18,7 @@ all: update install
 	git pull
 
 
+.PHONY others:
+	ln -s .vim/others/tmux.conf ~/.tmux.conf
+	ln -s .vim/others/gitconfig ~/.gitconfig
+	echo "Put 'source ~/.vim/others/bashrc' to ~/.bashrc"
