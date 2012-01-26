@@ -106,7 +106,7 @@ au BufNewFile,BufRead *.markdown setfiletype markdown
 " My status lines
 " set statusline=%<%f%y\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 " With Syntastic
-set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
+set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%{fugitive#statusline()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
 
 " Show error signs on left
@@ -155,10 +155,14 @@ imap jj <esc>
 " Easier way to insert curly braces. Testing out for a while :)
 map § {
 map ½ }
+map! § {
+map! ½ }
 imap § {
 imap ½ }
 cmap § {
 cmap ½ }
+omap § {
+omap ½ }
 
 
 

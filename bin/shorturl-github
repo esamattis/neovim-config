@@ -1,0 +1,4 @@
+#!/bin/bash
+
+curl --silent -i http://git.io -F "url=$@" | grep Location
+
