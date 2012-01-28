@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 26 Dec 2011.
+" Last Modified: 27 Jan 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -119,7 +119,7 @@ function! neocomplcache#enable() "{{{
         \'ruby,int-irb',
         \'^=\%(b\%[egin]\|e\%[nd]\)\|\%(@@\|[:$@]\)\h\w*\|\h\w*\%(::\w*\)*[!?]\?')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns,
-        \'php',
+        \'php,int-php',
         \'</\?\%(\h[[:alnum:]_-]*\s*\)\?\%(/\?>\)\?\|\$\h\w*\|\h\w*\%(\%(\\\|::\)\w*\)*')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns,
         \'perl,int-perlsh',
@@ -354,6 +354,8 @@ function! neocomplcache#enable() "{{{
         \ 'int-scala', 'scala')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_same_filetype_lists,
         \ 'int-nyaos', 'nyaos')
+  call neocomplcache#set_dictionary_helper(g:neocomplcache_same_filetype_lists,
+        \ 'int-php', 'php')
   "}}}
 
   " Initialize include filetype lists."{{{
@@ -499,9 +501,7 @@ function! neocomplcache#enable() "{{{
 
   " For auto complete keymappings.
   inoremap <silent> <Plug>(neocomplcache_start_auto_complete)
-        \ <C-x><C-u><C-p>
-  inoremap <silent> <Plug>(neocomplcache_start_auto_select_complete)
-        \ <C-x><C-u><C-p><C-r>=neocomplcache#popup_post()<CR>
+        \ <C-x><C-u><C-r>=neocomplcache#popup_post()<CR>
   inoremap <expr><silent> <Plug>(neocomplcache_start_unite_complete)
         \ unite#sources#neocomplcache#start_complete()
   inoremap <expr><silent> <Plug>(neocomplcache_start_unite_quick_match)
@@ -568,7 +568,8 @@ function! neocomplcache#manual_complete(findstart, base)"{{{
       let s:complete_words = []
       let s:is_prefetch = 0
       let &l:completefunc = 'neocomplcache#manual_complete'
-      return -1
+      return g:neocomplcache_enable_prefetch ?
+            \ -1 : -2
     endif
 
     " Get cur_keyword_pos.
@@ -584,7 +585,8 @@ function! neocomplcache#manual_complete(findstart, base)"{{{
       let s:complete_words = []
       let s:is_prefetch = 0
       let s:complete_results = {}
-      return -1
+      return g:neocomplcache_enable_prefetch ?
+            \ -1 : -2
     endif
 
     return cur_keyword_pos
@@ -615,7 +617,7 @@ function! neocomplcache#sources_manual_complete(findstart, base)"{{{
     if !neocomplcache#is_enabled()
       let s:cur_keyword_str = ''
       let s:complete_words = []
-      return -1
+      return -2
     endif
 
     " Get cur_keyword_pos.
@@ -628,7 +630,7 @@ function! neocomplcache#sources_manual_complete(findstart, base)"{{{
       let s:complete_words = []
       let s:complete_results = {}
 
-      return -1
+      return -2
     endif
 
     let s:complete_results = complete_results
@@ -703,6 +705,8 @@ function! neocomplcache#do_auto_complete()"{{{
         \            && exists('b:skk_on') && b:skk_on)
         \ || (!neocomplcache#is_eskk_enabled()
         \            && char2nr(split(cur_text, '\zs')[-1]) > 0x80)
+        \ || (neocomplcache#is_eskk_enabled()
+        \            && cur_text !~ '▽')
     let s:cur_keyword_str = ''
     let s:complete_words = []
     return
@@ -750,11 +754,7 @@ function! neocomplcache#do_auto_complete()"{{{
   set completeopt+=menuone
 
   " Start auto complete.
-  if neocomplcache#is_auto_select()
-    call feedkeys("\<Plug>(neocomplcache_start_auto_select_complete)")
-  else
-    call feedkeys("\<Plug>(neocomplcache_start_auto_complete)")
-  endif
+  call feedkeys("\<Plug>(neocomplcache_start_auto_complete)")
 
   let s:changedtick = b:changedtick
 endfunction"}}}
@@ -1885,7 +1885,7 @@ function! s:remove_next_keyword(plugin_name, list)"{{{
 
     for r in list
       if r.word =~ next_keyword_str
-        let r.word = r.word[: match(r.word, next_keyword_str)-1]
+        let r.word = r.word[:match(r.word, next_keyword_str)-1]
       endif
     endfor
 
@@ -1895,7 +1895,10 @@ function! s:remove_next_keyword(plugin_name, list)"{{{
   return list
 endfunction"}}}
 function! neocomplcache#popup_post()"{{{
-  return pumvisible() ? "\<Down>" : ""
+  return  !pumvisible() ? "" :
+        \ !g:neocomplcache_enable_auto_select
+        \  || neocomplcache#is_eskk_enabled() ? "\<C-p>" :
+        \ "\<C-p>\<Down>"
 endfunction"}}}
 "}}}
 

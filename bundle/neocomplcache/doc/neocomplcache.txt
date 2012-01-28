@@ -265,6 +265,8 @@ g:neocomplcache_enable_cursor_hold_i			*g:neocomplcache_enable_cursor_hold_i*
 		This variable controls whether neocomplcache use |CursorHoldI| event
 		when complete candidates.
 		Note: You should not use this option if less than Vim 7.3.319.
+		Note: Neocomplcache don't set 'updatetime'. So, you must set
+		'updatetime' manually.
 		
 		Default value is 0.
 
@@ -1107,6 +1109,32 @@ CHANGELOG						*neocomplcache-changelog*
 
 ------------------------------------------------------------------------------
 ChangeLog neocomplcache 6.2:
+
+2012-01-27
+- Changed default plugins rank.
+- Improved g:neocomplcache_enable_prefetch behavior.
+- Fixed for eskk.
+
+2012-01-24
+- Fixed feedkeys().
+- Supported php interpreter.
+
+2012-01-20
+- Fixed for eskk.
+- Fixed dictionary_complete behavior.
+
+2012-01-18
+- Fixed prefetch problem.
+
+2012-01-17
+- Improved documentation.
+
+2012-01-15
+- Changed syntax highlight name.
+- Improved syntax_complete caching behavior.
+
+2012-01-14
+- Added <Nop> in vim_complete.
 
 2012-01-05
 - Fixed filename complete escape.
