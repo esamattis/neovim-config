@@ -29,6 +29,7 @@
 [alias]
   st = status
   ci = commit
+  l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
   ca = commit -a -m
   co = checkout
   br = branch -a
