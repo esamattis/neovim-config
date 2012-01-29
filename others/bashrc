@@ -17,47 +17,17 @@ fi
 
 # Thanks to https://gist.github.com/634750
 
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-force_color_prompt=yes
-
-if [ -n "$force_color_prompt" ]; then
-    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-    color_prompt=yes
-    else
-    color_prompt=
-    fi
-fi
-
-if [ "$color_prompt" = yes ]; then
-    if [ $(id -u) -eq 0 ];
-    then # you are root, set red colour prompt
-        PS1='\[\e]0;\w\a\]\n\[\e[31m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
-    else # normal
-        PS1='\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
-    fi
-else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-fi
-
-unset color_prompt force_color_prompt
-
-
-        RED="\[\033[0;31m\]"
-     YELLOW="\[\033[0;33m\]"
-      GREEN="\[\033[0;32m\]"
-       BLUE="\[\033[0;34m\]"
-  LIGHT_RED="\[\033[1;31m\]"
+RED="\[\033[0;31m\]"
+YELLOW="\[\033[0;33m\]"
+GREEN="\[\033[0;32m\]"
+BLUE="\[\033[0;34m\]"
+LIGHT_RED="\[\033[1;31m\]"
 LIGHT_GREEN="\[\033[1;32m\]"
-      WHITE="\[\033[1;37m\]"
- LIGHT_GRAY="\[\033[0;37m\]"
- COLOR_NONE="\[\e[0m\]"
+WHITE="\[\033[1;37m\]"
+LIGHT_GRAY="\[\033[0;37m\]"
+COLOR_NONE="\[\e[0m\]"
 
-function parse_git_branch {
+function generate_git_bar {
   git rev-parse --git-dir &> /dev/null
   git_status="$(git status 2> /dev/null)"
   branch_pattern="^# On branch ([^${IFS}]*)"
@@ -96,23 +66,33 @@ function parse_git_branch {
   fi
 
   # if [[ ${#state} -gt "0" || ${#remote} -gt "0" ]]; then
-  #   s=" "
+  #   s="${COLOR_NONE} "
   # fi
 
-  echo "${branch}${s}${remote}${state}"
+  echo "${BLUE}(${branch}${s}${remote}${state}${BLUE})"
 }
 
 function prompt_func() {
-    TITLEBAR="${GREEN}\u@\h ${YELLOW}\w"
+
+  # <user>@<host> <current working directory>
+  TITLEBAR="${GREEN}\u@\h ${YELLOW}\w"
+
+  # Use red # as prompt char when root
+  if [ $(id -u) -eq 0 ]; then
+    PROMPT_CHAR="${RED}# ${COLOR_NONE}"
+  else
+    PROMPT_CHAR="${COLOR_NONE}$ "
+  fi
+
   git rev-parse --git-dir > /dev/null 2>&1
   if [ $? -eq 0 ]; then
-    prompt="${TITLEBAR}\n${BLUE}($(parse_git_branch)${BLUE})${COLOR_NONE}"
-    PS1="${prompt}$ "
+    # In Git repo
+    PS1="${TITLEBAR}\n$(generate_git_bar)${PROMPT_CHAR}"
   else
-    PS1=$PSAVE
+    # Normal directory
+    PS1="${TITLEBAR}\n${PROMPT_CHAR}"
   fi
-}
 
-export PSAVE=$PS1
+}
 
 PROMPT_COMMAND=prompt_func
