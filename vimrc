@@ -253,6 +253,10 @@ set listchars=tab:>.,trail:.,extends:…,nbsp:␣
 set showbreak=↳
 " set showbreak=⌞ " alternative
 
+" Activate soft wrap by words
+command! -nargs=* WrapText set wrap linebreak nolist
+command! -nargs=* WrapCode set wrap linebreak list
+
 
 " Some aliases
 command W w
@@ -361,6 +365,8 @@ map <Leader>g :LustyBufferGrep <CR>
 " Move by screen lines instead of file line. Nice with long lines.
 nnoremap j gj
 nnoremap k gk
+
+
 
 
 " Easily change directory to the file being edited.
