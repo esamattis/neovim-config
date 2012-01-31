@@ -249,6 +249,10 @@ set listchars=tab:>.,trail:.,extends:…,nbsp:␣
 
 
 
+" Show soft wrapped lines as …
+set showbreak=↳
+" set showbreak=⌞ " alternative
+
 
 " Some aliases
 command W w
