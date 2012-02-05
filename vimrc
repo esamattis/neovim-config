@@ -382,8 +382,9 @@ nnoremap k gk
 nmap <Leader>cd :cd %:p:h<CR>
 
 " Delete last linebreak, leading spaces and trailing spaces
-nnoremap <Leader>u I" <C-c>hvk$xh " up
-nnoremap <Leader>d jI" <C-c>hvk$xh " Down
+" TODO: Remove
+nnoremap <Leader>u :echo "Use J instead"<cr>
+nnoremap <Leader>d :echo "Use J instead"<cr>
 
 
 
