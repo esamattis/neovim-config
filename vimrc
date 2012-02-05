@@ -152,17 +152,6 @@ set autowrite
 " Map escape key to jj -- much faster to exit insert mode
 imap jj <esc>
 
-" Easier way to insert curly braces. Testing out for a while :)
-map § {
-map ½ }
-map! § {
-map! ½ }
-imap § {
-imap ½ }
-cmap § {
-cmap ½ }
-omap § {
-omap ½ }
 
 
 
