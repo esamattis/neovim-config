@@ -328,9 +328,28 @@ nnoremap <C-l> <C-w>>
 " Macros-fu
 
 " Invoke a certain macro
-noremap ä @
+noremap § @
 " Invoke last macro
-noremap ö @@
+noremap - @@
+
+
+" Extend movement keys. Ö and ö will move to begining of the line and ä and Ä
+" to end.
+map ö ^
+map ä g_
+vmap ö ^
+vmap ä g_
+map Ö 0
+map Ä $
+vmap Ö 0
+vmap Ä $
+
+" Remainders for old mappings. TODO: Remove
+map <leader>l :echo "Use Ä"<cr>
+map <leader>h :echo "Use Ö"<cr>
+
+
+
 
 " Redraw broken Vim
 map <F5> :redraw!<CR>
@@ -431,13 +450,6 @@ autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 
 
 
-
-" h, for line start
-map <Leader>h 0
-" ,l for line end
-map <Leader>l $
-" å too
-map å $
 
 
 " Remove crappy key mappings set by plugings.
