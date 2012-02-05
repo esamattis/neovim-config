@@ -358,10 +358,7 @@ map! <F7> <esc><C-w>=i
 " Redraw broken Vim
 map <F5> :redraw!<CR>
 
-" Execute file being edited
-map <F10> :! %:p <CR>
 
-map <F3> :Google<CR>
 
 " Open file tree
 map <Leader>n :LustyFilesystemExplorer<CR>
