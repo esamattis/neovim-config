@@ -350,6 +350,10 @@ map <leader>h :echo "Use Ö"<cr>
 
 
 
+" Balance split windows by hitting F7
+map <F7> <C-w>=
+map! <F7> <esc><C-w>=i
+
 
 " Redraw broken Vim
 map <F5> :redraw!<CR>
