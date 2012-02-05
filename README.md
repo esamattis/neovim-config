@@ -35,3 +35,5 @@ http://superuser.com/questions/111016/vim-open-file-at-location-that-was-last-vi
 http://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim
 
 http://mislav.uniqpath.com/2011/12/vim-revisited/
+
+http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/
