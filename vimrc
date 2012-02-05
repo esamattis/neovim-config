@@ -309,11 +309,11 @@ nnoremap <leader>v V`]
 
 
 "" Window management
-" new vertical split
-command Vertical vertical sp
 
-" new horizontal split
-command Horizontal sp
+
+" TODO: Remove old
+command Vertical echo "Use :vsp instead"
+command Horizontal echo "Use :sp instead"
 
 
 
