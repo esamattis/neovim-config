@@ -152,17 +152,6 @@ set autowrite
 " Map escape key to jj -- much faster to exit insert mode
 imap jj <esc>
 
-" Easier way to insert curly braces. Testing out for a while :)
-map § {
-map ½ }
-map! § {
-map! ½ }
-imap § {
-imap ½ }
-cmap § {
-cmap ½ }
-omap § {
-omap ½ }
 
 
 
@@ -245,9 +234,17 @@ au InsertLeave * set nopaste
 
 " Show trailing whitespace characters
 set list
-set listchars=tab:>.,trail:.,extends:#,nbsp:␣
+set listchars=tab:>.,trail:.,extends:…,nbsp:␣
 
 
+
+" Show soft wrapped lines as …
+set showbreak=↳
+" set showbreak=⌞ " alternative
+
+" Activate soft wrap by words
+command! -nargs=* WrapText set wrap linebreak nolist
+command! -nargs=* WrapCode set wrap linebreak list
 
 
 " Some aliases
@@ -312,11 +309,11 @@ nnoremap <leader>v V`]
 
 
 "" Window management
-" new vertical split
-command Vertical vertical sp
 
-" new horizontal split
-command Horizontal sp
+
+" TODO: Remove old
+command Vertical echo "Use :vsp instead"
+command Horizontal echo "Use :sp instead"
 
 
 
@@ -331,17 +328,37 @@ nnoremap <C-l> <C-w>>
 " Macros-fu
 
 " Invoke a certain macro
-noremap ä @
+noremap § @
 " Invoke last macro
-noremap ö @@
+noremap - @@
+
+
+" Extend movement keys. Ö and ö will move to begining of the line and ä and Ä
+" to end.
+map ö ^
+map ä g_
+vmap ö ^
+vmap ä g_
+map Ö 0
+map Ä $
+vmap Ö 0
+vmap Ä $
+
+" Remainders for old mappings. TODO: Remove
+map <leader>l :echo "Use Ä"<cr>
+map <leader>h :echo "Use Ö"<cr>
+
+
+
+" Balance split windows by hitting F7
+map <F7> <C-w>=
+map! <F7> <esc><C-w>=i
+
 
 " Redraw broken Vim
 map <F5> :redraw!<CR>
 
-" Execute file being edited
-map <F10> :! %:p <CR>
 
-map <F3> :Google<CR>
 
 " Open file tree
 map <Leader>n :LustyFilesystemExplorer<CR>
@@ -359,12 +376,15 @@ nnoremap j gj
 nnoremap k gk
 
 
+
+
 " Easily change directory to the file being edited.
 nmap <Leader>cd :cd %:p:h<CR>
 
 " Delete last linebreak, leading spaces and trailing spaces
-nnoremap <Leader>u I" <C-c>hvk$xh " up
-nnoremap <Leader>d jI" <C-c>hvk$xh " Down
+" TODO: Remove
+nnoremap <Leader>u :echo "Use J instead"<cr>
+nnoremap <Leader>d :echo "Use J instead"<cr>
 
 
 
@@ -432,13 +452,6 @@ autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 
 
 
-
-" h, for line start
-map <Leader>h 0
-" ,l for line end
-map <Leader>l $
-" å too
-map å $
 
 
 " Remove crappy key mappings set by plugings.
