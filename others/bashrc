@@ -74,7 +74,7 @@ function generate_git_bar {
 function prompt_func() {
 
   # <user>@<host> <current working directory>
-  TITLEBAR="${GREEN}\u@\h ${YELLOW}\w"
+  TITLEBAR="\n${GREEN}\u@\h ${YELLOW}\w"
 
   # Use red # as prompt char when root
   if [ $(id -u) -eq 0 ]; then
