@@ -504,6 +504,8 @@ au VimEnter * unmap <Leader>lr
 map <Leader>r *Nciw
 
 
+" Clear search hilights
+map  å :noh<cr><esc>
 
 
 " NeoComplCache config
