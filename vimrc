@@ -203,6 +203,15 @@ autocmd BufReadPost *
 
 
 
+" Keep search pattern at the center of the screen
+" http://vimbits.com/bits/92
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+
 
 " Search and replace
 """"""""""""""""""""
