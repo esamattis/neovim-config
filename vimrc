@@ -535,7 +535,16 @@ vmap # <Esc>/\v<c-r>=GetVisual()<cr>/<cr>NN
 
 
 
+" Buffersaurus
+" Show jump list of all search matches in all buffers
+map <Leader>b :Bsgrep <c-r>/<cr>
+
+
+
+
+
 " Load local vim config file
 if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
+
