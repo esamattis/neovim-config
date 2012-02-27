@@ -318,9 +318,6 @@ nnoremap <leader>v V`]
 "" Window management
 
 
-" TODO: Remove old
-command Vertical echo "Use :vsp instead"
-command Horizontal echo "Use :sp instead"
 
 
 
@@ -332,7 +329,7 @@ nnoremap <C-l> <C-w>>
 
 
 
-" Macros-fu
+"" Macros-fu
 
 " Invoke a certain macro
 noremap § @
@@ -351,9 +348,6 @@ map Ä $
 vmap Ö 0
 vmap Ä $
 
-" Remainders for old mappings. TODO: Remove
-map <leader>l :echo "Use Ä"<cr>
-map <leader>h :echo "Use Ö"<cr>
 
 
 
@@ -388,10 +382,6 @@ nnoremap k gk
 " Easily change directory to the file being edited.
 nmap <Leader>cd :cd %:p:h<CR>
 
-" Delete last linebreak, leading spaces and trailing spaces
-" TODO: Remove
-nnoremap <Leader>u :echo "Use J instead"<cr>
-nnoremap <Leader>d :echo "Use J instead"<cr>
 
 
 
@@ -533,13 +523,13 @@ function! GetVisual() range
   return escaped_selection
 endfunction
 
-" Replace selection with string
-vmap <C-r> <Esc>:%s/<c-r>=GetVisual()<cr>/
 
 " Command mode like * and # for visual mode
 vmap * <Esc>/\v<c-r>=GetVisual()<cr>/<cr>
 vmap # <Esc>/\v<c-r>=GetVisual()<cr>/<cr>NN
 
+" Replace selection with string
+vmap <C-r> <Esc>:%s/<c-r>=GetVisual()<cr>/
 
 
 " Buffersaurus
@@ -548,6 +538,13 @@ map <Leader>b :Bsgrep <c-r>/<cr>
 
 
 
+" TODO: oldies remove
+command Vertical echo "Use :vsp instead"
+command Horizontal echo "Use :sp instead"
+nnoremap <Leader>u :echo "Use J instead"<cr>
+nnoremap <Leader>d :echo "Use J instead"<cr>
+map <leader>l :echo "Use Ä"<cr>
+map <leader>h :echo "Use Ö"<cr>
 
 
 " Load local vim config file
