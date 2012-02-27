@@ -287,6 +287,7 @@ command Qa qa
 command QA qa
 command Wa wa
 command WA wa
+command E e
 
 
 
