@@ -153,7 +153,14 @@ set autowrite
 imap jj <esc>
 
 
+" Hilight active line
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
 
+
+
+" Start window scrolling n lines before hitting the edge
+set scrolloff=5
 
 
 
