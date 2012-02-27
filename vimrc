@@ -162,6 +162,8 @@ autocmd BufWinLeave * setlocal nocursorline
 " Start window scrolling n lines before hitting the edge
 set scrolloff=5
 
+" Make Y behave like other capitals. Yank to end of line.
+map Y y$
 
 
 
