@@ -166,6 +166,10 @@ set scrolloff=5
 map Y y$
 
 
+" Reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
+
 
 " Bubble single lines
 " http://vimcasts.org/episodes/bubbling-text/
