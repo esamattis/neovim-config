@@ -159,6 +159,10 @@ autocmd WinLeave * setlocal nocursorline
 
 
 
+" Start window scrolling n lines before hitting the edge
+set scrolloff=5
+
+
 
 
 " Bubble single lines
