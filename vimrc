@@ -240,6 +240,15 @@ set smartcase
 set gdefault
 
 
+"" Better comand-line editing
+"Makes C-j & C-k scroll back/forward in history in command-line mode, and
+"makes C-a & C-e act as Home/End in command-line mode.
+cnoremap <C-j> <t_kd>
+cnoremap <C-k> <t_ku>
+cnoremap <C-a> <Home>
+cnoremap <C-e> <End>
+
+
 
 
 " Pasting
