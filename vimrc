@@ -240,7 +240,7 @@ set smartcase
 set gdefault
 
 
-"" Better comand-line editing
+"" Better command-line editing
 "Makes C-j & C-k scroll back/forward in history in command-line mode, and
 "makes C-a & C-e act as Home/End in command-line mode.
 cnoremap <C-j> <t_kd>
@@ -265,7 +265,7 @@ au InsertLeave * set nopaste
 
 " Show trailing whitespace characters
 set list
-set listchars=tab:>.,trail:.,extends:…,nbsp:␣
+set listchars=tab:▸\ ,trail:.,extends:…,nbsp:␣
 
 
 
