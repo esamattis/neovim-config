@@ -430,8 +430,8 @@ command Vimrc e ~/.vim/vimrc
 set spelllang=en_us
 " Toggle spelling
 nmap <silent> <leader>s :set spell!<CR>
-
-
+" Always spellcheck Git commit messages
+autocmd BufRead COMMIT_EDITMSG setlocal spell!
 
 
 
