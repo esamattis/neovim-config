@@ -158,8 +158,6 @@ imap jj <esc>
 
 
 
-
-
 " Start window scrolling n lines before hitting the edge
 set scrolloff=5
 
