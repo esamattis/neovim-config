@@ -497,7 +497,7 @@ au VimEnter * unmap <Leader>lr
 " Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
 " refactor it. Navigate to more matches with `n` and `N` and redo refactoring
 " by hitting the dot key.
-map <Leader>r *Nciw
+noremap <Leader>r *Nciw
 
 
 
