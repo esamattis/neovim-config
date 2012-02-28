@@ -69,6 +69,8 @@ if exists('+colorcolumn')
 endif
 
 
+" Hilight active line
+set cursorline
 
 
 " Command for resetting tab width
@@ -153,9 +155,6 @@ set autowrite
 imap jj <esc>
 
 
-" Hilight active line
-autocmd BufEnter * setlocal cursorline
-autocmd BufWinLeave * setlocal nocursorline
 
 
 
@@ -341,10 +340,6 @@ nnoremap <leader>v V`]
 
 
 "" Window management
-
-
-
-
 
 " Easily resize split windows with Ctrl+hjkl
 nnoremap <C-j> <C-w>+
