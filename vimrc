@@ -217,6 +217,10 @@ vnoremap / /\v
 noremap <Space> mp*N
 noremap  <Leader><Space> 'p \| :noh<cr>
 
+" Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
+" refactor it. Navigate to more matches with `n` and `N` and redo refactoring
+" by hitting the dot key.
+noremap <Leader>r mp*Nciw
 
 " Clear search hilights
 noremap  å :noh<cr><esc>
@@ -492,10 +496,6 @@ au VimEnter * unmap <Leader>lr
 
 
 
-" Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
-" refactor it. Navigate to more matches with `n` and `N` and redo refactoring
-" by hitting the dot key.
-noremap <Leader>r *Nciw
 
 
 
