@@ -42,7 +42,6 @@ call pathogen#infect('~/.vim/bundle')
 
 "" Leader mappings
 let mapleader = ","
-let maplocalleader = ";"
 
 set ai
 set modeline
@@ -285,7 +284,7 @@ command! -nargs=* WrapText set wrap linebreak nolist
 command! -nargs=* WrapCode set wrap linebreak list
 
 
-" Some aliases
+" Some aliases for typoists
 command W w
 command Q q
 command WQ wq
@@ -295,6 +294,10 @@ command QA qa
 command Wa wa
 command WA wa
 command E e
+nnoremap ; :
+vnoremap ; :
+nnoremap _ :
+vnoremap _ :
 
 
 
