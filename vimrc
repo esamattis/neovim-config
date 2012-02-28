@@ -78,6 +78,11 @@ command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=
 
 
 
+" CSS properties and classes often use dash in their names. Add it to word
+" match then.
+au FileType css,jade,stylus,less,scss,handlebars,html setlocal iskeyword+=-
+
+
 " Makefiles and gitconfig require tab
 au FileType make,gitconfig setlocal noexpandtab
 
