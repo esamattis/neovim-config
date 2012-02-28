@@ -212,6 +212,19 @@ autocmd BufReadPost *
 nnoremap / /\v
 vnoremap / /\v
 
+
+" Word scouting
+" Hilight all words matching the one under the cursor and mark the position to
+" 'p'. Return to original word with <Leader><Space>
+noremap <Space> mp*N
+noremap  <Leader><Space> 'p \| :noh<cr>
+
+
+" Clear search hilights
+noremap  å :noh<cr><esc>
+
+
+
 " work together to highlight search results (as you type). It’s really quite
 " handy, as long as you have the next line as well.
 set incsearch
@@ -493,11 +506,6 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 
 
-" Hilight all words matching the one under the cursor
-map <Space> *N
-
-" Clear search hilights
-map  <Leader><Space> :noh<cr><esc>
 
 
 
