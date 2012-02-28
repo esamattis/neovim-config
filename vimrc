@@ -378,6 +378,9 @@ vmap Ä $
 
 
 
+" Resize splits when the window is resized
+au VimResized * exe "normal! \<c-w>="
+
 " Reset messed up Vim. Redraw screen, clear search hilights and balance window
 " splits
 map <F5> :redraw! \| :noh \| <cr><c-w>=
