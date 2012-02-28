@@ -159,7 +159,7 @@ imap jj <esc>
 
 
 " Start window scrolling n lines before hitting the edge
-set scrolloff=5
+set scrolloff=3
 
 " Make Y behave like other capitals. Yank to end of line.
 map Y y$
