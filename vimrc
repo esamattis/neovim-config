@@ -494,13 +494,18 @@ au VimEnter * unmap <Leader>lr
 map <Leader>r *Nciw
 
 
-" Clear search hilights
-map  å :noh<cr><esc>
-
 
 " NeoComplCache config
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
+
+
+" Hilight all words matching the one under the cursor
+map <Space> *N
+
+" Clear search hilights
+map  <Leader><Space> :noh<cr><esc>
+
 
 
 
