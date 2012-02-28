@@ -155,7 +155,7 @@ imap jj <esc>
 
 " Hilight active line
 autocmd BufEnter * setlocal cursorline
-autocmd BufWinLeave * setlocal nocursorline
+autocmd BufLeave * setlocal nocursorline
 
 
 
