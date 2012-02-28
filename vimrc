@@ -268,7 +268,7 @@ au InsertLeave * set nopaste
 
 " Show trailing whitespace characters
 set list
-set listchars=tab:▸…,trail:.,extends:…,nbsp:␣
+set listchars=tab:▸—,trail:·,extends:…,nbsp:␣
 
 
 
