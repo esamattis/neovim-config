@@ -427,6 +427,12 @@ nmap <silent> <leader>s :set spell!<CR>
 " Always spellcheck Git commit messages
 autocmd BufRead COMMIT_EDITMSG setlocal spell!
 
+" If we're running Vim 7.3 or newer, enable persistent undo and tell vim were
+" to store the undo files.
+if version >= 703
+    set undofile
+    set undodir=~/.vim/undos
+endif
 
 
 
