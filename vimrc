@@ -436,7 +436,7 @@ nmap <silent> <leader>s :set spell!<CR>
 """"""""""""""
 
 " Indent after if else etc
-autocmd BufRead,BufNewFile *.coffee set smartindent cinwords=if,else,for,while,try,loop,class
+autocmd BufRead,BufNewFile *.coffee set smartindent cinwords=if,else,for,while,try,loop,class,it
 
 au FileType coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
