@@ -42,7 +42,6 @@ call pathogen#infect('~/.vim/bundle')
 
 "" Leader mappings
 let mapleader = ","
-let maplocalleader = ";"
 
 set ai
 set modeline
@@ -69,15 +68,19 @@ if exists('+colorcolumn')
 endif
 
 
+" Hilight active line
+set cursorline
 
 
 " Command for resetting tab width
 command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=<args>
 
 
-" Small 2 spaces for indentation
-au FileType jade,stylus,css,handlebars setlocal shiftwidth=2 tabstop=2 softtabstop=2
-au FileType html,xml,xhtml setlocal shiftwidth=2 tabstop=2 softtabstop=2
+
+" CSS properties and classes often use dash in their names. Add it to word
+" match then.
+au FileType css,jade,stylus,less,scss,handlebars,html setlocal iskeyword+=-
+
 
 " Makefiles and gitconfig require tab
 au FileType make,gitconfig setlocal noexpandtab
@@ -153,14 +156,9 @@ set autowrite
 imap jj <esc>
 
 
-" Hilight active line
-autocmd BufEnter * setlocal cursorline
-autocmd BufLeave * setlocal nocursorline
-
-
 
 " Start window scrolling n lines before hitting the edge
-set scrolloff=5
+set scrolloff=3
 
 " Make Y behave like other capitals. Yank to end of line.
 map Y y$
@@ -203,15 +201,6 @@ autocmd BufReadPost *
 
 
 
-" Keep search pattern at the center of the screen
-" http://vimbits.com/bits/92
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap * *zz
-nnoremap # #zz
-nnoremap g* g*zz
-nnoremap g# g#zz
-
 
 " Search and replace
 """"""""""""""""""""
@@ -219,6 +208,23 @@ nnoremap g# g#zz
 " normal regexes.
 nnoremap / /\v
 vnoremap / /\v
+
+
+" Word scouting
+" Hilight all words matching the one under the cursor and mark the position to
+" 'p'. Return to original word with <Leader><Space>
+noremap <Space> mp*N
+noremap  <Leader><Space> 'p \| :noh<cr>
+
+" Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
+" refactor it. Navigate to more matches with `n` and `N` and redo refactoring
+" by hitting the dot key.
+noremap <Leader>r mp*Nciw
+
+" Clear search hilights
+noremap  å :noh<cr><esc>
+
+
 
 " work together to highlight search results (as you type). It’s really quite
 " handy, as long as you have the next line as well.
@@ -265,7 +271,7 @@ au InsertLeave * set nopaste
 
 " Show trailing whitespace characters
 set list
-set listchars=tab:▸\ ,trail:.,extends:…,nbsp:␣
+set listchars=tab:▸—,trail:·,extends:…,nbsp:␣
 
 
 
@@ -278,7 +284,7 @@ command! -nargs=* WrapText set wrap linebreak nolist
 command! -nargs=* WrapCode set wrap linebreak list
 
 
-" Some aliases
+" Some aliases for typoists
 command W w
 command Q q
 command WQ wq
@@ -288,6 +294,10 @@ command QA qa
 command Wa wa
 command WA wa
 command E e
+nnoremap ; :
+vnoremap ; :
+nnoremap _ :
+vnoremap _ :
 
 
 
@@ -342,10 +352,6 @@ nnoremap <leader>v V`]
 
 "" Window management
 
-
-
-
-
 " Easily resize split windows with Ctrl+hjkl
 nnoremap <C-j> <C-w>+
 nnoremap <C-k> <C-w>-
@@ -375,14 +381,12 @@ vmap Ä $
 
 
 
+" Resize splits when the window is resized
+au VimResized * exe "normal! \<c-w>="
 
-" Balance split windows by hitting F7
-map <F7> <C-w>=
-map! <F7> <esc><C-w>=i
-
-
-" Redraw broken Vim
-map <F5> :redraw!<CR>
+" Reset messed up Vim. Redraw screen, clear search hilights and balance window
+" splits
+map <F5> :redraw! \| :noh \| <cr><c-w>=
 
 
 
@@ -426,8 +430,8 @@ command Vimrc e ~/.vim/vimrc
 set spelllang=en_us
 " Toggle spelling
 nmap <silent> <leader>s :set spell!<CR>
-
-
+" Always spellcheck Git commit messages
+autocmd BufRead COMMIT_EDITMSG setlocal spell!
 
 
 
@@ -498,19 +502,15 @@ au VimEnter * unmap <Leader>lr
 
 
 
-" Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
-" refactor it. Navigate to more matches with `n` and `N` and redo refactoring
-" by hitting the dot key.
-map <Leader>r *Nciw
 
-
-" Clear search hilights
-map  å :noh<cr><esc>
 
 
 " NeoComplCache config
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
+
+
+
 
 
 
