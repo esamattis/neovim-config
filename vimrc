@@ -188,10 +188,6 @@ set backup " enable backup
 
 
 
-" do not store global and local values in a session
-set ssop-=options
-" do not store folds
-set ssop-=folds
 
 " When opening a file, always jump to the last cursor position
 autocmd BufReadPost *
@@ -308,8 +304,6 @@ command MM wall|make
 " Show unsaved changes
 command ShowUnsaved w !diff -u % -
 
-command SessionSave mksession .session.vim
-command SessionLoad source .session.vim
 
 
 " Cooler tab completion for vim commands
