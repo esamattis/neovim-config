@@ -37,3 +37,11 @@ http://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut
 http://mislav.uniqpath.com/2011/12/vim-revisited/
 
 http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/
+
+http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
+
+http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/
+
+http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
+
+
