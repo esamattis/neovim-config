@@ -224,6 +224,8 @@ noremap <Leader>r mp*Nciw
 " Clear search hilights
 noremap  å :noh<cr><esc>
 
+" Join lines from below too. See :help J
+map K kJ
 
 
 " work together to highlight search results (as you type). It’s really quite
