@@ -47,6 +47,10 @@ set ai
 set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_modules
 
+" Improves smoothness of redrawing when there are multiple windows and the
+" terminal does not support a scrolling region.
+set ttyfast
+
 
 set t_Co=256
 colorscheme default
