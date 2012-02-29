@@ -3,6 +3,7 @@
 " https://github.com/epeli/vimconfig/blob/master/after/plugin/buffersessions.vim
 "
 " (c) Esa-Matti Suuronen <esa-matti@suuronen.org>
+" Lisence:  WTFPL
 "
 " Default Vim session management tries to be too clever. I want just to save a
 " list of open buffers.
