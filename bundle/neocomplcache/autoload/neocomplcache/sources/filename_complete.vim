@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: filename_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 05 Jan 2012.
+" Last Modified: 15 Feb 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -77,7 +77,7 @@ function! s:source.initialize()"{{{
   "}}}
 
   " Set rank.
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_plugin_rank,
+  call neocomplcache#set_dictionary_helper(g:neocomplcache_source_rank,
         \ 'filename_complete', 10)
 endfunction"}}}
 function! s:source.finalize()"{{{
@@ -221,6 +221,12 @@ function! s:get_glob_files(cur_keyword_str, path)"{{{
 
     let files = copy(s:cached_files[getcwd()])
   else
+    let ftype = getftype(glob)
+    if ftype != '' && ftype !=# 'dir'
+      " Note: If glob() device files, Vim may freeze!
+      return []
+    endif
+
     if a:path == ''
       let files = neocomplcache#util#glob(glob)
     else
@@ -264,7 +270,7 @@ function! s:get_glob_files(cur_keyword_str, path)"{{{
   if a:cur_keyword_str =~ '^\$\h\w*'
     let env = matchstr(a:cur_keyword_str, '^\$\h\w*')
     let env_ev = eval(env)
-    if neocomplcache#is_win()
+    if neocomplcache#is_windows()
       let env_ev = substitute(env_ev, '\\', '/', 'g')
     endif
     let len_env = len(env_ev)
@@ -294,7 +300,7 @@ function! s:get_glob_files(cur_keyword_str, path)"{{{
       if g:neocomplcache_enable_auto_delimiter
         let dict.word .= '/'
       endif
-    elseif neocomplcache#is_win()
+    elseif neocomplcache#is_windows()
       if '.'.fnamemodify(dict.word, ':e') =~ exts
         let abbr .= '*'
       endif
