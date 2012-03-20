@@ -55,6 +55,10 @@ set ttyfast
 set t_Co=256
 colorscheme default
 
+command Dark colorscheme solarized | set bg=dark
+command Dark2 colorscheme badwolf | set bg=dark
+command Light colorscheme hemisu | set bg=light
+
 syntax on
 filetype on
 filetype plugin on
