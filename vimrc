@@ -55,6 +55,10 @@ set ttyfast
 set t_Co=256
 colorscheme default
 
+command Dark colorscheme solarized | set bg=dark
+command Dark2 colorscheme badwolf | set bg=dark
+command Light colorscheme hemisu | set bg=light
+
 syntax on
 filetype on
 filetype plugin on
@@ -215,6 +219,8 @@ vnoremap / /\v
 " 'p'. Return to original word with <Leader><Space>
 noremap <Space> mp*N
 noremap  <Leader><Space> 'p \| :noh<cr>
+" Same for visual mode selection too
+vmap <Space> mpy/<C-r>"<cr>
 
 " Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
 " refactor it. Navigate to more matches with `n` and `N` and redo refactoring
@@ -238,6 +244,25 @@ set hlsearch
 " make searches case-insensitive, unless they contain upper-case letters:
 set ignorecase
 set smartcase
+
+
+" Search for selected text, forwards
+vnoremap <silent> * :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy/<C-R><C-R>=substitute(
+  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+" and backwards
+vnoremap <silent> # :<C-U>
+  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+  \gvy?<C-R><C-R>=substitute(
+  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+  \gV:call setreg('"', old_reg, old_regtype)<CR>
+
+
+" Buffersaurus
+" Show jump list of all search matches in all buffers
+map <Leader>b :Bsgrep <c-r>/<cr>
 
 
 " Apply  substitutions globally on lines. For example, instead of
@@ -519,24 +544,6 @@ let g:neocomplcache_enable_smart_case = 1
 
 
 
-
-" Search for selected text, forwards
-vnoremap <silent> * :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy/<C-R><C-R>=substitute(
-  \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
-" and backwards
-vnoremap <silent> # :<C-U>
-  \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-  \gvy?<C-R><C-R>=substitute(
-  \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-  \gV:call setreg('"', old_reg, old_regtype)<CR>
-
-
-" Buffersaurus
-" Show jump list of all search matches in all buffers
-map <Leader>b :Bsgrep <c-r>/<cr>
 
 
 
