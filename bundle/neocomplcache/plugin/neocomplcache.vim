@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 20 Feb 2012.
+" Last Modified: 06 Mar 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -26,10 +26,10 @@
 " GetLatestVimScripts: 2620 1 :AutoInstall: neocomplcache
 "=============================================================================
 
-if v:version < 702
-  echoerr 'neocomplcache does not work this version of Vim (' . v:version . ').'
+if exists('g:loaded_neocomplcache')
   finish
-elseif exists('g:loaded_neocomplcache')
+elseif v:version < 702
+  echoerr 'neocomplcache does not work this version of Vim (' . v:version . ').'
   finish
 elseif $SUDO_USER != ''
   echoerr '"sudo vim" is detected. Please use sudo.vim or other plugins instead.'
@@ -150,9 +150,6 @@ let g:neocomplcache_source_rank =
 
 let g:neocomplcache_temporary_dir =
       \ get(g:, 'neocomplcache_temporary_dir', expand('~/.neocon'))
-if !isdirectory(g:neocomplcache_temporary_dir)
-  call mkdir(g:neocomplcache_temporary_dir, 'p')
-endif
 let g:neocomplcache_enable_debug =
       \ get(g:, 'neocomplcache_enable_debug', 0)
 if exists('g:neocomplcache_enable_at_startup') && g:neocomplcache_enable_at_startup

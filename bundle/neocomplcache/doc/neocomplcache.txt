@@ -937,6 +937,40 @@ CHANGELOG					*neocomplcache-changelog*
 ------------------------------------------------------------------------------
 ChangeLog neocomplcache 7.0:
 
+2012-03-15
+- Fixed get_cur_text().
+
+2012-03-13
+- Fixed vb keyword pattern.
+
+2012-03-10
+- Fixed cur_text bug.
+
+2012-03-07
+- Fixed bell problem.
+- Deleted snippet source.
+- Fixed get_cur_text().
+- Improved completion source.
+- Updated vital.
+
+2012-03-06
+- Fixed Vim search.
+- Improved temporary directory behavior.
+
+2012-03-05
+- Fixed asynchronous load.
+- Fixed expand().
+- Improved version check.
+- Enabled beep.
+- Improved cache behavior.
+
+2012-03-04
+- Improved filename escape.
+- Improved asyncronous caching behavior.
+
+2012-03-03
+- Fixed temporary directory initialization.
+
 2012-02-24
 - Improved auto caching.
 - Fixed filetype error in dictionary_complete source.

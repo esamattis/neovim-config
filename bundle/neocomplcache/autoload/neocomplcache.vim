@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 26 Feb 2012.
+" Last Modified: 15 Mar 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -46,8 +46,8 @@ function! neocomplcache#enable() "{{{
   " Auto commands."{{{
   augroup neocomplcache
     autocmd!
-    " Auto complete events
     autocmd InsertLeave * call s:on_insert_leave()
+    autocmd CursorMovedI * call s:on_moved_i()
   augroup END
 
   if g:neocomplcache_enable_insert_char_pre
@@ -64,9 +64,6 @@ function! neocomplcache#enable() "{{{
           \ call s:do_auto_complete('CursorMovedI')
   endif
   "}}}
-
-  " Disable beep.
-  set vb t_vb=
 
   " Initialize"{{{
   let s:is_enabled = 1
@@ -260,7 +257,7 @@ function! neocomplcache#enable() "{{{
         \'\$\w+\|[[:alpha:]_./-][[:alnum:]_.-]*')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns,
         \'vb',
-        \'\a[[:alnum:]]*\|#\a[[:alnum:]]*')
+        \'\h\w*\|#\h\w*')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns,
         \'lua',
         \'\h\w*')
@@ -535,9 +532,6 @@ function! neocomplcache#enable() "{{{
     let s:exists_vimproc = 0
   endif
 
-  " Disable bell.
-  set vb t_vb=
-
   " Initialize.
   for source in values(neocomplcache#available_complfuncs())
     if has_key(source, 'initialize')
@@ -730,22 +724,12 @@ function! s:do_auto_complete(event)"{{{
         \ || cur_text == s:old_cur_text
         \ || (neocomplcache#is_eskk_enabled()
         \            && cur_text !~ '▽')
-        \ || (!neocomplcache#is_eskk_enabled() && (exists('b:skk_on') && b:skk_on)
+        \ || (!neocomplcache#is_eskk_enabled() &&
+        \      (exists('b:skk_on') && b:skk_on)
         \     || char2nr(split(cur_text, '\zs')[-1]) > 0x80)
     let s:cur_keyword_str = ''
     let s:complete_words = []
     return
-  endif
-
-  if cur_text =~ '\s\+$'
-    if neocomplcache#is_source_enabled('buffer_complete')
-      " Caching current cache line.
-      call neocomplcache#sources#buffer_complete#caching_current_line()
-    endif
-    if neocomplcache#is_source_enabled('member_complete')
-      " Caching current cache line.
-      call neocomplcache#sources#member_complete#caching_current_line()
-    endif
   endif
 
   let s:old_cur_text = cur_text
@@ -1043,7 +1027,8 @@ endfunction"}}}
 
 function! neocomplcache#get_cur_text(...)"{{{
   " Return cached text.
-  return (a:0 == 0 && mode() ==# 'i' && exists('s:cur_text')) ? s:cur_text : s:get_cur_text()
+  return (a:0 == 0 && mode() ==# 'i' && exists('s:cur_text')) ?
+        \ s:cur_text : s:get_cur_text()
 endfunction"}}}
 function! neocomplcache#get_next_keyword()"{{{
   " Get next keyword.
@@ -1259,6 +1244,15 @@ function! neocomplcache#print_debug(expr)"{{{
   if g:neocomplcache_enable_debug
     echomsg string(a:expr)
   endif
+endfunction"}}}
+function! neocomplcache#get_temporary_directory()"{{{
+  let directory = neocomplcache#util#substitute_path_separator(
+        \ neocomplcache#util#expand(g:neocomplcache_temporary_dir))
+  if !isdirectory(directory)
+    call mkdir(directory, 'p')
+  endif
+
+  return directory
 endfunction"}}}
 
 " For unite source.
@@ -1888,6 +1882,22 @@ endfunction"}}}
 "}}}
 
 " Event functions."{{{
+function! s:on_moved_i()"{{{
+  " Get cursor word.
+  let cur_text = s:get_cur_text()
+
+  " Make cache.
+  if cur_text =~ '\s\+$'
+    if neocomplcache#is_source_enabled('buffer_complete')
+      " Caching current cache line.
+      call neocomplcache#sources#buffer_complete#caching_current_line()
+    endif
+    if neocomplcache#is_source_enabled('member_complete')
+      " Caching current cache line.
+      call neocomplcache#sources#member_complete#caching_current_line()
+    endif
+  endif
+endfunction"}}}
 function! s:on_insert_enter()"{{{
   if g:neocomplcache_enable_cursor_hold_i &&
         \ &updatetime > g:neocomplcache_cursor_hold_i_time
@@ -1950,9 +1960,11 @@ endfunction"}}}
 
 " Internal helper functions."{{{
 function! s:get_cur_text()"{{{
-  "let s:cur_text = col('.') < pos ? '' : matchstr(getline('.'), '.*')[: col('.') - pos]
-  let s:cur_text = matchstr(getline('.'),
-        \ '^.*\%' . col('.') . 'c' . (mode() ==# 'i' ? '' : '.'))
+  let s:cur_text =
+        \ (mode() ==# 'i' ? (col('.')-1) : col('.')) >= len(getline('.')) ?
+        \      getline('.') :
+        \      matchstr(getline('.'),
+        \         '^.*\%' . col('.') . 'c' . (mode() ==# 'i' ? '' : '.'))
 
   " Save cur_text.
   return s:cur_text
