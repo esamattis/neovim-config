@@ -40,11 +40,17 @@
 " g:syntastic_c_include_dirs. This list can be used like this:
 "
 "   let g:syntastic_c_include_dirs = [ 'includes', 'headers' ]
-
+"
 " Moreover it is possible to add additional compiler options to the syntax
 " checking execution via the variable 'g:syntastic_c_compiler_options':
 "
 "   let g:syntastic_c_compiler_options = ' -ansi'
+"
+" Using the global variable 'g:syntastic_c_remove_include_errors' you can
+" specify whether errors of files included via the g:syntastic_c_include_dirs'
+" setting are removed from the result set:
+"
+"   let g:syntastic_c_remove_include_errors = 1
 
 if exists('loaded_c_syntax_checker')
     finish
@@ -58,48 +64,44 @@ endif
 let s:save_cpo = &cpo
 set cpo&vim
 
-let s:default_includes = [ '.', '..', 'include', 'includes',
-            \ '../include', '../includes' ]
-
-function! s:GetIncludeDirs()
-    let include_dirs = s:default_includes
-
-    if exists('g:syntastic_c_include_dirs')
-        " TODO: check for duplicates
-        call extend(include_dirs, g:syntastic_c_include_dirs)
-    endif
-
-    return join(map(copy(include_dirs), '"-I" . v:val'), ' ')
-endfunction
+if !exists('g:syntastic_c_compiler_options')
+    let g:syntastic_c_compiler_options = '-std=gnu99'
+endif
 
 function! SyntaxCheckers_c_GetLocList()
-    let makeprg = 'gcc -fsyntax-only -std=gnu99 '.shellescape(expand('%')).
-               \ ' '.s:GetIncludeDirs()
+    let makeprg = 'gcc -fsyntax-only '
     let errorformat = '%-G%f:%s:,%-G%f:%l: %#error: %#(Each undeclared '.
                \ 'identifier is reported only%.%#,%-G%f:%l: %#error: %#for '.
                \ 'each function it appears%.%#,%-GIn file included%.%#,'.
                \ '%-G %#from %f:%l\,,%f:%l:%c: %m,%f:%l: %trror: %m,%f:%l: %m'
 
+    " add optional user-defined compiler options
+    let makeprg .= g:syntastic_c_compiler_options
+
+    let makeprg .= ' '.shellescape(expand('%')).
+               \ ' '.syntastic#c#GetIncludeDirs('c')
+
+    " determine whether to parse header files as well
     if expand('%') =~? '.h$'
         if exists('g:syntastic_c_check_header')
             let makeprg = 'gcc -c '.shellescape(expand('%')).
-                        \ ' '.s:GetIncludeDirs()
+                        \ ' '.syntastic#c#GetIncludeDirs('c')
         else
             return []
         endif
     endif
 
-    if exists('g:syntastic_c_compiler_options')
-        let makeprg .= g:syntastic_c_compiler_options
-    endif
-
+    " check if the user manually set some cflags
     if !exists('b:syntastic_c_cflags')
+        " check whether to search for include files at all
         if !exists('g:syntastic_c_no_include_search') ||
                     \ g:syntastic_c_no_include_search != 1
+            " refresh the include file search if desired
             if exists('g:syntastic_c_auto_refresh_includes') &&
                         \ g:syntastic_c_auto_refresh_includes != 0
                 let makeprg .= syntastic#c#SearchHeaders()
             else
+                " search for header includes if not cached already
                 if !exists('b:syntastic_c_includes')
                     let b:syntastic_c_includes = syntastic#c#SearchHeaders()
                 endif
@@ -107,10 +109,22 @@ function! SyntaxCheckers_c_GetLocList()
             endif
         endif
     else
+        " use the user-defined cflags
         let makeprg .= b:syntastic_c_cflags
     endif
 
-    return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+    " process makeprg
+    let errors = SyntasticMake({ 'makeprg': makeprg,
+                \ 'errorformat': errorformat })
+
+    " filter the processed errors if desired
+    if exists('g:syntastic_c_remove_include_errors') &&
+                \ g:syntastic_c_remove_include_errors != 0
+        return filter(errors,
+                    \ 'has_key(v:val, "bufnr") && v:val["bufnr"]=='.bufnr(''))
+    else
+        return errors
+    endif
 endfunction
 
 let &cpo = s:save_cpo
