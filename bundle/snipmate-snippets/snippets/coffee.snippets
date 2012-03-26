@@ -12,6 +12,9 @@ snippet err
 	throw err if err
 snippet rerr
 	return cb err if err
+snippet iferr
+	if err
+	  return ${1}
 snippet #
 	#{ ${1} }
 snippet u
@@ -98,6 +101,10 @@ snippet l
 	console.log ${1}
 snippet e
 	console.error ${1}
+snippet wi
+	winston.info ${1}
+snippet we
+	winston.error ${1}
 # Try __ Catch
 snippet try
 	try
