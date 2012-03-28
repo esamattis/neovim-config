@@ -2,10 +2,10 @@
 export TERM="xterm-256color"
 export EDITOR=vim
 
-if [ -x $(which keychain) ] ; then
-    keychain --nogui -q -Q id_rsa
-        . ~/.keychain/`uname -n`-sh
-fi
+# if [ -x $(which keychain) ] ; then
+#     keychain --nogui -q -Q id_rsa
+#         . ~/.keychain/`uname -n`-sh
+# fi
 
 if [ -d ~/.vim/bin ] ; then
     PATH=~/.vim/bin:"${PATH}"

@@ -449,6 +449,7 @@ autocmd FileType gitcommit DiffGitCached | wincmd p
 command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
 
 command Vimrc e ~/.vim/vimrc
+command Localrc e ~/.vim/localrc
 
 
 " spell checking
