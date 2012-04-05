@@ -542,7 +542,8 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 
 
-
+" Vim Slime
+let g:slime_target = "tmux"
 
 
 
