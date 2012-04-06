@@ -544,6 +544,8 @@ let g:neocomplcache_enable_smart_case = 1
 
 " Vim Slime
 let g:slime_target = "tmux"
+map <Leader>d V<C-c><C-c>
+vmap <Leader>d <C-c><C-c>
 
 
 
@@ -553,8 +555,6 @@ let g:slime_target = "tmux"
 " TODO: oldies remove
 command Vertical echo "Use :vsp instead"
 command Horizontal echo "Use :sp instead"
-nnoremap <Leader>u :echo "Use J instead"<cr>
-nnoremap <Leader>d :echo "Use J instead"<cr>
 map <leader>l :echo "Use Ä"<cr>
 map <leader>h :echo "Use Ö"<cr>
 
