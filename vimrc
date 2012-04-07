@@ -544,7 +544,9 @@ let g:neocomplcache_enable_smart_case = 1
 
 " Vim Slime
 let g:slime_target = "tmux"
+" Send current line to slime
 map <Leader>d V<C-c><C-c>
+" Send visual selection to slime
 vmap <Leader>d <C-c><C-c>
 
 
