@@ -399,13 +399,13 @@ noremap - @@
 " Extend movement keys. Ö and ö will move to begining of the line and ä and Ä
 " to end.
 map ö ^
-map ä g_
+map Ä g_
 vmap ö ^
-vmap ä g_
+vmap Ä g_
 map Ö 0
-map Ä $
+map ä $
 vmap Ö 0
-vmap Ä $
+vmap ä $
 
 
 
