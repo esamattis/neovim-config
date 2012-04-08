@@ -70,14 +70,17 @@ set smarttab expandtab autoindent
 " By default use 4 spaces as indentation
 set tabstop=4 shiftwidth=4 softtabstop=4
 
+
+" Show vertical&horizontal line where the cursor is
+au WinLeave * set nocursorline nocursorcolumn
+au WinEnter * set cursorline cursorcolumn
+
 " Show margin column
 if exists('+colorcolumn')
     set colorcolumn=80
 endif
 
 
-" Hilight active line
-set cursorline
 
 
 " Command for resetting tab width
@@ -299,7 +302,6 @@ au InsertLeave * set nopaste
 " Show trailing whitespace characters
 set list
 set listchars=tab:▸—,trail:·,extends:…,nbsp:␣
-
 
 
 " Show soft wrapped lines as …
