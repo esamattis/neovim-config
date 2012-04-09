@@ -73,8 +73,8 @@ set tabstop=4 shiftwidth=4 softtabstop=4
 
 " Show vertical&horizontal line where the cursor is
 set cursorline cursorcolumn
-au WinLeave * set nocursorline nocursorcolumn
-au WinEnter * set cursorline cursorcolumn
+au BufLeave * set nocursorline nocursorcolumn
+au BufEnter * set cursorline cursorcolumn
 
 " Show margin column
 if exists('+colorcolumn')
