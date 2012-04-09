@@ -2,6 +2,9 @@
 export TERM="xterm-256color"
 export EDITOR=vim
 
+# tmux
+source /usr/share/doc/tmux/examples/bash_completion_tmux.sh
+
 # if [ -x $(which keychain) ] ; then
 #     keychain --nogui -q -Q id_rsa
 #         . ~/.keychain/`uname -n`-sh
