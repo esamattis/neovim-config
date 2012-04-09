@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 06 Mar 2012.
+" Last Modified: 31 Mar 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -97,6 +97,8 @@ let g:neocomplcache_enable_underbar_completion =
       \ get(g:, 'neocomplcache_enable_underbar_completion', 0)
 let g:neocomplcache_enable_fuzzy_completion =
       \ get(g:, 'neocomplcache_enable_fuzzy_completion', 0)
+let g:neocomplcache_fuzzy_completion_start_length =
+      \ get(g:, 'neocomplcache_fuzzy_completion_start_length', 3)
 let g:neocomplcache_enable_caching_message =
       \ get(g:, 'neocomplcache_enable_caching_message', 1)
 let g:neocomplcache_enable_insert_char_pre =
@@ -121,12 +123,13 @@ let g:neocomplcache_ctags_program =
       \ get(g:, 'neocomplcache_ctags_program', 'ctags')
 let g:neocomplcache_force_overwrite_completefunc =
       \ get(g:, 'neocomplcache_force_overwrite_completefunc', 0)
-" Note: ^X mode has problem in xim.
 let g:neocomplcache_enable_prefetch =
       \ get(g:, 'neocomplcache_enable_prefetch',
-      \  !(v:version > 703 || v:version == 703 && has('patch418')
-      \  && (!has('xim') || !has('gui_running'))
-      \ ))
+      \ 1)
+" Note: This feature is temporary disabled.
+      " \  !(v:version > 703 || v:version == 703 && has('patch418')
+      " \  && (!has('xim') || !has('gui_running'))
+      " \ ))
 let g:neocomplcache_release_cache_time =
       \ get(g:, 'neocomplcache_release_cache_time', 900)
 

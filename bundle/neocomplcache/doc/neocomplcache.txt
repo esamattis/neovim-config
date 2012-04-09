@@ -255,10 +255,16 @@ g:neocomplcache_enable_cursor_hold_i		*g:neocomplcache_enable_cursor_hold_i*
 		
 		Default value is 0.
 
+g:neocomplcache_cursor_hold_i_time		*g:neocomplcache_cursor_hold_i_time*
+		If g:neocomplcache_enable_cursor_hold_i is non zero and in
+		insert mode, this value changes 'updatetime' option.
+
+		Default value is 300.
+
 g:neocomplcache_enable_insert_char_pre		*g:neocomplcache_enable_insert_char_pre*
 		This variable controls whether neocomplcache use
 		|InsertCharPre| event when complete candidates.
-		Note: You should not use this option if less than Vim 7.3.418.
+		Note: You should not use this option if less than Vim 7.3.461.
 		Note: This option must be set before call |:NeoComplCacheEnable|.
 		Note: This option is experimental.
 		
@@ -277,11 +283,6 @@ g:neocomplcache_enable_auto_delimiter		*g:neocomplcache_enable_auto_delimiter*
 		automatically.  For example, /(filename) or #(Vim script).
 		
 		Default value is 0.
-
-g:neocomplcache_cursor_hold_i_time		*g:neocomplcache_cursor_hold_i_time*
-		This variable defines time of automatic completion by a milli second unit.
-		
-		Default value is 300.
 
 g:neocomplcache_enable_camel_case_completion	*g:neocomplcache_enable_camel_case_completion*
 		When you input a capital letter, this variable controls
@@ -303,14 +304,24 @@ g:neocomplcache_enable_fuzzy_completion		*g:neocomplcache_enable_fuzzy_completio
 		When you input one character, this variable controls whether
 		neocomplcache takes an ambiguous searching as an end of the
 		words in it.  For example, neocomplcache come to match it
-		with "public_html" or "PublicHtml" when you input it with "ph".
-		This variable disables
-		|g:neocomplcache_enable_camel_case_completion| and
-		|g:neocomplcache_enable_underbar_completion|.
+		with "public_html" or "PublicHtml" when you input it with "puh".
+		Note: If |g:neocomplcache_fuzzy_completion_start_length| is 3,
+		"ph" does not complete "public_html".
 		Note: This match is too heavy. So, it is enabled when your
-		input is less than 8 characters.
+		input length is longer than or equal to
+		|g:neocomplcache_fuzzy_completion_start_length| and less than
+		20 characters.
 		
 		Default value is 0.
+
+g:neocomplcache_fuzzy_completion_start_length	*g:neocomplcache_fuzzy_completion_start_length*
+		This variable controls length of fuzzy completion start length.
+		For example, If this variable is "3", third and after input characters are
+		fuzzy matched.  But first and second input characters are not
+		fuzzy matched.
+		Note: If this variable changed, completion speed may be too slow.
+
+		Default value is 3.
 
 g:neocomplcache_enable_caching_message		*g:neocomplcache_enable_caching_message*
 		When make cache, this variable controls whether neocomplcache
@@ -355,7 +366,7 @@ g:neocomplcache_enable_prefetch			*g:neocomplcache_enable_prefetch*
 		Partial function (ex: |complete_check()|) is disabled in
 		completefunc.
 		
-		Default value is 1.
+		Default value is 0.
 
 g:neocomplcache_temporary_dir			*g:neocomplcache_temporary_dir*
 		This variable appoints the directory that neocomplcache
@@ -786,6 +797,8 @@ EXAMPLES					*neocomplcache-examples*
 	"inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
 	" Or set this.
 	"let g:neocomplcache_enable_cursor_hold_i = 1
+	" Or set this.
+	"let g:neocomplcache_enable_insert_char_pre = 1
 	
 	" AutoComplPop like behavior.
 	"let g:neocomplcache_enable_auto_select = 1
@@ -936,6 +949,36 @@ CHANGELOG					*neocomplcache-changelog*
 
 ------------------------------------------------------------------------------
 ChangeLog neocomplcache 7.0:
+
+2012-04-05
+- Improved cache event.
+
+2012-04-02
+- Improved documentation.
+- Fixed asyncronous cache bug.
+
+2012-03-31
+- Changed g:neocomplcache_enable_prefetch default value.
+- Improved asyncronous caching check timing.
+- Fixed caching.
+- Supported Ctrl-x mode fix.
+
+2012-03-27
+- Fixed g:neocomplcache_enable_fuzzy_completion documentaion.
+- Added g:neocomplcache_fuzzy_completion_start_length option.
+
+2012-03-26
+- Fixed filename escape.
+- Fixed vim keyword pattern.
+
+2012-03-25
+- Fixed filename_complete behavior.
+
+2012-03-23
+- Fixed g:neocomplcache_enable_cursor_hold_i behavior.
+
+2012-03-21
+- Improved filename pattern.
 
 2012-03-15
 - Fixed get_cur_text().
