@@ -57,7 +57,8 @@ colorscheme default
 
 command Dark colorscheme solarized | set bg=dark
 command Dark2 colorscheme badwolf | set bg=dark
-command Light colorscheme hemisu | set bg=light
+command Light colorscheme solarized | set bg=light
+command Light2 colorscheme hemisu | set bg=light
 
 syntax on
 filetype on
