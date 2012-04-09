@@ -78,6 +78,7 @@ function! s:TmuxConfig()
   end
 
   let b:slime_config["socket_name"] = input("tmux socket name: ", b:slime_config["socket_name"])
+  call system("tmux -L " . b:slime_config["socket_name"] . " display-panes")
   let b:slime_config["target_pane"] = input("tmux target pane: ", b:slime_config["target_pane"])
 endfunction
 
