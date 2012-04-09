@@ -2,6 +2,9 @@
 export TERM=screen-256color
 export EDITOR=vim
 
+# Disable terminal flow control
+stty -ixon
+
 # tmux
 source $HOME/.vim/others/bash_completion_tmux.sh
 
