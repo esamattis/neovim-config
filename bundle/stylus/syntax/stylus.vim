@@ -54,11 +54,17 @@ syn cluster stylusCssSelectors contains=cssTagName,cssSelector.*,cssIdentifier,c
 syn cluster stylusCssAttributes contains=css.*Attr,cssValue.*,cssColor,cssURL,cssImportant,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssRenderProp
 
 syn region stylusDefinition matchgroup=cssBraces start="{" end="}" contains=TOP
-" syn match stylusProperty "\%([{};]\s*\|^\)\@<=\%([[:alnum:]-]\|#{[^{}]*}\)\+:" contains=css.*Prop skipwhite nextgroup=stylusCssAttribute contained containedin=stylusDefinition
-syn match stylusProperty "^\s*\%([[:alnum:]-]\+\)" contains=css.*Prop skipwhite nextgroup=stylusCssAttribute
+
+syn match stylusVariable "$[[:alnum:]_-]\+"
 syn match stylusVariableAssignment "\%([[:alnum:]_-]\+\s*\)\@<==" nextgroup=stylusCssAttribute,stylusVariable skipwhite
 
-syn match stylusCssAttribute +\%("\%([^"]\|\\"\)*"\|'\%([^']\|\\'\)*'\|#{[^{}]*}\|[^{};]\)*+ contained contains=@stylusCssAttributes,stylusFunction,stylusVariable,stylusControl,stylusUserFunction
+syn match stylusProperty "\%([{};]\s*\|^\)\@<=\%([[:alnum:]-]\|#{[^{}]*}\)\+:" contains=css.*Prop skipwhite nextgroup=stylusCssAttribute contained containedin=stylusDefinition
+syn match stylusProperty "^\s*\zs\s\%(\%([[:alnum:]-]\|#{[^{}]*}\)\+:\|:[[:alnum:]-]\+\)"hs=s+1 contains=css.*Prop skipwhite nextgroup=stylusCssAttribute
+syn match stylusProperty "^\s*\zs\s\%(:\=[[:alnum:]-]\+\s*=\)"hs=s+1 contains=css.*Prop skipwhite nextgroup=stylusCssAttribute
+
+syn match stylusCssAttribute +\%("\%([^"]\|\\"\)*"\|'\%([^']\|\\'\)*'\|#{[^{}]*}\|[^{};]\)*+ contained contains=@stylusCssAttributes,stylusFunction,stylusVariable,stylusControl,stylusUserFunction,stylusInterpolation
+
+syn match stylusInterpolation %{[[:alnum:]_-]\+}%
 
 syn match stylusUserFunction "^\s*\%([[:alnum:]_-]\+\)(\@="
 syn match stylusUserFunction "\<\%([^)]*\)\>(\@=" contained
@@ -74,6 +80,13 @@ syn match stylusFunction "\<\%(opposite-position\|image-size\|add-property\)\>(\
 syn keyword stylusVariable null true false arguments
 syn keyword stylusControl  if else unless for in return
 
+syn match stylusAmpersand  "&"
+syn match stylusClass      "[[:alnum:]_-]\+" contained
+syn match stylusClassChar  "\.[[:alnum:]_-]\@=" nextgroup=stylusClass
+syn match stylusEscape     "^\s*\zs\\"
+syn match stylusId         "[[:alnum:]_-]\+" contained
+syn match stylusIdChar     "#[[:alnum:]_-]\@=" nextgroup=stylusId
+
 syn keyword stylusTodo       FIXME NOTE TODO OPTIMIZE XXX contained
 
 syn region  stylusComment    start=+^\s*\/\/+ skip=+\n\s*\/\/+ end=+$+ keepend contains=stylusTodo,@Spell fold
@@ -86,6 +99,14 @@ hi def link stylusVariable              Identifier
 hi def link stylusControl               PreProc
 hi def link stylusUserFunction          PreProc
 hi def link stylusFunction              Function
+hi def link stylusInterpolation         Delimiter
+
+hi def link stylusAmpersand             Character
+hi def link stylusClass                 Type
+hi def link stylusClassChar             Special
+hi def link stylusEscape                Special
+hi def link stylusId                    Identifier
+hi def link stylusIdChar                Special
 
 let b:current_syntax = "stylus"
 

@@ -57,7 +57,8 @@ colorscheme default
 
 command Dark colorscheme solarized | set bg=dark
 command Dark2 colorscheme badwolf | set bg=dark
-command Light colorscheme hemisu | set bg=light
+command Light colorscheme solarized | set bg=light
+command Light2 colorscheme hemisu | set bg=light
 
 syntax on
 filetype on
@@ -70,14 +71,16 @@ set smarttab expandtab autoindent
 " By default use 4 spaces as indentation
 set tabstop=4 shiftwidth=4 softtabstop=4
 
+
+" Show vertical&horizontal line where the cursor is
+set cursorline cursorcolumn
+
 " Show margin column
 if exists('+colorcolumn')
     set colorcolumn=80
 endif
 
 
-" Hilight active line
-set cursorline
 
 
 " Command for resetting tab width
@@ -301,7 +304,6 @@ set list
 set listchars=tab:▸—,trail:·,extends:…,nbsp:␣
 
 
-
 " Show soft wrapped lines as …
 set showbreak=↳
 " set showbreak=⌞ " alternative
@@ -396,13 +398,13 @@ noremap - @@
 " Extend movement keys. Ö and ö will move to begining of the line and ä and Ä
 " to end.
 map ö ^
-map ä g_
+map Ä g_
 vmap ö ^
-vmap ä g_
+vmap Ä g_
 map Ö 0
-map Ä $
+map ä $
 vmap Ö 0
-vmap Ä $
+vmap ä $
 
 
 
@@ -542,7 +544,12 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 
 
-
+" Vim Slime
+let g:slime_target = "tmux"
+" Send current line to slime
+map <Leader>d V<C-c><C-c>
+" Send visual selection to slime
+vmap <Leader>d <C-c><C-c>
 
 
 
@@ -552,8 +559,6 @@ let g:neocomplcache_enable_smart_case = 1
 " TODO: oldies remove
 command Vertical echo "Use :vsp instead"
 command Horizontal echo "Use :sp instead"
-nnoremap <Leader>u :echo "Use J instead"<cr>
-nnoremap <Leader>d :echo "Use J instead"<cr>
 map <leader>l :echo "Use Ä"<cr>
 map <leader>h :echo "Use Ö"<cr>
 
