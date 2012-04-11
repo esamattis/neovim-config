@@ -62,23 +62,22 @@ endfunction
 
 function! s:TmuxSend(config, text)
 
-  call s:ExecFileTypeFn("_PreTmux_", [a:config["socket_name"], a:config["target_pane"]])
+  call s:ExecFileTypeFn("_PreTmux_", [a:config["session_name"], a:config["target_pane"]])
 
   let escaped_text = s:_EscapeText(a:text)
-  call system("tmux -L " . a:config["socket_name"] . " set-buffer " . escaped_text)
-  call system("tmux -L " . a:config["socket_name"] . " paste-buffer -t " . a:config["target_pane"])
+  call system("tmux set-buffer " . escaped_text)
+  call system("tmux paste-buffer -t " . a:config["session_name"] . ":" . a:config["target_pane"])
 
-  call s:ExecFileTypeFn("_PostTmux_", [a:config["socket_name"], a:config["target_pane"]])
+  call s:ExecFileTypeFn("_PostTmux_", [a:config["session_name"], a:config["target_pane"]])
 
 endfunction
 
 function! s:TmuxConfig()
   if !exists("b:slime_config")
-    let b:slime_config = {"socket_name": "default", "target_pane": ":"}
+    let b:slime_config = {"session_name": "", "target_pane": ""}
   end
 
-  let b:slime_config["socket_name"] = input("tmux socket name: ", b:slime_config["socket_name"])
-  call system("tmux -L " . b:slime_config["socket_name"] . " display-panes")
+  let b:slime_config["session_name"] = input("tmux socket name: ", b:slime_config["session_name"])
   let b:slime_config["target_pane"] = input("tmux target pane: ", b:slime_config["target_pane"])
 endfunction
 
