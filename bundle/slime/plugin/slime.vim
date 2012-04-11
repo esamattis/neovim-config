@@ -72,14 +72,25 @@ function! s:TmuxSend(config, text)
 
 endfunction
 
+let s:slime_config_defaults = {"session_name": "", "target_pane": ""}
+
 function! s:TmuxConfig()
+
   if !exists("b:slime_config")
     let b:slime_config = {"session_name": "", "target_pane": ""}
   end
 
-  let b:slime_config["session_name"] = input("tmux socket name: ", b:slime_config["session_name"])
-  let b:slime_config["target_pane"] = input("tmux target pane: ", b:slime_config["target_pane"])
+  let b:slime_config["session_name"] = input("tmux session name: ", s:slime_config_defaults["session_name"])
+  let b:slime_config["target_pane"] = input("tmux target pane ([window_name][.pane_index]): ", s:slime_config_defaults["target_pane"])
+
+  let s:slime_config_defaults["session_name"] = b:slime_config["session_name"]
+  let s:slime_config_defaults["target_pane"] = b:slime_config["target_pane"]
+
 endfunction
+
+
+
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Helpers
