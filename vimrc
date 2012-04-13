@@ -444,6 +444,8 @@ nmap <Leader>cd :cd %:p:h<CR>
 " diff will be opened automatically after the git commit.
 autocmd FileType gitcommit DiffGitCached | wincmd p
 
+" Highlight VCS conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 
 
