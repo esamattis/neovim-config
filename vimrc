@@ -367,7 +367,7 @@ command XEscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 
 " strip all trailing whitespace in the current file
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>W mz:%s/\s\+$//<cr>:let @/=''<cr>'z
 
 
 
