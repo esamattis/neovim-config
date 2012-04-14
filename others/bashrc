@@ -13,6 +13,9 @@ source $HOME/.vim/others/bash_completion_tmux.sh
 #         . ~/.keychain/`uname -n`-sh
 # fi
 
+
+alias ircproxy='ssh -t jyulakka ssh -t melmacian.net "tmux att -d -t irc"'
+
 if [ -d ~/.vim/bin ] ; then
     PATH=~/.vim/bin:"${PATH}"
 fi
