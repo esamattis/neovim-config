@@ -570,3 +570,21 @@ if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
 
+let s:LastCmd = ""
+
+function s:ExecCmd(cmd)
+    let s:LastCmd = a:cmd
+    call system(a:cmd)
+endfunction
+
+function s:ExecLastCmd()
+    if s:LastCmd != ""
+        call system(s:LastCmd)
+    endif
+endfunction
+
+command -nargs=1  ExecCmd call s:ExecCmd(<args>)
+command ExecLastCmd call s:ExecLastCmd()
+map <Leader>a :ExecLastCmd<CR>
+
+
