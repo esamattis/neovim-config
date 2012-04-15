@@ -459,7 +459,7 @@ command Localrc e ~/.vim/localrc
 " spell checking
 set spelllang=en_us
 " Toggle spelling
-nmap <silent> <leader>s :set spell!<CR>
+nmap <silent> <leader>S :set spell!<CR>
 " Always spellcheck Git commit messages
 autocmd BufRead COMMIT_EDITMSG setlocal spell!
 
@@ -554,3 +554,6 @@ if filereadable($HOME . "/.vim/localrc")
 endif
 
 
+map <Leader>s :SlimuxREPLSendLine<CR>
+vmap <Leader>s :SlimuxREPLSendSelection<CR>
+map <Leader>a :SlimuxShellLast<CR>
