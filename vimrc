@@ -546,45 +546,11 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 
 
-" Vim Slime
-let g:slime_target = "tmux"
-" Send current line to slime
-map <Leader>d V<C-c><C-c>
-" Send visual selection to slime
-vmap <Leader>d <C-c><C-c>
-
-
-
-
-
-
-" TODO: oldies remove
-command Vertical echo "Use :vsp instead"
-command Horizontal echo "Use :sp instead"
-map <leader>l :echo "Use Ä"<cr>
-map <leader>h :echo "Use Ö"<cr>
 
 
 " Load local vim config file
 if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
-
-let s:LastCmd = ""
-
-function s:ExecCmd(cmd)
-    let s:LastCmd = a:cmd
-    call system(a:cmd)
-endfunction
-
-function s:ExecLastCmd()
-    if s:LastCmd != ""
-        call system(s:LastCmd)
-    endif
-endfunction
-
-command -nargs=1  ExecCmd call s:ExecCmd(<args>)
-command ExecLastCmd call s:ExecLastCmd()
-map <Leader>a :ExecLastCmd<CR>
 
 
