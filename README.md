@@ -19,34 +19,25 @@ Can't live without it.
 ## Bootstrap
 
     wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | bash -eu
-    
+
 ## Solarized for gnome-terminal
 
-https://github.com/sigurdga/gnome-terminal-colors-solarized
+  * https://github.com/sigurdga/gnome-terminal-colors-solarized
 
 ## Influences from
 
-http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+  * http://stevelosh.com/blog/2010/09/coming-home-to-vim/
+  * http://nvie.com/posts/how-i-boosted-my-vim/
+  * http://net.tutsplus.com/articles/general/top-10-pitfalls-when-switching-to-vim
+  * http://stackoverflow.com/questions/95072/what-are-your-favorite-vim-tricksz
+  * http://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim
+  * http://mislav.uniqpath.com/2011/12/vim-revisited/
+  * http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/
+  * http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
+  * http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/
+  * http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
 
-http://nvie.com/posts/how-i-boosted-my-vim/
-
-http://net.tutsplus.com/articles/general/top-10-pitfalls-when-switching-to-vim
-
-http://stackoverflow.com/questions/95072/what-are-your-favorite-vim-tricksz
-
-http://stackoverflow.com/questions/1218390/what-is-your-most-productive-shortcut-with-vim
-
-http://mislav.uniqpath.com/2011/12/vim-revisited/
-
-http://yannesposito.com/Scratch/en/blog/Learn-Vim-Progressively/
-
-http://concisionandconcinnity.blogspot.com/2009/07/vim-part-ii-matching-pairs.html
-
-http://dancingpenguinsoflight.com/2009/02/code-navigation-completion-snippets-in-vim/
-
-http://www.thegeekstuff.com/2009/01/vi-and-vim-editor-5-awesome-examples-for-automatic-word-completion-using-ctrl-x-magic/
-
-## Scripting 
+## Scripting
 
 :help usr_41.txt
 
