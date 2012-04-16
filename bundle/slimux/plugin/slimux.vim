@@ -9,6 +9,12 @@ let s:retry_send = {}
 
 function! g:_SlimuxPickPaneFromBuf(tmux_packet)
 
+    let pos = getpos(".")[1]
+    if pos < 3
+      echo "select a pane"
+      return
+    end
+
     " Get current line under the cursor
     let line = getline(".")
 
@@ -36,11 +42,30 @@ function! s:SelectPane(tmux_packet)
     " Put tmux panes in the buffer. Must use cat here because tmux might fail
     " here due to some libevent bug in linux.
     " Try 'tmux list-panes -a > panes.txt' to see if it is fixed
-    %!tmux list-panes -a | cat
+
+    " Set header for the menu buffer
+    call setline(1, "Select tmux pane with Enter key")
+    call setline(2, "")
+
+    " Add previous selection as the first
+    let last = a:tmux_packet["target_pane"]
+    if len(last) != 0
+      call setline(3, last . ": (previous)")
+    endif
+
+    " List all tmux panes at the end
+    normal G
+    read !tmux list-panes -a | cat
+    call setpos(".", [0, 3, 0, 0])
+
+    " Hilight what we can select
+    highlight MyGroup ctermbg=green guibg=green
+    match MyGroup '^\([^ ]\+\)\:'
 
     " bufhidden=wipe deletes the buffer when it is hidden
     setlocal bufhidden=wipe buftype=nofile
     setlocal nobuflisted nomodifiable noswapfile nowrap
+    setlocal cursorline nocursorcolumn
 
     " Hide buffer on q and <ESC>
     nnoremap <buffer> <silent> q :hide<CR>
