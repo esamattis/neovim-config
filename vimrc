@@ -367,7 +367,7 @@ command XEscToCapsLock !xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 
 " strip all trailing whitespace in the current file
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+nnoremap <leader>W mz:%s/\s\+$//<cr>:let @/=''<cr>'z
 
 
 
@@ -444,6 +444,8 @@ nmap <Leader>cd :cd %:p:h<CR>
 " diff will be opened automatically after the git commit.
 autocmd FileType gitcommit DiffGitCached | wincmd p
 
+" Highlight VCS conflict markers
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 
 
@@ -457,7 +459,7 @@ command Localrc e ~/.vim/localrc
 " spell checking
 set spelllang=en_us
 " Toggle spelling
-nmap <silent> <leader>s :set spell!<CR>
+nmap <silent> <leader>S :set spell!<CR>
 " Always spellcheck Git commit messages
 autocmd BufRead COMMIT_EDITMSG setlocal spell!
 
@@ -544,23 +546,6 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 
 
-" Vim Slime
-let g:slime_target = "tmux"
-" Send current line to slime
-map <Leader>d V<C-c><C-c>
-" Send visual selection to slime
-vmap <Leader>d <C-c><C-c>
-
-
-
-
-
-
-" TODO: oldies remove
-command Vertical echo "Use :vsp instead"
-command Horizontal echo "Use :sp instead"
-map <leader>l :echo "Use Ä"<cr>
-map <leader>h :echo "Use Ö"<cr>
 
 
 " Load local vim config file
@@ -568,3 +553,7 @@ if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
 
+
+map <Leader>s :SlimuxREPLSendLine<CR>
+vmap <Leader>s :SlimuxREPLSendSelection<CR>
+map <Leader>a :SlimuxShellLast<CR>
