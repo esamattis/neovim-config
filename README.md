@@ -16,7 +16,7 @@ Caps Lock to Esc
 
 Can't live without it.
 
-## Install
+## Bootstrap
 
     wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | bash -eu
     
