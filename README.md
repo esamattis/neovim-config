@@ -16,9 +16,13 @@ Caps Lock to Esc
 
 Can't live without it.
 
-## Installing the config
+## Install
 
     wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | bash -eu
+    
+## Solarized for gnome-terminal
+
+https://github.com/sigurdga/gnome-terminal-colors-solarized
 
 ## Influences from
 
