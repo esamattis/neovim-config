@@ -26,6 +26,7 @@ This plugin borrows ideas and some code from [vim-slime][].
 Use [pahtogen][] and put files to
 `$HOME/.vim/bundle/slimux/`
 
+Slimux requires fairly recent tmux version. Be sure you have 1.5.x or later.
 
 ## REPL Commands
 
@@ -59,13 +60,17 @@ Prompt global pane configuration for the shell commands.
 
 ## Keyboard Shortcuts
 
-Slimux does not force shortcuts on your Vim, but here's something you
-can put to your `.vimrc`
+Slimux does not force any shortcuts on your Vim, but here's something you can
+put to your `.vimrc`
 
     map <Leader>s :SlimuxREPLSendLine<CR>
     vmap <Leader>s :SlimuxREPLSendSelection<CR>
     map <Leader>a :SlimuxShellLast<CR>
 
+Or if you like something more Emacs Slime style try something like this:
+
+    map <C-c><C-c> :SlimuxREPLSendLine<CR>
+    map <C-c><C-c> :SlimuxREPLSendSelection<CR>
 
 You may also add shortcuts to other commands too.
 
