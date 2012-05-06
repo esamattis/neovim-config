@@ -21,6 +21,15 @@ interaction with some more complex REPLs such as the CoffeeScript REPL.
 This plugin borrows ideas and some code from [vim-slime][].
 
 
+Blog post
+
+http://esa-matti.suuronen.org/blog/2012/04/19/slimux-tmux-plugin-for-vim/
+
+Ascii.io screencast
+
+http://ascii.io/a/409
+
+
 ## Installation
 
 Use [pahtogen][] and put files to
@@ -60,8 +69,8 @@ Prompt global pane configuration for the shell commands.
 
 ## Keyboard Shortcuts
 
-Slimux does not force any shortcuts on your Vim, but here's something you can
-put to your `.vimrc`
+Slimux does not force shortcuts on your Vim, but here's something you
+can put to your `.vimrc`
 
     map <Leader>s :SlimuxREPLSendLine<CR>
     vmap <Leader>s :SlimuxREPLSendSelection<CR>
@@ -70,7 +79,7 @@ put to your `.vimrc`
 Or if you like something more Emacs Slime style try something like this:
 
     map <C-c><C-c> :SlimuxREPLSendLine<CR>
-    map <C-c><C-c> :SlimuxREPLSendSelection<CR>
+    vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
 
 You may also add shortcuts to other commands too.
 
