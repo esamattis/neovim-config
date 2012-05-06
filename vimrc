@@ -55,10 +55,6 @@ set ttyfast
 set t_Co=256
 colorscheme default
 
-command Dark colorscheme solarized | set bg=dark
-command Dark2 colorscheme badwolf | set bg=dark
-command Light colorscheme solarized | set bg=light
-command Light2 colorscheme hemisu | set bg=light
 
 syntax on
 filetype on
@@ -449,11 +445,6 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 
 
-" Open snippet file of the filetype currently being edited
-command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
-
-command Vimrc e ~/.vim/vimrc
-command Localrc e ~/.vim/localrc
 
 
 " spell checking
@@ -546,7 +537,15 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
 
 
+" Open snippet file of the filetype currently being edited
+command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
 
+command Vimrc e ~/.vim/vimrc
+command Localrc e ~/.vim/localrc
+
+
+" Load local config always when saved.
+autocmd BufWritePost $HOME/.vim/localrc source $HOME/.vim/localrc
 
 " Load local vim config file
 if filereadable($HOME . "/.vim/localrc")
