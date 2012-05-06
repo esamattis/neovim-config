@@ -542,23 +542,28 @@ let g:neocomplcache_enable_smart_case = 1
 " Open snippet file of the filetype currently being edited
 command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
 
+" Edir shortcut for this config
 command Vimrc e ~/.vim/vimrc
-command Localrc e ~/.vim/localrc
-
 
 
 "" Local Vim configuration
 """"""""""""""""""""""""""
 
-" Load local config always when saved.
-autocmd BufWritePost $HOME/.vim/localrc source $HOME/.vim/localrc
-" File type is vim
-autocmd BufReadPost $HOME/.vim/localrc setfiletype vim
-" Seed it with localrc.default when created
-autocmd BufNewFile $HOME/.vim/localrc setfiletype vim | read $HOME/.vim/localrc.default
 " Load load it always on startup
 if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
+
+" Edit shortcut
+command Localrc e ~/.vim/localrc
+
+" Reload local config always when saved.
+autocmd BufWritePost $HOME/.vim/localrc source $HOME/.vim/localrc
+
+" File type is vim
+autocmd BufReadPost $HOME/.vim/localrc setfiletype vim
+
+" Seed it with localrc.default when created
+autocmd BufNewFile $HOME/.vim/localrc setfiletype vim | read $HOME/.vim/localrc.default
 
 
