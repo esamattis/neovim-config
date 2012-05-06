@@ -528,7 +528,10 @@ au VimEnter * unmap <Leader>lg
 au VimEnter * unmap <Leader>lr
 
 
-
+" Slimux key map
+map <Leader>s :SlimuxREPLSendLine<CR>
+vmap <Leader>s :SlimuxREPLSendSelection<CR>
+map <Leader>a :SlimuxShellLast<CR>
 
 
 
@@ -553,6 +556,3 @@ if filereadable($HOME . "/.vim/localrc")
 endif
 
 
-map <Leader>s :SlimuxREPLSendLine<CR>
-vmap <Leader>s :SlimuxREPLSendSelection<CR>
-map <Leader>a :SlimuxShellLast<CR>
