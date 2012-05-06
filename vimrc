@@ -277,9 +277,8 @@ set gdefault
 "makes C-a & C-e act as Home/End in command-line mode.
 cnoremap <C-j> <t_kd>
 cnoremap <C-k> <t_ku>
-cnoremap <C-a> <Home>
-cnoremap <C-e> <End>
-
+cnoremap <C-ö> <Home>
+cnoremap <C-ä> <End>
 
 
 
@@ -547,10 +546,17 @@ command Vimrc e ~/.vim/vimrc
 command Localrc e ~/.vim/localrc
 
 
+
+"" Local Vim configuration
+""""""""""""""""""""""""""
+
 " Load local config always when saved.
 autocmd BufWritePost $HOME/.vim/localrc source $HOME/.vim/localrc
-
-" Load local vim config file
+" File type is vim
+autocmd BufReadPost $HOME/.vim/localrc setfiletype vim
+" Seed it with localrc.default when created
+autocmd BufNewFile $HOME/.vim/localrc setfiletype vim | read $HOME/.vim/localrc.default
+" Load load it always on startup
 if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
