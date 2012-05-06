@@ -1,3 +1,5 @@
+" set cursorline cursorcolumn
+
 " colorscheme solarized | set bg=dark
 " colorscheme solarized | set bg=light
 " colorscheme hemisu | set bg=light
