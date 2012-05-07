@@ -503,7 +503,6 @@ autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 
 
 
-
 " Remove crappy key mappings set by plugings.
 " Protip: Search for bad plugings with :verbose imap <c-n>
 "
