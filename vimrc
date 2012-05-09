@@ -459,6 +459,9 @@ if version >= 703
 endif
 
 
+" Block navigation
+map <Leader>k [%
+map <Leader>j ]%
 
 " CoffeeScript
 """"""""""""""
