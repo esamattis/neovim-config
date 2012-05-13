@@ -1,12 +1,14 @@
 # Slimux
 
-Slimux is an [tmux][] integration plugin for Vim. It makes it easy to interact
+This is a SLIME inspired tmux integration plugin for Vim. It makes it easy to interact
 with different tmux panes directly from Vim. It has two styles for interacting
 with panes. REPL and Shell styles.
 
 REPL commands are designed to work with various Read Eval Print Loops such as
 `python`, `irb` (Ruby), `node` (Javascript), `coffee` (CoffeeScript) etc.
-Shell commands are designed to work with normal shells such as `bash`.
+This is loosely modelled after [SLIME for Emacs][SLIME]. Shell commands are designed 
+to work with normal shells such as `bash`. These are useful for running tests for
+example.
 
 Main difference between these is pane configuration visibility. Each buffer has
 own configuration for REPL, but for Shell there is only one global
@@ -69,8 +71,8 @@ Prompt global pane configuration for the shell commands.
 
 ## Keyboard Shortcuts
 
-Slimux does not force shortcuts on your Vim, but here's something you
-can put to your `.vimrc`
+Slimux does not force any shortcuts on your Vim, but here's something you can
+put to your `.vimrc`
 
     map <Leader>s :SlimuxREPLSendLine<CR>
     vmap <Leader>s :SlimuxREPLSendSelection<CR>
@@ -83,9 +85,56 @@ Or if you like something more Emacs Slime style try something like this:
 
 You may also add shortcuts to other commands too.
 
+
+## Adding support for new languages
+
+Usually new there is no need to do anything. For example Ruby and Node.js REPLs
+works just fine out of box, but for some languages you have to do some preprocessing
+before the code can be sent. There are three hooks you can specify for
+each language.
+
+Custom escaping function
+
+    function SlimuxEscape_<filetype>(text)
+        return a:text
+    endfunction
+
+Pre send hook
+
+    function SlimuxPre_<filetype>(target_pane)
+    endfunction
+
+Post send hook
+
+    function SlimuxPost_<filetype>(target_pane)
+    endfunction
+
+Just add these to ftplugin directory contained within this plugin (and sent a pull request on Github!).
+You can use [Python][] and [CoffeeScript][] hooks as examples.
+
+
+
+
+## Other Vim Slime plugins
+
+Before I created this plugin I tried several others, but non of them satisfied me. They where too 
+complicated or just didn't support the languages I needed. So if Slimux isn't your cup of tea, 
+maybe one of these is:
+
+  * https://github.com/jpalardy/vim-slime
+  * https://github.com/benmills/vimux
+  * https://github.com/kikijump/tslime.vim
+  * https://github.com/jgdavey/vim-turbux
+  * http://www.vim.org/scripts/script.php?script_id=2531
+  
+
+
 [tmux]: http://tmux.sourceforge.net/
 [pahtogen]: https://github.com/tpope/vim-pathogen
 [vim-slime]: https://github.com/jpalardy/vim-slime
+[SLIME]: http://common-lisp.net/project/slime/
 
+[Python]: https://github.com/epeli/slimux/blob/master/ftplugin/python.vim
+[CoffeeScript]: https://github.com/epeli/slimux/blob/master/ftplugin/coffee.vim
 
 
