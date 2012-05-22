@@ -7,7 +7,7 @@ snippet ifmain
 		${1:main()}
 	end
 snippet bp
-	require 'ruby-debug/completion'; debugger
+	debugger
 snippet bpg
 	require 'rubygems'; require 'ruby-debug/completion'; debugger
 # New Block
@@ -580,4 +580,11 @@ snippet debug
 	require 'ruby-debug'; debugger; true;
 snippet pry
 	require 'pry'; binding.pry
-
+snippet l
+	RAILS_DEFAULT_LOGGER.debug "${1}"
+snippet le
+	$stderr.puts "${1}\n"
+snippet s
+	start = Time.now
+snippet se
+	logger.debug "TOOK${1} #{ Time.now - start }"
