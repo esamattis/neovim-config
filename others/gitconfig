@@ -31,3 +31,5 @@
   ci = commit
   l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
   ll = log --stat --abbrev-commit
+  # Sorted tag list
+  stag = for-each-ref --sort='*authordate' --format='%(refname:short)' refs/tags
