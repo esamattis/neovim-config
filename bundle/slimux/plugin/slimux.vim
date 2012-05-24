@@ -6,23 +6,37 @@
 
 
 let s:retry_send = {}
+let s:last_selected_pane = ""
 
-function! g:_SlimuxPickPaneFromBuf(tmux_packet)
-
-    let pos = getpos(".")[1]
-    if pos < 3
-      echo "select a pane"
-      return
-    end
+function! g:_SlimuxPickPaneFromBuf(tmux_packet, test)
 
     " Get current line under the cursor
     let line = getline(".")
 
+    " Parse target pane from current line
+    let pane_match = matchlist(line, '\(^[^ ]\+\)\: ')
+
+    if len(pane_match) == 0
+      echo "Please select a pane with enter or exit with 'q'"
+      return
+    endif
+
+    let target_pane = pane_match[1]
+
+    " Test only. Do not send the real packet or configure anything. Instead
+    " just send line break to see on which pane the cursor is on.
+    if a:test
+        return s:Send({ "target_pane": target_pane, "text": "\n", "type": "code" })
+    endif
+
     " Hide (and destroy) the scratch buffer
     hide
 
-    " Parse target pane
-    let a:tmux_packet["target_pane"] = matchlist(line, '\([^ ]\+\)\: ')[1]
+    " Configure current packet
+    let a:tmux_packet["target_pane"] = target_pane
+
+    " Save last selected pane
+    let s:last_selected_pane = target_pane
 
     if !empty(s:retry_send)
         call s:Send(s:retry_send)
@@ -39,30 +53,25 @@ function! s:SelectPane(tmux_packet)
     " Create new buffer in a horizontal split
     belowright new
 
-    " Put tmux panes in the buffer. Must use cat here because tmux might fail
-    " here due to some libevent bug in linux.
-    " Try 'tmux list-panes -a > panes.txt' to see if it is fixed
-
     " Set header for the menu buffer
-    call setline(1, "Select tmux pane with Enter key")
+    call setline(1, "# Enter: Select pane - Space: Test - Esc/q: Cancel")
     call setline(2, "")
 
     " Add last used pane as the first
-    let last = a:tmux_packet["target_pane"]
-    if len(last) != 0
-      call setline(3, last . ": (previous)")
+    if len(s:last_selected_pane) != 0
+      call setline(4, s:last_selected_pane . ": (last one used)")
     endif
 
     " List all tmux panes at the end
     normal G
+
+    " Put tmux panes in the buffer. Must use cat here because tmux might fail
+    " here due to some libevent bug in linux.
+    " Try 'tmux list-panes -a > panes.txt' to see if it is fixed
     read !tmux list-panes -a | cat
 
     " Move cursor to first item
     call setpos(".", [0, 3, 0, 0])
-
-    " Hilight items we can select
-    highlight TmuxPanes ctermbg=green guibg=green
-    match TmuxPanes '^\([^ ]\+\)\:'
 
     " bufhidden=wipe deletes the buffer when it is hidden
     setlocal bufhidden=wipe buftype=nofile
@@ -74,9 +83,11 @@ function! s:SelectPane(tmux_packet)
     nnoremap <buffer> <silent> <ESC> :hide<CR>
 
     " Use enter key to pick tmux pane
-    nnoremap <buffer> <Enter> :call g:_SlimuxPickPaneFromBuf(g:SlimuxActiveConfigure)<CR>
+    nnoremap <buffer> <Enter> :call g:_SlimuxPickPaneFromBuf(g:SlimuxActiveConfigure, 0)<CR>
 
-    " Use h key to display pane index hints
+    nnoremap <buffer> <Space> :call g:_SlimuxPickPaneFromBuf(g:SlimuxActiveConfigure, 1)<CR>
+
+    " Use d key to display pane index hints
     nnoremap <buffer> <silent> d :call system("tmux display-panes")<CR>
 
 endfunction
