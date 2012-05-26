@@ -8,6 +8,9 @@ stty -ixon
 # tmux
 source $HOME/.vim/others/bash_completion_tmux.sh
 
+# Source rvm if installed
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" 
+
 # if [ -x $(which keychain) ] ; then
 #     keychain --nogui -q -Q id_rsa
 #         . ~/.keychain/`uname -n`-sh
@@ -23,6 +26,8 @@ fi
 if [ -d ~/bin ] ; then
     PATH=~/bin:"${PATH}"
 fi
+
+
 
 # Thanks to https://gist.github.com/634750
 
