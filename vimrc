@@ -248,6 +248,8 @@ set smartcase
 " Show jump list of all search matches in all buffers
 map <Leader>b :Bsgrep <c-r>/<cr>
 
+" Do Grep.vim on the search register
+map <Leader>g :execute ":Grep -ri " . substitute(@/, "^\\\\v", "", "")<CR>
 
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
@@ -403,8 +405,6 @@ map <Leader>n :LustyFilesystemExplorer<CR>
 map <Leader>m :LustyBufferExplorer <CR>
 " Opens filesystem explorer at the directory of the current file
 map <Leader>f :LustyFilesystemExplorerFromHere <CR>
-" Opens buffer grep
-map <Leader>g :LustyBufferGrep <CR>
 
 
 
