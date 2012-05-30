@@ -254,6 +254,9 @@ map <Leader>g :execute ":Grep -ri " . substitute(@/, "^\\\\v", "", "")<CR>
 " Close quickfix window when leaving. TODO: improve
 au WinLeave * cclose
 
+" Close buffer
+noremap <Leader>q :Bclose<CR>
+
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
 " want (when was the last time you wanted to only replace the first occurrence
