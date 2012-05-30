@@ -26,6 +26,7 @@ Can't live without it.
 
 ## Influences from
 
+  * https://github.com/skwp/dotfiles
   * http://stevelosh.com/blog/2010/09/coming-home-to-vim/
   * http://nvie.com/posts/how-i-boosted-my-vim/
   * http://net.tutsplus.com/articles/general/top-10-pitfalls-when-switching-to-vim
