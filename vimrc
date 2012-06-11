@@ -51,6 +51,9 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_mo
 " terminal does not support a scrolling region.
 set ttyfast
 
+" Fix Home and End
+" http://stackoverflow.com/questions/1523746/fix-home-and-end
+set term=xterm
 
 set t_Co=256
 colorscheme default
