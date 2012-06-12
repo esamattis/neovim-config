@@ -260,13 +260,15 @@ au WinLeave * cclose
 " Close buffer
 noremap <Leader>q :Bclose<CR>
 
+" Write buffer (save)
+noremap <Leader>w :w<CR>
+
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
 " want (when was the last time you wanted to only replace the first occurrence
 " of a word on a line?) and if you need the previous behavior you just tack on
 " the g again.
 set gdefault
-
 
 
 
