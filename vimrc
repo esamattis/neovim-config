@@ -222,6 +222,9 @@ noremap  <Leader><Space> 'p \| :noh<cr>
 " Same for visual mode selection too
 vmap <Space> mpy/<C-r>"<cr>
 
+" Find break points
+map <Leader>B obp<TAB><ESC>v^<Space>dd<Leader>b
+
 " Simple word refactoring shortcut. Hit <Leader>r<new word> on a word to
 " refactor it. Navigate to more matches with `n` and `N` and redo refactoring
 " by hitting the dot key.
@@ -269,6 +272,7 @@ noremap <Leader>w :w<CR>
 " of a word on a line?) and if you need the previous behavior you just tack on
 " the g again.
 set gdefault
+
 
 
 
