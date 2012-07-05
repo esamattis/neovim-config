@@ -24,6 +24,12 @@ Can't live without it.
 
   * https://github.com/sigurdga/gnome-terminal-colors-solarized
 
+## tmux
+
+For lucid
+  * https://launchpad.net/ubuntu/+source/tmux/1.1-1/+build/1373518/+files/tmux_1.1-1_i386.deb
+  * https://launchpad.net/ubuntu/+source/tmux/1.1-1/+build/1373516/+files/tmux_1.1-1_amd64.deb
+
 ## Influences from
 
   * https://github.com/skwp/dotfiles
