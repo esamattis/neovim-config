@@ -27,8 +27,11 @@ Can't live without it.
 ## tmux
 
 For lucid
-  * https://launchpad.net/ubuntu/+source/tmux/1.1-1/+build/1373518/+files/tmux_1.1-1_i386.deb
-  * https://launchpad.net/ubuntu/+source/tmux/1.1-1/+build/1373516/+files/tmux_1.1-1_amd64.deb
+
+    sudo apt-get install libevent-1.4-2
+    
+  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_i386.deb
+  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_amd64.deb
 
 ## Influences from
 
