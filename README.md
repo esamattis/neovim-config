@@ -24,6 +24,15 @@ Can't live without it.
 
   * https://github.com/sigurdga/gnome-terminal-colors-solarized
 
+## tmux
+
+For lucid
+
+    sudo apt-get install libevent-1.4-2
+    
+  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_i386.deb
+  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_amd64.deb
+
 ## Influences from
 
   * https://github.com/skwp/dotfiles
