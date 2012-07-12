@@ -2,7 +2,7 @@
 
 ## Install
 
-Debian and friends
+Dependecies
 
     sudo apt-get install vim-nox exuberant-ctags git-core build-essential ruby ruby1.8-dev
 
@@ -12,7 +12,7 @@ Some nice tools to have
 
 Checkers and linters for Syntastic
 
-    sudo npm install -g coffee-script jsonlint stylus less
+    sudo npm install -g jshint coffee-script jsonlint stylus less
     sudo gem install sass
     sudo apt-get install pyflakes
 
