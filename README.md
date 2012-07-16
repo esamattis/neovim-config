@@ -10,9 +10,9 @@ Some nice tools to have
 
     sudo apt-get install hexer bvi tmux screen irb keychain curl elinks htop iotop
 
-Checkers and linters for Syntastic
+Checkers and linters for Syntastic (and some other tools)
 
-    sudo npm install -g jshint coffee-script jsonlint stylus less
+    sudo npm install -g jshint coffee-script jsonlint stylus less server grunt
     sudo gem install sass
     sudo apt-get install pyflakes
 
