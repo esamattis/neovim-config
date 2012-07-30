@@ -6,7 +6,11 @@ all: update install
 	ln -fvs ~/.vim/gvimrc ~/.gvimrc
 	~/.vim/bin/buildcommandt
 	vim -c 'call pathogen#helptags()' -c 'qa!'
-	vim -version || exit 0 
+	vim -version || exit 0
+	@echo
+	@echo "Cool all done!"
+	@echo
+	@echo "Install tmux/git/bash with 'cd ~/.vim && make friends'"
 
 
 .PHONY update:

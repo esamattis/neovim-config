@@ -2,13 +2,20 @@
 
 ## Install
 
-Debian and friends
+Dependecies
 
     sudo apt-get install vim-nox exuberant-ctags git-core build-essential ruby ruby1.8-dev
 
 Some nice tools to have
 
-    sudo apt-get install hexer bvi tmux screen ipython irb keychain curl elinks htop iotop
+    sudo apt-get install hexer bvi tmux screen irb keychain curl elinks htop iotop
+
+Checkers and linters for Syntastic (and some other tools)
+
+    sudo npm install -g jshint coffee-script jsonlint stylus less serve grunt
+    sudo gem install sass
+    sudo apt-get install pyflakes
+
 
 Caps Lock to Esc
 
