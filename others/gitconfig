@@ -33,3 +33,4 @@
   ll = log --stat --abbrev-commit
   # Sorted tag list
   stag = for-each-ref --sort='*authordate' --format='%(refname:short)' refs/tags
+  rh = reset HEAD

@@ -383,6 +383,8 @@ noremap § @
 " Invoke last macro
 noremap - @@
 
+imap § {
+imap ½ }
 
 " Extend movement keys. Ö and ö will move to begining of the line and ä and Ä
 " to end.

@@ -12,6 +12,7 @@ if version < 600
 else
   runtime! syntax/html.vim
   unlet b:current_syntax
+  syntax clear Javascript
 endif
 
 if version < 600
@@ -38,7 +39,7 @@ syn match   hbsHandlebars      "{{\|}}"                                 containe
 syn match   hbsUnescape        "{{{\|}}}"                               containedin=hbsInside
 syn match   hbsOperators       "=\|\.\|/"                               containedin=hbsInside
 
-syn region  hbsSection         start="{{[#/]"lc=2 end=/}}/me=e-2      containedin=hbsInside
+syn region  hbsSection         start="{{[#/]"lc=2 end=/}}/me=e-2        containedin=hbsInside
 syn region  hbsPartial         start=/{{[<>]/lc=2 end=/}}/me=e-2        containedin=hbsInside
 syn region  hbsMarkerSet       start=/{{=/lc=2    end=/=}}/me=e-2       containedin=hbsInside
 

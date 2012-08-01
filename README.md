@@ -2,13 +2,20 @@
 
 ## Install
 
-Debian and friends
+Dependecies
 
     sudo apt-get install vim-nox exuberant-ctags git-core build-essential ruby ruby1.8-dev
 
 Some nice tools to have
 
-    sudo apt-get install hexer bvi tmux screen ipython irb keychain curl elinks htop iotop
+    sudo apt-get install hexer bvi tmux screen irb keychain curl elinks htop iotop
+
+Checkers and linters for Syntastic (and some other tools)
+
+    sudo npm install -g jshint coffee-script jsonlint stylus less serve grunt
+    sudo gem install sass
+    sudo apt-get install pyflakes
+
 
 Caps Lock to Esc
 
@@ -23,6 +30,15 @@ Can't live without it.
 ## Solarized for gnome-terminal
 
   * https://github.com/sigurdga/gnome-terminal-colors-solarized
+
+## tmux
+
+For lucid
+
+    sudo apt-get install libevent-1.4-2
+    
+  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_i386.deb
+  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_amd64.deb
 
 ## Influences from
 
