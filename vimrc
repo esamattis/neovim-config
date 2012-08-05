@@ -171,6 +171,8 @@ set scrolloff=3
 " Make Y behave like other capitals. Yank to end of line.
 map Y y$
 
+let g:yankring_history_dir = "$HOME/.vim"
+
 
 " Reselect visual block after indent/outdent
 vnoremap < <gv
