@@ -9,7 +9,8 @@ all: update install
 	vim -version || exit 0
 	@echo
 	@echo "Cool all done!"
-	@echo "Install tmux/git/bash with 'make friends'"
+	@echo
+	@echo "Install tmux/git/bash with 'cd ~/.vim && make friends'"
 
 
 .PHONY update:
