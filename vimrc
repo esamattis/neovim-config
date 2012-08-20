@@ -66,7 +66,10 @@ filetype plugin on
 
 " Use smart indenting
 set smarttab expandtab autoindent
+
+" Pick file type based indenting
 filetype indent on
+
 
 " By default use 4 spaces as indentation
 set tabstop=4 shiftwidth=4 softtabstop=4
@@ -466,7 +469,7 @@ map <Leader>j ]%
 """"""""""""""
 
 " Indent after if else etc
-autocmd BufRead,BufNewFile *.coffee set smartindent cinwords=if,else,for,while,try,loop,class,it
+autocmd BufRead,BufNewFile *.coffee set cinwords=if,else,for,while,try,loop,class,it
 
 au FileType coffee setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
@@ -490,7 +493,7 @@ command -nargs=1 C CoffeeCompile | :<args>
 
 " Ruby
 """"""
-autocmd BufRead,BufNewFile *.rb set smartindent cinwords=if,else,for,while,begin,class,do
+autocmd BufRead,BufNewFile *.rb set cinwords=if,else,for,while,begin,class,do
 
 " Ruby uses 2 spaces as indentation
 au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
@@ -499,7 +502,7 @@ au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
 
 " Python
 """"""""
-autocmd BufRead,BufNewFile *.py set smartindent cinwords=if,elif,else,for,while,try,except,finally,def,class
+autocmd BufRead,BufNewFile *.py set cinwords=if,elif,else,for,while,try,except,finally,def,class
 autocmd BufWritePre *.py normal m`:%s/\s\+$//e ``
 
 
