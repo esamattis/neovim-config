@@ -1,3 +1,15 @@
+do
+  something
+end
+
+def foo
+  a_hash = {:do => 'bar'}
+end
+
+def foo(job)
+  job.do!
+end
+
 proc do |(a, b)|
   puts a
   puts b
@@ -26,5 +38,10 @@ def foo
           'Specify the HOST and the PORT of the coordinator') do |str|
     h = sub_opts_to_hash(str)
     puts h
+  end
+end
+
+module X
+  Class.new do
   end
 end
