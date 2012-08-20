@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2010 Stephen Bach
+# Copyright (C) 2008 Stephen Bach
 #
 # Permission is hereby granted to use and distribute this code, with or without
 # modifications, provided that this copyright notice is copied with it. Like
@@ -62,12 +62,13 @@ class BufferStack
     end
 
     def push
-      @stack.delete $curbuf.number
-      @stack << $curbuf.number
+      buf_number = VIM::evaluate('expand("<abuf>")').to_i
+      @stack.delete buf_number
+      @stack << buf_number
     end
 
     def pop
-      number = VIM::evaluate('bufnr(expand("<afile>"))')
+      number = VIM::evaluate('bufnr(expand("<abuf>"))')
       @stack.delete number
     end
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2008-2010 Stephen Bach
+# Copyright (C) 2008 Stephen Bach
 #
 # Permission is hereby granted to use and distribute this code, with or without
 # modifications, provided that this copyright notice is copied with it. Like
@@ -9,33 +9,64 @@
 
 module LustyM
 class LustyJuggler
-  private
-    @@KEYS = { "a" => 1,
-               "s" => 2,
-               "d" => 3,
-               "f" => 4,
-               "g" => 5,
-               "h" => 6,
-               "j" => 7,
-               "k" => 8,
-               "l" => 9,
-               ";" => 10,
-               "1" => 1,
-               "2" => 2,
-               "3" => 3,
-               "4" => 4,
-               "5" => 5,
-               "6" => 6,
-               "7" => 7,
-               "8" => 8,
-               "9" => 9,
-               "0" => 10 }
-
   public
     def initialize
       @running = false
       @last_pressed = nil
-      @name_bar = NameBar.new
+      alpha_buffer_keys = [
+        "a",
+        "s",
+        "d",
+        "f",
+        "g",
+        "h",
+        "j",
+        "k",
+        "l",
+        ";",
+      ]
+      @name_bar = NameBar.new(alpha_buffer_keys)
+      @ALPHA_BUFFER_KEYS = Hash.new
+      alpha_buffer_keys.each_with_index {|x, i| @ALPHA_BUFFER_KEYS[x] = i + 1}
+      @NUMERIC_BUFFER_KEYS = {
+        "1" => 1,
+        "2" => 2,
+        "3" => 3,
+        "4" => 4,
+        "5" => 5,
+        "6" => 6,
+        "7" => 7,
+        "8" => 8,
+        "9" => 9,
+        "0" => 10,
+        "10" => 10
+      }
+      @BUFFER_KEYS = @ALPHA_BUFFER_KEYS.merge(@NUMERIC_BUFFER_KEYS)
+      @KEYPRESS_KEYS = {
+        # Can't use '<CR>' as an argument to :call func for some reason.
+        "<CR>" => "ENTER",
+        "<Tab>" => "TAB",
+
+        # Split opener keys
+        "v" => "v",
+        "b" => "b",
+
+        # Left and Right keys
+        "<Esc>OD" => "Left",
+        "<Esc>OC" => "Right",
+        "<Left>" => "Left",
+        "<Right>" => "Right",
+      }
+      @KEYPRESS_MAPPINGS = @BUFFER_KEYS.merge(@KEYPRESS_KEYS)
+      @CANCEL_MAPPINGS = [
+        "i",
+        "q",
+        "<Esc>",
+        "<C-c>",
+        "<BS>",
+        "<Del>",
+        "<C-h>",
+      ]
     end
 
     def run
@@ -55,10 +86,10 @@ class LustyJuggler
       @running = true
 
       # Need to zero the timeout length or pressing 'g' will hang.
+      @timeoutlen = VIM::evaluate("&timeoutlen")
       @ruler = VIM::evaluate_bool("&ruler")
       @showcmd = VIM::evaluate_bool("&showcmd")
       @showmode = VIM::evaluate_bool("&showmode")
-      @timeoutlen = VIM::evaluate("&timeoutlen")
       VIM::set_option 'timeoutlen=0'
       VIM::set_option 'noruler'
       VIM::set_option 'noshowcmd'
@@ -67,31 +98,14 @@ class LustyJuggler
       @key_mappings_map = Hash.new { |hash, k| hash[k] = [] }
 
       # Selection keys.
-      @@KEYS.keys.each do |c|
-        map_key(c, ":call <SID>LustyJugglerKeyPressed('#{c}')<CR>")
+      @KEYPRESS_MAPPINGS.each_pair do |c, v|
+        map_key(c, ":call <SID>LustyJugglerKeyPressed('#{v}')<CR>")
       end
-      # Can't use '<CR>' as an argument to :call func for some reason.
-      map_key("<CR>", ":call <SID>LustyJugglerKeyPressed('ENTER')<CR>")
-      map_key("<Tab>", ":call <SID>LustyJugglerKeyPressed('TAB')<CR>")
-
-      # Split opener keys
-      map_key("v", ":call <SID>LustyJugglerKeyPressed('v')<CR>")
-      map_key("b", ":call <SID>LustyJugglerKeyPressed('b')<CR>")
-
-      # Left and Right keys
-      map_key("<Esc>OD", ":call <SID>LustyJugglerKeyPressed('Left')<CR>")
-      map_key("<Esc>OC", ":call <SID>LustyJugglerKeyPressed('Right')<CR>")
-      map_key("<Left>",  ":call <SID>LustyJugglerKeyPressed('Left')<CR>")
-      map_key("<Right>", ":call <SID>LustyJugglerKeyPressed('Right')<CR>")
 
       # Cancel keys.
-      map_key("i", ":call <SID>LustyJugglerCancel()<CR>")
-      map_key("q", ":call <SID>LustyJugglerCancel()<CR>")
-      map_key("<Esc>", ":call <SID>LustyJugglerCancel()<CR>")
-      map_key("<C-c>", ":call <SID>LustyJugglerCancel()<CR>")
-      map_key("<BS>", ":call <SID>LustyJugglerCancel()<CR>")
-      map_key("<Del>", ":call <SID>LustyJugglerCancel()<CR>")
-      map_key("<C-h>", ":call <SID>LustyJugglerCancel()<CR>")
+      @CANCEL_MAPPINGS.each do |c|
+        map_key(c, ":call <SID>LustyJugglerCancel()<CR>")
+      end
 
       @last_pressed = 2 if LustyJuggler::alt_tab_mode_active?
       print_buffer_list(@last_pressed)
@@ -102,7 +116,7 @@ class LustyJuggler
 
       if @last_pressed.nil? and c == 'ENTER'
         cleanup()
-      elsif @last_pressed and (@@KEYS[c] == @last_pressed or c == 'ENTER')
+      elsif @last_pressed and (@BUFFER_KEYS[c] == @last_pressed or c == 'ENTER')
         choose(@last_pressed)
         cleanup()
       elsif @last_pressed and %w(v b).include?(c)
@@ -117,7 +131,7 @@ class LustyJuggler
         @last_pressed = (@last_pressed + 1) > $lj_buffer_stack.length ? 1 : (@last_pressed + 1)
         print_buffer_list(@last_pressed)
       else
-        @last_pressed = @@KEYS[c]
+        @last_pressed = @BUFFER_KEYS[c]
         print_buffer_list(@last_pressed)
       end
     end
@@ -131,26 +145,12 @@ class LustyJuggler
       VIM::set_option "showcmd" if @showcmd
       VIM::set_option "showmode" if @showmode
 
-      @@KEYS.keys.each do |c|
+      @KEYPRESS_MAPPINGS.keys.each do |c|
         unmap_key(c)
       end
-      unmap_key("<CR>")
-      unmap_key("<Tab>")
-
-      unmap_key("v")
-      unmap_key("b")
-
-      unmap_key("i")
-      unmap_key("q")
-      unmap_key("<Esc>")
-      unmap_key("<C-c>")
-      unmap_key("<BS>")
-      unmap_key("<Del>")
-      unmap_key("<C-h>")
-      unmap_key("<Esc>OC")
-      unmap_key("<Esc>OD")
-      unmap_key("<Left>")
-      unmap_key("<Right>")
+      @CANCEL_MAPPINGS.each do |c|
+        unmap_key(c)
+      end
 
       @running = false
       VIM::message ''
@@ -231,5 +231,109 @@ class LustyJuggler
       end
     end
 end
+
+class LustyJugglerDvorak < LustyJuggler
+  public
+    def initialize
+      super
+      alpha_buffer_keys = [
+        "a",
+        "o",
+        "e",
+        "u",
+        "i",
+        "d",
+        "h",
+        "t",
+        "n",
+        "s",
+      ]
+      @name_bar = NameBar.new(alpha_buffer_keys)
+      @ALPHA_BUFFER_KEYS = Hash.new
+      alpha_buffer_keys.each_with_index {|x, i| @ALPHA_BUFFER_KEYS[x] = i + 1}
+      @BUFFER_KEYS = @ALPHA_BUFFER_KEYS.merge(@NUMERIC_BUFFER_KEYS)
+      @KEYPRESS_MAPPINGS = @BUFFER_KEYS.merge(@KEYPRESS_KEYS)
+      @CANCEL_MAPPINGS.delete("i")
+      @CANCEL_MAPPINGS.push("c")
+    end
 end
 
+class LustyJugglerColemak < LustyJuggler
+  public
+    def initialize
+      super
+      alpha_buffer_keys = [
+        "a",
+        "r",
+        "s",
+        "t",
+        "d",
+        "h",
+        "n",
+        "e",
+        "i",
+        "o",
+      ]
+      @name_bar = NameBar.new(alpha_buffer_keys)
+      @ALPHA_BUFFER_KEYS = Hash.new
+      alpha_buffer_keys.each_with_index {|x, i| @ALPHA_BUFFER_KEYS[x] = i + 1}
+      @BUFFER_KEYS = @ALPHA_BUFFER_KEYS.merge(@NUMERIC_BUFFER_KEYS)
+      @KEYPRESS_MAPPINGS = @BUFFER_KEYS.merge(@KEYPRESS_KEYS)
+      @CANCEL_MAPPINGS.delete("i")
+      @CANCEL_MAPPINGS.push("c")
+    end
+end
+
+class LustyJugglerBepo < LustyJuggler
+  public
+    def initialize
+      super
+      alpha_buffer_keys = [
+        "a",
+        "u",
+        "i",
+        "e",
+        ",",
+        "t",
+        "s",
+        "r",
+        "n",
+        "m",
+      ]
+      @name_bar = NameBar.new(alpha_buffer_keys)
+      @ALPHA_BUFFER_KEYS = Hash.new
+      alpha_buffer_keys.each_with_index {|x, i| @ALPHA_BUFFER_KEYS[x] = i + 1}
+      @BUFFER_KEYS = @ALPHA_BUFFER_KEYS.merge(@NUMERIC_BUFFER_KEYS)
+      @KEYPRESS_MAPPINGS = @BUFFER_KEYS.merge(@KEYPRESS_KEYS)
+      @CANCEL_MAPPINGS.delete("i")
+      @CANCEL_MAPPINGS.push("c")
+    end
+end
+
+class LustyJugglerAzerty < LustyJuggler
+  public
+    def initialize
+      super
+      alpha_buffer_keys = [
+        "q",
+        "s",
+        "d",
+        "f",
+        "g",
+        "j",
+        "k",
+        "l",
+        "m",
+        "ù",
+      ]
+      @name_bar = NameBar.new(alpha_buffer_keys)
+      @ALPHA_BUFFER_KEYS = Hash.new
+      alpha_buffer_keys.each_with_index {|x, i| @ALPHA_BUFFER_KEYS[x] = i + 1}
+      @BUFFER_KEYS = @ALPHA_BUFFER_KEYS.merge(@NUMERIC_BUFFER_KEYS)
+      @KEYPRESS_MAPPINGS = @BUFFER_KEYS.merge(@KEYPRESS_KEYS)
+      @CANCEL_MAPPINGS.delete("q")
+      @CANCEL_MAPPINGS.push("c")
+      @CANCEL_MAPPINGS.push("a")
+    end
+end
+end
