@@ -1,14 +1,12 @@
 " unimpaired.vim - Pairs of handy bracket mappings
-" Maintainer:   Tim Pope <vimNOSPAM@tpope.org>
+" Maintainer:   Tim Pope <http://tpo.pe/>
 " Version:      1.1
+" GetLatestVimScripts: 1590 1 :AutoInstall: unimpaired.vim
 
 if exists("g:loaded_unimpaired") || &cp || v:version < 700
   finish
 endif
 let g:loaded_unimpaired = 1
-
-let s:cpo_save = &cpo
-set cpo&vim
 
 " Next and previous {{{1
 
@@ -29,6 +27,7 @@ call s:MapNextFamily('a','')
 call s:MapNextFamily('b','b')
 call s:MapNextFamily('l','l')
 call s:MapNextFamily('q','c')
+call s:MapNextFamily('t','t')
 
 function! s:entries(path)
   let path = substitute(a:path,'[\\/]$','','')
@@ -76,18 +75,84 @@ nmap ]o <Plug>unimpairedONext
 nmap [o <Plug>unimpairedOPrevious
 
 " }}}1
+" Diff {{{1
+
+nmap [n <Plug>unimpairedContextPrevious
+nmap ]n <Plug>unimpairedContextNext
+omap [n <Plug>unimpairedContextPrevious
+omap ]n <Plug>unimpairedContextNext
+
+nnoremap <silent> <Plug>unimpairedContextPrevious :call <SID>Context(1)<CR>
+nnoremap <silent> <Plug>unimpairedContextNext     :call <SID>Context(0)<CR>
+onoremap <silent> <Plug>unimpairedContextPrevious :call <SID>ContextMotion(1)<CR>
+onoremap <silent> <Plug>unimpairedContextNext     :call <SID>ContextMotion(0)<CR>
+
+function! s:Context(reverse)
+  call search('^@@ .* @@\|^[<=>|]\{7}[<=>|]\@!', a:reverse ? 'bW' : 'W')
+endfunction
+
+function! s:ContextMotion(reverse)
+  if a:reverse
+    -
+  endif
+  call search('^@@ .* @@\|^diff \|^[<=>|]\{7}[<=>|]\@!', 'bWc')
+  if getline('.') =~# '^diff '
+    let end = search('^diff ', 'Wn') - 1
+    if end < 0
+      let end = line('$')
+    endif
+  elseif getline('.') =~# '^@@ '
+    let end = search('^@@ .* @@\|^diff ', 'Wn') - 1
+    if end < 0
+      let end = line('$')
+    endif
+  elseif getline('.') =~# '^=\{7\}'
+    +
+    let end = search('^>\{7}>\@!', 'Wnc')
+  elseif getline('.') =~# '^[<=>|]\{7\}'
+    let end = search('^[<=>|]\{7}[<=>|]\@!', 'Wn') - 1
+  else
+    return
+  endif
+  if end > line('.')
+    execute 'normal! V'.(end - line('.')).'j'
+  elseif end == line('.')
+    normal! V
+  endif
+endfunction
+
+" }}}1
 " Line operations {{{1
 
-nnoremap <silent> <Plug>unimpairedBlankUp   :<C-U>put!=repeat(nr2char(10),v:count)<Bar>']+1<CR>
-nnoremap <silent> <Plug>unimpairedBlankDown :<C-U>put =repeat(nr2char(10),v:count)<Bar>'[-1<CR>
+function! s:BlankUp(count) abort
+  put!=repeat(nr2char(10), a:count)
+  ']+1
+  silent! call repeat#set("\<Plug>unimpairedBlankUp", a:count)
+endfunction
+
+function! s:BlankDown(count) abort
+  put =repeat(nr2char(10), a:count)
+  '[-1
+  silent! call repeat#set("\<Plug>unimpairedBlankDown", a:count)
+endfunction
+
+nnoremap <silent> <Plug>unimpairedBlankUp   :<C-U>call <SID>BlankUp(v:count1)<CR>
+nnoremap <silent> <Plug>unimpairedBlankDown :<C-U>call <SID>BlankDown(v:count1)<CR>
 
 nmap [<Space> <Plug>unimpairedBlankUp
 nmap ]<Space> <Plug>unimpairedBlankDown
 
-nnoremap <silent> <Plug>unimpairedMoveUp   :<C-U>exe 'norm m`'<Bar>exe 'move--'.v:count1<CR>``
-nnoremap <silent> <Plug>unimpairedMoveDown :<C-U>exe 'norm m`'<Bar>exe 'move+'.v:count1<CR>``
-xnoremap <silent> <Plug>unimpairedMoveUp   :<C-U>exe 'norm m`'<Bar>exe '''<,''>move--'.v:count1<CR>``
-xnoremap <silent> <Plug>unimpairedMoveDown :<C-U>exe 'norm m`'<Bar>exe '''<,''>move''>+'.v:count1<CR>``
+function! s:Move(cmd, count, map) abort
+  normal! m`
+  exe 'move'.a:cmd.a:count
+  norm! ``
+  silent! call repeat#set("\<Plug>unimpairedMove".a:map, a:count)
+endfunction
+
+nnoremap <silent> <Plug>unimpairedMoveUp   :<C-U>call <SID>Move('--',v:count1,'Up')<CR>
+nnoremap <silent> <Plug>unimpairedMoveDown :<C-U>call <SID>Move('+',v:count1,'Down')<CR>
+xnoremap <silent> <Plug>unimpairedMoveUp   :<C-U>exe 'normal! m`'<Bar>exe '''<,''>move--'.v:count1<CR>``
+xnoremap <silent> <Plug>unimpairedMoveDown :<C-U>exe 'normal! m`'<Bar>exe '''<,''>move''>+'.v:count1<CR>``
 
 nmap [e <Plug>unimpairedMoveUp
 nmap ]e <Plug>unimpairedMoveDown
@@ -103,13 +168,13 @@ function! s:StringEncode(str)
 endfunction
 
 function! s:StringDecode(str)
-  let map = {'n': "\n", 'r': "\r", 't': "\t", 'b': "\b", 'f': "\f", 'e': "\e", 'a': "\001", 'v': "\013", '"': '"', '\': '\', "'": "'"}
+  let map = {'n': "\n", 'r': "\r", 't': "\t", 'b': "\b", 'f': "\f", 'e': "\e", 'a': "\001", 'v': "\013"}
   let str = a:str
   if str =~ '^\s*".\{-\}\\\@<!\%(\\\\\)*"\s*\n\=$'
     let str = substitute(substitute(str,'^\s*\zs"','',''),'"\ze\s*\n\=$','','')
   endif
   let str = substitute(str,'\\n\%(\n$\)\=','\n','g')
-  return substitute(str,'\\\(\o\{1,3\}\|x\x\{1,2\}\|u\x\{1,4\}\|.\)','\=get(map,submatch(1),nr2char("0".substitute(submatch(1),"^[Uu]","x","")))','g')
+  return substitute(str,'\\\(\o\{1,3\}\|x\x\{1,2\}\|u\x\{1,4\}\|.\)','\=get(map,submatch(1),submatch(1) =~? "^[0-9xu]" ? nr2char("0".substitute(submatch(1),"^[Uu]","x","")) : submatch(1))','g')
 endfunction
 
 function! s:UrlEncode(str)
@@ -119,6 +184,65 @@ endfunction
 function! s:UrlDecode(str)
   let str = substitute(substitute(substitute(a:str,'%0[Aa]\n$','%0A',''),'%0[Aa]','\n','g'),'+',' ','g')
   return substitute(str,'%\(\x\x\)','\=nr2char("0x".submatch(1))','g')
+endfunction
+
+let g:unimpaired_base64_chars = map(range(char2nr('A'),char2nr('Z')),'nr2char(v:val)')
+                            \ + map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
+                            \ + map(range(char2nr('0'),char2nr('9')),'nr2char(v:val)')
+                            \ + ['+','/']
+
+let g:unimpaired_base64_filler = '='
+let g:unimpaired_base64_reverse_map = {}
+let s:pos = 0
+for s:char in g:unimpaired_base64_chars
+    let g:unimpaired_base64_reverse_map[s:char] = s:pos
+    let s:pos = s:pos + 1
+endfor
+unlet s:pos
+
+function! s:Base64Encode(str)
+  " Respect current file encoding
+  let to_be_encoded=a:str
+  let encoded = ''
+  while len(to_be_encoded) > 2
+    let encoded .= g:unimpaired_base64_chars[char2nr(to_be_encoded[0])/4]
+              \ .  g:unimpaired_base64_chars[16*(char2nr(to_be_encoded[0])%4 )+char2nr(to_be_encoded[1])/16]
+              \ .  g:unimpaired_base64_chars[4 *(char2nr(to_be_encoded[1])%16)+char2nr(to_be_encoded[2])/64]
+              \ .  g:unimpaired_base64_chars[char2nr(to_be_encoded[2])%64]
+    let to_be_encoded = to_be_encoded[3:]
+  endwhile
+  if len(to_be_encoded) == 2
+    let encoded .= g:unimpaired_base64_chars[char2nr(to_be_encoded[0])/4]
+              \ .  g:unimpaired_base64_chars[16*(char2nr(to_be_encoded[0])%4 )+char2nr(to_be_encoded[1])/16]
+              \ .  g:unimpaired_base64_chars[4 *(char2nr(to_be_encoded[1])%16)]
+              \ .  g:unimpaired_base64_filler
+  elseif len(to_be_encoded) == 1
+    let encoded .= g:unimpaired_base64_chars[char2nr(to_be_encoded[0])/4]
+              \ .  g:unimpaired_base64_chars[16*(char2nr(to_be_encoded[0])%4 )]
+              \ .  g:unimpaired_base64_filler
+              \ .  g:unimpaired_base64_filler
+  endif
+  return encoded
+endfunction
+
+function! s:Base64Decode(str)
+    let to_be_decoded=a:str
+    let decoded=''
+    while len(to_be_decoded) % 4 == 0
+        let decoded .= nr2char(   4 * (g:unimpaired_base64_reverse_map[to_be_decoded[0]]      )
+                             \  +     (g:unimpaired_base64_reverse_map[to_be_decoded[1]] / 16 )
+                             \)
+        if to_be_decoded[2] !=# g:unimpaired_base64_filler
+            let decoded .= nr2char(16 * (g:unimpaired_base64_reverse_map[to_be_decoded[1]] % 16) + (g:unimpaired_base64_reverse_map[to_be_decoded[2]]/4))
+            if to_be_decoded[3] !=# g:unimpaired_base64_filler
+                let decoded .= nr2char(64 * (g:unimpaired_base64_reverse_map[to_be_decoded[2]] % 4) + g:unimpaired_base64_reverse_map[to_be_decoded[3]])
+            endif
+        endif
+        let to_be_decoded = to_be_decoded[4:]
+        if empty(to_be_decoded)
+            return decoded
+        endif
+    endwhile
 endfunction
 
 " HTML entities {{{2
@@ -266,9 +390,9 @@ call s:MapTransform('UrlEncode','[u')
 call s:MapTransform('UrlDecode',']u')
 call s:MapTransform('XmlEncode','[x')
 call s:MapTransform('XmlDecode',']x')
+call s:MapTransform('Base64Encode','[Y')
+call s:MapTransform('Base64Decode',']Y')
 
 " }}}1
 
-let &cpo = s:cpo_save
-
-" vim:set ft=vim ts=8 sw=2 sts=2:
+" vim:set sw=2 sts=2:
