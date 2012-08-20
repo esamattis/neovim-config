@@ -66,6 +66,7 @@ filetype plugin on
 
 " Use smart indenting
 set smarttab expandtab autoindent
+filetype indent on
 
 " By default use 4 spaces as indentation
 set tabstop=4 shiftwidth=4 softtabstop=4
