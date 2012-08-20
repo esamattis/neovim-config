@@ -6,7 +6,7 @@ Last Change: December 27, 2009
 |snipMate-installation|  Installation
 |snipMate-description|   Description
 |snipMate-related-work|  Related work
-|snipMate-usage|         Usage
+|snipMate-usage|         Usage (GETTING STARTED QUICKLY)
 |snipMate-snippet-sources|       snippet sources
 |snipMate-syntax|        Snippet syntax
 |snipMate-settings|      Settings
@@ -74,19 +74,34 @@ Adding snippets: >
 
   You can retab your snippet text by visually selecting it and pressing <cr>.
 
-Using snippets:
->
-  g:snipMate.scope_aliases
-< defines which snippets typse are available when you edit a buffer.
-  You can override the default in autoload/snipMate.vim in your .vimrc.
+Using snippets: ~
 
   <c-r><tab>: shows a list of available snippets
   XX<tab>   : will either show a list of all snippets starting with the
               characters XX or expand the snippet if it matches a snippet name.
 
-  Add this to your .vimrc to not ignore tabs if there is no match: >
-    let g:snipMate['no_match_completion_feedkeys_chars'] = "\<tab>"
->
+associating snippets and filetypes: ~
+
+1) >
+  g:snipMate.scope_aliases
+< defines which snippets types are available when you edit a buffer.
+  You can override the default in autoload/snipMate.vim in your .vimrc. For
+  example, to add both ruby.snippets and ruby-rails.snippets for files of
+  filetype='ruby', add the following to your vimrc: >
+    let g:snipMate = {}
+    let g:snipMate.scope_aliases = {} 
+    let g:snipMate.scope_aliases['ruby'] = 'ruby,ruby-rails'
+
+< SnipMate scopes are akin to filetypes.  Setting a scope alias as shown above
+  allows multiple snippets files to be used for one filetype without actually
+  changing the filetype.
+
+2)
+  set filetype to a list such as 'html.javascript' or such.
+
+  Add this to your .vimrc to not add tabs if there is no match: >
+    let g:snipMate['no_match_completion_feedkeys_chars'] = ""
+<
 
  *snipMate-disambiguation*
 What happens if multiple files or filetypes define the same snippet name or if
@@ -184,13 +199,22 @@ Note that dotted
 	:set ft=html.eruby syntax=sql
 
 to activate snippets for both HTML, eRuby and sql for the current file.
-See g:snipMate['get_scopes'] in plugin/snipMate.vim.
+See g:snipMate['get_scopes'] in plugin/snipMate.vim. However, this is not
+recommended, as it can have unwanted side effects (appears to break some forms
+of syntax highlighting).  Instead, set g:snipMate.scope_aliases. 
+See|snipMate-usage|.
 
 The syntax for snippets in *.snippets files is the following: >
 
  snippet trigger
+ guard left_from_cursor='^\s*'
  	expanded text
 	more expanded text
+
+Note: the guard condition line is optional. It can be used to make a snippet available
+only in some cases. the value should be a viml expression.
+(This implementation may change). Only supported in *.snippets files by now.
+
 Multiple snippets having the same name but different triggers exist?
 
 
