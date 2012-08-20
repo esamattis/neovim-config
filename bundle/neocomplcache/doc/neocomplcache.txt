@@ -1,6 +1,6 @@
 *neocomplcache.txt*	Ultimate auto completion system for Vim
 
-Version: 7.0
+Version: 7.1
 Author : Shougo <Shougo.Matsu@gmail.com>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
@@ -34,6 +34,7 @@ Examples		|neocomplcache-examples|
 Sources			|neocomplcache-sources|
   User sources		  |neocomplcache-user-sources|
 Create source		|neocomplcache-create-source|
+FAQ			|neocomplcache-faq|
 Changelog		|neocomplcache-changelog|
 
 ==============================================================================
@@ -131,9 +132,8 @@ COMMANDS 					*neocomplcache-commands*
 		Caching [filetype] dictionary file.
 		Select current buffer filetype when [filetype] omitted.
 
-:NeoComplCacheCachingTags [bufname]		*:NeoComplCacheCachingTags*
-		Caching [bufname] tags file.
-		Select current buffer filetype when [bufname] omitted.
+:NeoComplCacheCachingTags		*:NeoComplCacheCachingTags*
+		Caching tags file in current buffer.
 
 :NeoComplCacheCachingInclude [bufname]		*:NeoComplCacheCachingInclude*
 		Caching [bufname] include file.
@@ -169,7 +169,9 @@ VARIABLES 					*neocomplcache-variables*
 
 g:neocomplcache_enable_at_startup		*g:neocomplcache_enable_at_startup*
 		This variable controls whether I validate neocomplcache at
-		the time of Vim start.  This option should set it in .vimrc.
+		the time of Vim start.
+		Note: This option must set it in .vimrc(_vimrc). NOT IN
+		.gvimrc(_gvimrc)!
 		
 		Because default value is 0, you cannot use neocomplcache
 		unless you validate it by manual operation.
@@ -366,6 +368,12 @@ g:neocomplcache_enable_prefetch			*g:neocomplcache_enable_prefetch*
 		Partial function (ex: |complete_check()|) is disabled in
 		completefunc.
 		
+		Default value is 0(less than 7.3.519).
+
+g:neocomplcache_lock_iminsert			*g:neocomplcache_lock_iminsert*
+		This variable is non 0, neocomplcache lock when 'iminsert' is
+		non zero.
+		
 		Default value is 0.
 
 g:neocomplcache_temporary_dir			*g:neocomplcache_temporary_dir*
@@ -415,8 +423,8 @@ g:neocomplcache_omni_patterns			*g:neocomplcache_omni_patterns*
 		endif
 		let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 		let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-		let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
-		let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
+		let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+		let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 <
 g:neocomplcache_tags_filter_patterns		*g:neocomplcache_tags_filter_patterns*
 		This dictionary records  a pattern to filter a candidate in
@@ -425,6 +433,13 @@ g:neocomplcache_tags_filter_patterns		*g:neocomplcache_tags_filter_patterns*
 		
 		Because it is complicated, refer to neocomplcache#enable() in
 		autoload/neocomplcache.vim for the initial value.
+
+g:neocomplcache_tags_caching_limit_file_size	*g:neocomplcache_tags_caching_limit_file_size*
+		This variable set file size to make a cache of a file in
+		tags_complete source. If open file is bigger than this size,
+		neocomplcache do not make a tags cache.
+		
+		Default value is 500000.
 
 g:neocomplcache_same_filetype_lists		*g:neocomplcache_same_filetype_lists*
 		It is a dictionary to connect file type mutually.  It is
@@ -617,10 +632,12 @@ g:neocomplcache_delimiter_patterns		*g:neocomplcache_delimiter_patterns*
 		autoload/neocomplcache.vim for the initial value.
 
 g:neocomplcache_omni_functions			*g:neocomplcache_omni_functions*
-		This dictionary which appoints |omni_complete| call
-		function.  The key is |&filetype|. If
-		g:neocomplcache_omni_function_list[|&filetype|] is
-		undefined, |omni_complete| calls |omnifunc|.
+		This dictionary which appoints |omni_complete| call functions.
+		The key is |&filetype|. The value is omnifunc String or List of
+		omnifunc String. If
+		g:neocomplcache_omni_function_list[|&filetype|] is undefined,
+		|omni_complete| calls |omnifunc|.
+		If the key is "_", used for all filetypes.
 		
 		Default value is {}.
 
@@ -656,8 +673,29 @@ g:neocomplcache_source_completion_length	*g:neocomplcache_source_completion_leng
 g:neocomplcache_source_rank			*g:neocomplcache_source_rank*
 		It is a dictionary to control each source's completion
 		priority.
+		The key is source name and the value is source priority number.
 		Note: g:neocomplcache_plugin_rank is deprecated name.
 		
+		The default rank of each sources:
+		filename_complete : 3
+		dictionary_complete : 4
+		buffer_complete : 5
+		syntax_complete : 7
+		include_complete : 8
+		snippets_complete : 8
+		vim_complete : 300
+		omni_complete : 300
+		other plugin sources : 5
+		other completefunc sources : 10
+		other ftplugin sources : 100
+		
+		Ex:
+>
+		let g:neocomplcache_source_rank = {
+			\ 'snippets_complete' : 100,
+			\ 'abbrev_complete' : 50,
+			\ }
+<
 		Default value is set by each sources.
 
 g:neocomplcache_force_overwrite_completefunc	*g:neocomplcache_force_overwrite_completefunc*
@@ -672,6 +710,30 @@ g:neocomplcache_release_cache_time		*g:neocomplcache_release_cache_time*
 		This variable defines time of automatic released cache by a second unit.
 		
 		Default value is 900.
+
+g:neocomplcache_use_vimproc			*g:neocomplcache_use_vimproc*
+		This variable is non 0, neocomplcache use |vimproc|.
+		Note: If this variable is non 0, neocomplcache will make cache
+		asynchronously.
+		
+		Default value is vimproc auto detection result.
+
+g:neocomplcache_ignore_composite_filetype_lists	*g:neocomplcache_ignore_composite_filetype_lists*
+		It is a dictionary to ignore composite file type.
+		The dictionary's key is composite filetype and value is
+		filetype.
+		Ex:
+>
+		let g:neocomplcache_ignore_composite_filetype_lists = {
+			\ 'ruby.spec' : 'ruby'
+			\ }
+<
+		If you open filetype like |ruby.spec|, completion is
+		intended for |ruby| and |spec|.
+		But if you only want to complete |ruby| filetype,
+		you can set this variable to ignore |spec|.
+		
+		Default value is {}.
 
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*neocomplcache-key-mappings*
@@ -748,6 +810,7 @@ neocomplcache#complete_common_string()		*neocomplcache#complete_common_string()*
 ==============================================================================
 EXAMPLES					*neocomplcache-examples*
 >
+	"Note: This option must set it in .vimrc(_vimrc). NOT IN .gvimrc(_gvimrc)!
 	" Disable AutoComplPop.
 	let g:acp_enableAtStartup = 0
 	" Use neocomplcache.
@@ -781,7 +844,10 @@ EXAMPLES					*neocomplcache-examples*
 	
 	" Recommended key-mappings.
 	" <CR>: close popup and save indent.
-	inoremap <expr><CR>  neocomplcache#close_popup() . "\<CR>"
+	inoremap <expr><silent> <CR> <SID>my_cr_function()
+	function! s:my_cr_function()
+	  return pumvisible() ? neocomplcache#close_popup() . "\<CR>" : "\<CR>"
+	endfunction
 	" <TAB>: completion.
 	inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 	" <C-h>, <BS>: close popup and delete backword char.
@@ -824,8 +890,12 @@ EXAMPLES					*neocomplcache-examples*
 	let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 	"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 	let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-	let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
-	let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
+	let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+	let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+	
+	" For perlomni.vim setting.
+	" https://github.com/c9s/perlomni.vim
+	let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 <
 ==============================================================================
 SOURCES						*neocomplcache-sources*
@@ -846,13 +916,13 @@ member_complete.vim				*member_complete*
 		This source collects use of member variables from buffer.
 
 tags_complete.vim				*tags_complete*
-		This source analyzes a tag file defined in 'tags' for
-		completion.  When a huge tag file is set, neocomplcache
-		don't make cache if you don't execute
-		|:NeoComplCacheCachingTags|command.  Because
-		tags_complete is too slow if tags_complete read a big
-		tags file.  You should use more convenient include
-		completion now.
+		This source analyzes a tag file from tagfiles() for completion.
+		When a huge tag file (above
+		|g:neocomplcache_tags_caching_limit_file_size|) is set,
+		neocomplcache don't make cache if you don't execute
+		|:NeoComplCacheCachingTags|command.  Because tags_complete is
+		too slow if tags_complete read a big tags file.  You should use
+		more convenient include completion now.
 
 syntax_complete.vim				*syntax_complete*
 		This source analyzes a syntax file like
@@ -892,13 +962,6 @@ omni_complete.vim				*omni_complete*
 		text is matched with |g:neocomplcache_omni_patterns|. If
 		|g:neocomplcache_omni_function_list|is defined,
 		neocomplcache will give priority it.
-
-completefunc_complete.vim			*completefunc_complete*
-		This source collects candidates from any 'completefunc'.
-		But it is incomplete.
-		neocomplcache#sources#completefunc_complete#call_completefunc(funcname)
-		is only available. This function calls any 'completefunc'
-		manually.
 
 abbrev_complete.vim				*abbrev_complete*
 		This source collects candidates from abbrev.
@@ -945,10 +1008,254 @@ ability of neocomplcache will spread by creating source by yourself.
 Todo
 
 ==============================================================================
+FAQ						*neocomplcache-faq*
+
+Q: Is there a way to control the colors used for popup menu using highlight
+groups?:
+
+A: Like this:
+>
+	highlight Pmenu ctermbg=8
+	highlight PmenuSel ctermbg=1
+	highlight PmenuSbar ctermbg=0
+<
+
+Q: Python(or Ruby) interface crashes Vim using neocomplcache:
+
+A: This is not neocomplcache issue. Please report to omnicomplete(rubycomplete
+or pythoncomplete) and Vim interface maintainer.
+
+
+Q: I like to move cursor by cursor keys. But neocomplcache popups menus...
+
+A: Please set this in your .vimrc. But this feature requires Vim 7.3.418 or
+above.
+>
+	let g:neocomplcache_enable_insert_char_pre = 1
+<
+
+Q: Where is snippets for neocomplcache?
+
+A: https://github.com/Shougo/neocomplcache-snippets-complete
+
+Q: To disable python omni complete in neocomplcache?:
+
+A:
+>
+	let g:neocomplcache_omni_patterns['python'] = ''
+<
+Q: Can I enable quick match? :
+
+A: Quick match feature is removed in latest neocomplcache.
+Because quick match is hard to implement.
+But you can use |unite.vim| to quick match.
+>
+	imap <expr> -  pumvisible() ?
+	    \ "\<Plug>(neocomplcache_start_unite_quick_match)" : '-'
+<
+==============================================================================
 CHANGELOG					*neocomplcache-changelog*
+
+2012-08-18
+- Improved for iconv().
+
+2012-08-14
+- Fixed for vimshell.
+
+2012-08-11
+- Improved documentation.
+
+2012-08-07
+- Improved a bit.
+- Fixed omni patterns for c and cpp.
+
+2012-08-06
+- Improved remove next keyword.
+- Improved set context filetype.
+
+2012-08-03
+- Improved omni_complete.
+- Added _ omnifunc.
+- Deleted completefunc_complete source.
+- Updated vital.
+
+2012-08-02
+- Fixed for g:neocomplcache_enable_insert_char_pre.
+- Fixed omni_complete for compound filetype.
+- Fixed dictionary_complete caching timing.
+
+2012-08-01
+- Fixed filename_complete.
+
+2012-07-27
+- Added FAQ section.
+- Fixed skip filename patterns.
+
+2012-07-26
+- Fixed for g:neocomplcache_enable_insert_char_pre.
+- Improved omni_complete source.
+
+2012-07-24
+- Fixed complete done error.
+
+2012-07-23
+- Added FAQ.
+
+2012-07-22
+- Updated examples.
+
+2012-07-19
+- Added FAQ section(I tired...).
+
+2012-07-17
+- Improved python interface check.
+
+2012-07-15
+- Fixed omni_complete.
+- Fixed marker.
+
+2012-07-11
+- Check complete position.
+- Fixed omni_complete error.
+- Improved learning for Vim 7.3.598.
+
+2012-07-08
+- Improved omni_complete.
+
+2012-07-06
+- Improved buffer source.
+- Supported python3.
+
+2012-07-02
+- Improved word caching behavior.
+
+2012-06-28
+- Fixed neocomplcache#is_plugin_locked() error.
+
+2012-06-25
+- Ignore document tags in tags_complete.
+
+2012-06-23
+- Improved error message.
+- Improved filename escape.
+- Fixed cache behavior.
+
+2012-06-21
+- Improved check_cache_list().
+- Added g:neocomplcache_tags_caching_limit_file_size variable.
+
+2012-06-10
+- Improved same filetype for plaintex.
+
+2012-06-07
+- Fixed for tags_complete.
+
+2012-06-06
+- Fixed for fuzzyfinder.
+
+2012-06-05
+- Added g:neocomplcache_use_vimproc option.
+
+2012-06-01
+- Improved asynchronous cache behavior.
+
+2012-05-31
+- Improved MacOS check.
+- Fixed for css omni_complete.
+
+2012-05-30
+- Fixed for MacVim check.
+
+2012-05-28
+- Fixed for MacVim.
+
+2012-05-26
+- Fixed omni_complete for rubycomplete.
+- Fixed for eskk convertion check.
+- Improved check lock.
+- Improved for omni_complete.
+
+2012-05-24
+- Changed filename_complete default rank.
+- Improved auto complete behavior.
+
+2012-05-23
+- Improved sort behavior.
+- Fixed omni_complete sort.
+
+2012-05-22
+- Added word order function.
+
+2012-05-21
+- Fixed warning mappings.
+- Silent mapping.
+- Improved g:neocomplcache_source_rank documentaion.
+
+2012-05-20
+- Fixed g:neocomplcache_enable_prefetch initialization.
+- Added neocomplcache#complete_check().
+- Improved complete_check timing.
+
+2012-05-19
+- Fixed for eskk error.
+- Supported Vim 7.3.519 feature.
+- Improved error catch behavior.
+- Deleted fileencoding.
+- Supported wildcard import in include_complete.
+- Fixed filename_complete.
+
+2012-05-18
+- Fixed filename completion.
+
+2012-05-14
+- Deleted debug message.
+- Fixed error in Vim 7.2.
+
+2012-05-11
+- Improved buffer cache behavior.
+- Fixed include filename completion.
+
+2012-05-09
+- Refactored cache.vim.
+- Fixed tags_complete problem.
+- Improved asynchronous cache.
+- Improved cache timing.
+
+2012-05-08
+- Fixed cd problem.
+- Ver.7.1 development is started.
 
 ------------------------------------------------------------------------------
 ChangeLog neocomplcache 7.0:
+
+2012-05-04
+- Fixed command definition.
+- Ver.7.0.
+
+2012-05-03
+- Improved make cache behavior.
+
+2012-05-02
+- Updated examples.
+- Added g:neocomplcache_lock_iminsert option.
+
+2012-04-28
+- Updated vital.
+
+2012-04-24
+- Fixed make cache bug.
+
+2012-04-22
+- Improved member_complete behavior.
+- Improved buffer_complete behavior.
+- Improved omni_complete behavior.
+
+2012-04-20
+- Fixed feedkeys() problem.
+
+2012-04-10
+- Improved escape filename.
+- Improved sudo check.
 
 2012-04-05
 - Improved cache event.

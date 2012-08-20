@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 31 Mar 2012.
+" Last Modified: 21 May 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -22,7 +22,7 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-" Version: 7.0, for Vim 7.2
+" Version: 7.1, for Vim 7.2
 " GetLatestVimScripts: 2620 1 :AutoInstall: neocomplcache
 "=============================================================================
 
@@ -31,38 +31,47 @@ if exists('g:loaded_neocomplcache')
 elseif v:version < 702
   echoerr 'neocomplcache does not work this version of Vim (' . v:version . ').'
   finish
-elseif $SUDO_USER != ''
-  echoerr '"sudo vim" is detected. Please use sudo.vim or other plugins instead.'
+elseif $SUDO_USER != '' && $USER !=# $SUDO_USER
+      \ && $HOME !=# expand('~'.$USER)
+  echoerr '"sudo vim" and $HOME is not same to /root are detected.'
+        \.'Please use sudo.vim plugin instead of sudo command or set always_set_home in sudoers.'
   finish
 endif
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-command! -nargs=0 NeoComplCacheEnable call neocomplcache#enable()
-command! -nargs=0 NeoComplCacheDisable call neocomplcache#disable()
-command! -nargs=0 NeoComplCacheLock call neocomplcache#lock()
-command! -nargs=0 NeoComplCacheUnlock call neocomplcache#unlock()
-command! -nargs=0 NeoComplCacheToggle call neocomplcache#toggle_lock()
-command! -nargs=1 NeoComplCacheLockSource call neocomplcache#lock_source(<q-args>)
-command! -nargs=1 NeoComplCacheUnlockSource call neocomplcache#unlock_source(<q-args>)
+command! -nargs=0 -bar NeoComplCacheEnable
+      \ call neocomplcache#enable()
+command! -nargs=0 -bar NeoComplCacheDisable
+      \ call neocomplcache#disable()
+command! -nargs=0 -bar NeoComplCacheLock
+      \ call neocomplcache#lock()
+command! -nargs=0 -bar NeoComplCacheUnlock
+      \ call neocomplcache#unlock()
+command! -nargs=0 -bar NeoComplCacheToggle
+      \ call neocomplcache#toggle_lock()
+command! -nargs=1 -bar NeoComplCacheLockSource
+      \ call neocomplcache#lock_source(<q-args>)
+command! -nargs=1 -bar NeoComplCacheUnlockSource
+      \ call neocomplcache#unlock_source(<q-args>)
 
 " Warning if using obsolute mappings."{{{
-inoremap <unique> <Plug>(neocomplcache_snippets_expand)
+silent! inoremap <unique> <Plug>(neocomplcache_snippets_expand)
       \ <C-o>:echoerr <SID>print_snippets_complete_error()<CR>
-snoremap <unique> <Plug>(neocomplcache_snippets_expand)
+silent! snoremap <unique> <Plug>(neocomplcache_snippets_expand)
       \ :<C-u>:echoerr <SID>print_snippets_complete_error()<CR>
-inoremap <unique> <Plug>(neocomplcache_snippets_jump)
+silent! inoremap <unique> <Plug>(neocomplcache_snippets_jump)
       \ <C-o>:echoerr <SID>print_snippets_complete_error()<CR>
-snoremap <unique> <Plug>(neocomplcache_snippets_jump)
+silent! snoremap <unique> <Plug>(neocomplcache_snippets_jump)
       \ :<C-u>:echoerr <SID>print_snippets_complete_error()<CR>
-inoremap <unique> <Plug>(neocomplcache_snippets_force_expand)
+silent! inoremap <unique> <Plug>(neocomplcache_snippets_force_expand)
       \ <C-o>:echoerr <SID>print_snippets_complete_error()<CR>
-snoremap <unique> <Plug>(neocomplcache_snippets_force_expand)
+silent! snoremap <unique> <Plug>(neocomplcache_snippets_force_expand)
       \ :<C-u>:echoerr <SID>print_snippets_complete_error()<CR>
-inoremap <unique> <Plug>(neocomplcache_snippets_force_jump)
+silent! inoremap <unique> <Plug>(neocomplcache_snippets_force_jump)
       \ <C-o>:echoerr <SID>print_snippets_complete_error()<CR>
-snoremap <unique> <Plug>(neocomplcache_snippets_force_jump)
+silent! snoremap <unique> <Plug>(neocomplcache_snippets_force_jump)
       \ :<C-u>:echoerr <SID>print_snippets_complete_error()<CR>
 function! s:print_snippets_complete_error()
   return 'Warning: neocomplcache snippets source was splitted!'
@@ -124,12 +133,11 @@ let g:neocomplcache_ctags_program =
 let g:neocomplcache_force_overwrite_completefunc =
       \ get(g:, 'neocomplcache_force_overwrite_completefunc', 0)
 let g:neocomplcache_enable_prefetch =
-      \ get(g:, 'neocomplcache_enable_prefetch',
-      \ 1)
-" Note: This feature is temporary disabled.
-      " \  !(v:version > 703 || v:version == 703 && has('patch418')
-      " \  && (!has('xim') || !has('gui_running'))
-      " \ ))
+      \ get(g:, 'g:neocomplcache_enable_prefetch',
+      \  !(v:version > 703 || v:version == 703 && has('patch519')
+      \ ))
+let g:neocomplcache_lock_iminsert =
+      \ get(g:, 'neocomplcache_lock_iminsert', 0)
 let g:neocomplcache_release_cache_time =
       \ get(g:, 'neocomplcache_release_cache_time', 900)
 
