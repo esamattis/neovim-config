@@ -392,16 +392,26 @@ noremap - @@
 imap § {
 imap ½ }
 
-" Extend movement keys. Ö and ö will move to begining of the line and ä and Ä
-" to end.
+
+"" Extend navigation keys
+
+" First non whitespace character
 map ö ^
-map Ä g_
-vmap ö ^
-vmap Ä g_
-map Ö 0
+
+" End of line
 map ä $
-vmap Ö 0
+
+" Begining of line
+map Ö 0
+
+" Last non space character
+map Ä g_
+
+" Same for visual mode
+vmap ö ^
 vmap ä $
+vmap Ö 0
+vmap Ä g_
 
 
 
