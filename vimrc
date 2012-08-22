@@ -192,17 +192,6 @@ vmap <C-Up> [egv
 vmap <C-Down> ]egv
 
 
-" Move lines with arrow keys
-" http://codingfearlessly.com/2012/08/21/vim-putting-arrows-to-use/
-nmap <Left> <<
-nmap <Right> >>
-vmap <Left> <gv
-vmap <Right> >gv
-nmap <Up> [e
-nmap <Down> ]e
-vmap <Up> [egv
-vmap <Down> ]egv
-
 
 
 " Backups
