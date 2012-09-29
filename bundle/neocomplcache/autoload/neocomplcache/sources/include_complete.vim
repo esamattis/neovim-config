@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: include_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 19 May 2012.
+" Last Modified: 23 Sep 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -41,8 +41,6 @@ function! s:source.initialize()"{{{
   let s:cache_accessed_time = {}
   let s:async_include_cache = {}
   let s:cached_pattern = {}
-  let s:completion_length =
-        \ neocomplcache#get_auto_completion_length('include_complete')
 
   " Set rank.
   call neocomplcache#set_dictionary_helper(
@@ -60,14 +58,16 @@ function! s:source.initialize()"{{{
   let g:neocomplcache_include_patterns =
         \ get(g:, 'neocomplcache_include_patterns', {})
   call neocomplcache#set_dictionary_helper(g:neocomplcache_include_patterns,
-        \ 'java,haskell', '^import')
+        \ 'java,haskell', '\<import')
+  call neocomplcache#set_dictionary_helper(g:neocomplcache_include_patterns,
+        \ 'cs', '\<using')
   "}}}
   " Initialize expr pattern."{{{
   let g:neocomplcache_include_exprs =
         \ get(g:, 'neocomplcache_include_exprs', {})
   call neocomplcache#set_dictionary_helper(g:neocomplcache_include_exprs,
-        \ 'haskell',
-        \ 'substitute(v:fname,''\\.'',''/'',''g'')')
+        \ 'haskell,cs',
+        \ "substitute(v:fname, '\\.', '/', 'g')")
   "}}}
   " Initialize path pattern."{{{
   let g:neocomplcache_include_paths =
@@ -129,12 +129,11 @@ function! s:source.get_keyword_list(cur_keyword_str)"{{{
   " Check caching.
   for include in s:include_info[bufnr('%')].include_files
     call neocomplcache#cache#check_cache(
-          \ 'include_cache', include, s:async_include_cache,
-          \ s:include_cache, s:completion_length)
+          \ 'include_cache', include, s:async_include_cache, s:include_cache)
     if has_key(s:include_cache, include)
       let s:cache_accessed_time[include] = localtime()
       let keyword_list += neocomplcache#dictionary_filter(
-            \ s:include_cache[include], a:cur_keyword_str, s:completion_length)
+            \ s:include_cache[include], a:cur_keyword_str)
     endif
   endfor
 
@@ -155,7 +154,8 @@ endfunction"}}}
 
 function! neocomplcache#sources#include_complete#get_include_tags(bufnumber)"{{{
   return filter(map(neocomplcache#sources#include_complete#get_include_files(a:bufnumber),
-        \ "neocomplcache#cache#encode_name('tags_output', v:val)"), 'filereadable(v:val)')
+        \ "neocomplcache#cache#encode_name('tags_output', v:val)"),
+        \ 'filereadable(v:val)')
 endfunction"}}}
 
 " For Debug.
@@ -174,12 +174,14 @@ function! s:doc_dict.search(cur_text)"{{{
     return []
   endif
 
+  let completion_length = 2
+
   " Collect words.
   let words = []
   let i = 0
   while i >= 0
     let word = matchstr(a:cur_text, '\k\+', i)
-    if len(word) >= s:completion_length
+    if len(word) >= completion_length
       call add(words, word)
     endif
 
@@ -187,7 +189,7 @@ function! s:doc_dict.search(cur_text)"{{{
   endwhile
 
   for word in reverse(words)
-    let key = tolower(word[: s:completion_length-1])
+    let key = tolower(word[: completion_length-1])
 
     for include in filter(copy(s:include_info[bufnr('%')].include_files),
           \ 'has_key(s:include_cache, v:val) && has_key(s:include_cache[v:val], key)')
@@ -287,24 +289,36 @@ function! s:get_buffer_include_files(bufnumber)"{{{
     return []
   endif
 
-  if filetype == 'python'
-        \ && !has_key(g:neocomplcache_include_paths, 'python')
-        \ && executable('python')
+  if (filetype ==# 'python' || filetype ==# 'python3')
+        \ && (executable('python') || executable('python3'))
     " Initialize python path pattern.
-    call neocomplcache#set_dictionary_helper(g:neocomplcache_include_paths, 'python',
-          \ neocomplcache#system('python -',
-          \ 'import sys;sys.stdout.write(",".join(sys.path))'))
-  elseif filetype == 'cpp' && isdirectory('/usr/include/c++')
+
+    let path = ''
+    if executable('python3')
+      let path .= ',' . neocomplcache#system('python3 -',
+          \ 'import sys;sys.stdout.write(",".join(sys.path))')
+      call neocomplcache#set_dictionary_helper(
+            \ g:neocomplcache_include_paths, 'python3', path)
+    endif
+    if executable('python')
+      let path .= ',' . neocomplcache#system('python -',
+          \ 'import sys;sys.stdout.write(",".join(sys.path))')
+    endif
+    let path = join(neocomplcache#util#uniq(filter(
+          \ split(path, ',', 1), "v:val != ''")), ',')
+    call neocomplcache#set_dictionary_helper(
+          \ g:neocomplcache_include_paths, 'python', path)
+  elseif filetype ==# 'cpp' && isdirectory('/usr/include/c++')
     " Add cpp path.
-    call neocomplcache#set_dictionary_helper(g:neocomplcache_include_paths, 'cpp',
+    call neocomplcache#set_dictionary_helper(
+          \ g:neocomplcache_include_paths, 'cpp',
           \ getbufvar(a:bufnumber, '&path') .
           \ ','.join(split(glob('/usr/include/c++/*'), '\n'), ','))
   endif
 
   let pattern = get(g:neocomplcache_include_patterns, filetype,
         \ getbufvar(a:bufnumber, '&include'))
-  if pattern == '' ||
-        \ (filetype != 'c' && filetype != 'cpp' && pattern ==# '^\s*#\s*include')
+  if pattern == ''
     return []
   endif
   let path = get(g:neocomplcache_include_paths, filetype,
