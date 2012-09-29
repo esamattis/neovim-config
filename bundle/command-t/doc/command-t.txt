@@ -158,7 +158,7 @@ of the following commands:
 
 Note: Make sure you compile targeting the same architecture Vim was built for.
 For instance, MacVim binaries are built for i386, but sometimes GCC compiles
-for x86_64. First you have to check the platfom Vim was built for:
+for x86_64. First you have to check the platform Vim was built for:
 
   vim --version
   ...
@@ -626,14 +626,16 @@ Command-T is written and maintained by Wincent Colaiuta <win@wincent.com>.
 Other contributors that have submitted patches include (in alphabetical
 order):
 
-  Anthony Panozzo           Mike Lundy                Steven Moazami
-  Daniel Hahler             Nate Kane                 Sung Pae
-  Felix Tjandrawibawa       Nicholas Alpi             Thomas Pelletier
-  Gary Bernhardt            Nadav Samet               Victor Hugo Borja
-  Jeff Kreeftmeijer         Noon Silk                 Woody Peterson
-  Lucas de Vries            Rainux Luo                Yan Pritzker
-  Marian Schubert           Scott Bronson             Zak Johnson
-  Matthew Todd              Seth Fowler
+  Anthony Panozzo           Mike Lundy                Thomas Pelletier
+  Daniel Hahler             Nate Kane                 Victor Hugo Borja
+  Felix Tjandrawibawa       Nicholas Alpi             Woody Peterson
+  Gary Bernhardt            Nadav Samet               Yan Pritzker
+  Ivan Ukhov                Noon Silk                 Zak Johnson
+  Jeff Kreeftmeijer         Rainux Luo
+  Lucas de Vries            Scott Bronson
+  Marcus Brito              Seth Fowler
+  Marian Schubert           Steven Moazami
+  Matthew Todd              Sung Pae
 
 As this was the first Vim plug-in I had ever written I was heavily influenced
 by the design of the LustyExplorer plug-in by Stephen Bach, which I understand
@@ -735,6 +737,11 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 HISTORY                                         *command-t-history*
+
+1.5 (not yet released)
+- don't scan "pathological" filesystem structures (ie. circular or
+  self-referential symlinks; patch from Marcus Brito)
+- gracefully handle files starting with "+" (patch from Ivan Ukhov)
 
 1.4 (20 June 2012)
 
