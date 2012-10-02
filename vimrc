@@ -15,25 +15,7 @@
 " Surround with tag: <select>S<tag>
 " Change the surrounding tag: cst<tag>
 "
-"
-let g:pathogen_disabled = []
 
-" Disable command-t if it is broken
-if filereadable($HOME . '/.vim/bundle/command-t/disable')
-   call add(g:pathogen_disabled, 'command-t')
-else
-    " Search buffers with Command-T
-    nnoremap <Leader>, :CommandTBuffer<CR>
-
-    " Use separate working directory for Command-T instead of Vim's cwd.  Use
-    " CommandTSetWorkingDirectory to reset the dir to cwd of Vim.
-    command CommandTSetWorkingDirectory let g:CommandTWorkingDirectory = getcwd()
-    CommandTSetWorkingDirectory " Set up initially
-
-    " remove easy :call EasyMotionT(0, 0)<CR>
-    au VimEnter *  unmap <Leader>t
-    au VimEnter * map <Leader>t :exec  "CommandT" . g:CommandTWorkingDirectory  <CR>
-endif
 
 " Activate all plugins from the bundle
 " call pathogen#runtime_append_all_bundles()
@@ -427,11 +409,12 @@ au VimResized * exe "normal! \<c-w>="
 map <F5> :redraw! \| :noh \| <cr><c-w>=
 
 
+map <Leader>t :CtrlP<CR>
 
 " Open file tree
 map <Leader>n :LustyFilesystemExplorer<CR>
 " Open bufexplorer
-map <Leader>m :LustyBufferExplorer <CR>
+map <Leader>m :CtrlPBuffer<CR>
 " Opens filesystem explorer at the directory of the current file
 map <Leader>f :LustyFilesystemExplorerFromHere <CR>
 
