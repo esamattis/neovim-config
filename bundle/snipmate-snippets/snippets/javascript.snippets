@@ -21,7 +21,7 @@ snippet f
 # Immediate function
 snippet (f
 	(function(${1}) {
-		${3:/* code */}
+		${3}
 	}(${2}));
 # if
 snippet if
@@ -158,3 +158,9 @@ snippet sing
 
 		return instance;
 	}
+snippet ifmain
+	if (require.main === module) {
+	  ${1}
+	}
+snippet err
+	if (err) throw err;
