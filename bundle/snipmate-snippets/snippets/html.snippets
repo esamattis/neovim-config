@@ -220,7 +220,7 @@ snippet blockquote
 	</blockquote>${2}
 snippet body
 	<body>
-		${1}
+	${1}
 	</body>
 snippet br
 	<br />${1}
@@ -420,9 +420,7 @@ snippet h6#
 	<h6 id="${1}">${2}</h6>${3}
 snippet head
 	<head>
-		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-
-		<title>${1:`substitute(Filename('', 'Page Title'), '^.', '\u&', '')`}</title>${2}
+		<title>${1}</title>
 	</head>
 snippet header
 	<header>
