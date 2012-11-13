@@ -1,6 +1,6 @@
 # Prototype
 snippet bp
-	debugger
+	debugger;
 snippet l
 	console.log(${1});
 snippet proto
@@ -16,8 +16,7 @@ snippet fun
 # Anonymous Function
 snippet f
 	function(${1}) {
-		${3}
-	}${2:;}
+	}
 # Immediate function
 snippet (f
 	(function(${1}) {
@@ -164,3 +163,7 @@ snippet ifmain
 	}
 snippet err
 	if (err) throw err;
+snippet it
+	it("${1}", function(){
+	  ${2}
+	});
