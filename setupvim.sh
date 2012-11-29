@@ -1,6 +1,6 @@
-#!/bin/sh
+#!/bin/bash
 
-set -e
+set -eu
 
 function backup {
     if [[ -e $1 ]] ; then
