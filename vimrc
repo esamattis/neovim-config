@@ -410,6 +410,7 @@ map <F5> :redraw! \| :noh \| <cr><c-w>=
 
 
 map <Leader>t :CtrlP<CR>
+map <Leader>T :CtrlPClearAllCaches<CR>
 
 " Open file tree
 map <Leader>n :LustyFilesystemExplorer<CR>
@@ -417,7 +418,6 @@ map <Leader>n :LustyFilesystemExplorer<CR>
 map <Leader>m :LustyBufferExplorer<CR>
 " Opens filesystem explorer at the directory of the current file
 map <Leader>f :LustyFilesystemExplorerFromHere <CR>
-
 
 
 " Move by screen lines instead of file line. Nice with long lines.
