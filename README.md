@@ -8,7 +8,7 @@ Dependecies
 
 Some nice tools to have
 
-    sudo apt-get install hexer bvi tmux screen irb keychain curl elinks htop iotop
+    sudo apt-get install tmux curl elinks bvi hexer irb keychain htop iotop screen
 
 Checkers and linters for Syntastic (and some other tools)
 
@@ -25,7 +25,7 @@ Can't live without it.
 
 ## Bootstrap
 
-    wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | bash -eu
+    wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | bash
 
 ## Solarized for gnome-terminal
 
