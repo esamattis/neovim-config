@@ -414,7 +414,7 @@ map <Leader>t :CtrlP<CR>
 " Open file tree
 map <Leader>n :LustyFilesystemExplorer<CR>
 " Open bufexplorer
-map <Leader>m :CtrlPBuffer<CR>
+map <Leader>m :LustyBufferExplorer<CR>
 " Opens filesystem explorer at the directory of the current file
 map <Leader>f :LustyFilesystemExplorerFromHere <CR>
 
