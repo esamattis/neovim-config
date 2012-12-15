@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 27 Sep 2012.
+" Last Modified: 15 Nov 2012.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -27,14 +27,23 @@
 
 if exists('g:loaded_neocomplcache')
   finish
-elseif v:version < 702
-  echoerr 'neocomplcache does not work this version of Vim (' . v:version . ').'
+endif
+let g:loaded_neocomplcache = 1
+
+if v:version < 702
+  echohl Error
+  echomsg 'neocomplcache does not work this version of Vim (' . v:version . ').'
+  echohl None
   finish
 elseif $SUDO_USER != '' && $USER !=# $SUDO_USER
       \ && $HOME !=# expand('~'.$USER)
       \ && $HOME ==# expand('~'.$SUDO_USER)
-  echoerr '"sudo vim" and $HOME is not same to /root are detected.'
-        \.'Please use sudo.vim plugin instead of sudo command or set always_set_home in sudoers.'
+  echohl Error
+  echomsg 'neocomplcache disabled: "sudo vim" is detected and $HOME is set to '
+        \.'your user''s home. '
+        \.'You may want to use the sudo.vim plugin, the "-H" option '
+        \.'with "sudo" or set always_set_home in /etc/sudoers instead.'
+  echohl None
   finish
 endif
 
@@ -63,7 +72,7 @@ else
         \ call neocomplcache#set_file_type(<q-args>)
 endif
 
-" Warning if using obsolute mappings."{{{
+" Warning if using obsolute mappings. "{{{
 silent! inoremap <unique> <Plug>(neocomplcache_snippets_expand)
       \ <C-o>:echoerr <SID>print_snippets_complete_error()<CR>
 silent! snoremap <unique> <Plug>(neocomplcache_snippets_expand)
@@ -86,7 +95,7 @@ function! s:print_snippets_complete_error()
       \ .' "https://github.com/Shougo/neocomplcache-snippets-complete"'
 endfunction"}}}
 
-" Global options definition."{{{
+" Global options definition. "{{{
 let g:neocomplcache_max_list =
       \ get(g:, 'neocomplcache_max_list', 100)
 let g:neocomplcache_max_keyword_width =
@@ -151,15 +160,18 @@ let g:neocomplcache_release_cache_time =
 let g:neocomplcache_wildcard_characters =
       \ get(g:, 'neocomplcache_wildcard_characters', {
       \ '_' : '*' })
+let g:neocomplcache_skip_auto_completion_time =
+      \ get(g:, 'neocomplcache_skip_auto_completion_time', '0.3')
 
 let g:neocomplcache_sources_list =
       \ get(g:, 'neocomplcache_sources_list', {})
-if exists('g:neocomplcache_plugin_disable')
-  let g:neocomplcache_source_disable =
-        \ g:neocomplcache_plugin_disable
+let g:neocomplcache_disabled_sources_list =
+      \ get(g:, 'neocomplcache_disabled_sources_list', {})
+if exists('g:neocomplcache_source_disable')
+  let g:neocomplcache_disabled_sources_list._ =
+        \ keys(filter(copy(g:neocomplcache_source_disable), 'v:val'))
 endif
-let g:neocomplcache_source_disable =
-      \ get(g:, 'neocomplcache_source_disable', {})
+
 if exists('g:neocomplcache_plugin_completion_length')
   let g:neocomplcache_source_completion_length =
         \ g:neocomplcache_plugin_completion_length
@@ -186,7 +198,5 @@ endif"}}}
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
-
-let g:loaded_neocomplcache = 1
 
 " vim: foldmethod=marker
