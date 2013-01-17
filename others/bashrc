@@ -16,12 +16,14 @@ function be {
   bundle exec $@
 }
 
-
+## put to ~/.bashrc if in use
 # if [ -x $(which keychain) ] ; then
 #     keychain --nogui -q -Q id_rsa
 #         . ~/.keychain/`uname -n`-sh
 # fi
 
+# Restore keychain
+alias keychain-enable='keychain --nogui -q -Q id_rsa && . ~/.keychain/`uname -n`-sh'
 
 alias ircproxy='ssh -t jyulakka ssh -t melmacian.net "tmux att -d -t irc"'
 
