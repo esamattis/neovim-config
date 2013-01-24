@@ -11,8 +11,8 @@ snippet e
 	console.error(${1});
 snippet **
 	/**
-	* ${1}
-	**/
+	 * ${1}
+	 **/
 snippet proto
 	${1:class_name}.prototype.${2:method_name} =
 	function(${3:first_argument}) {
@@ -30,7 +30,7 @@ snippet f
 snippet (f
 	(function(${1}) {
 		${3}
-	}(${2}))
+	}(${2}));
 # if
 snippet if
 	if (${1:true}) {
@@ -64,9 +64,10 @@ snippet case
 	${3}
 # for (...) {...}
 snippet for
-	for (var ${2:i} = 0; $2 < ${1:Things}.length; $2${3: += 1}) {
+	var i;
+	for (${2:i} = 0; $2 < ${1:Things}.length; $2${3: += 1}) {
 		${4:$1[$2]}
-	};
+	}
 # for (...) {...} (Improved Native For-Loop)
 snippet forr
 	for (var ${2:i} = ${1:Things}.length - 1; $2 >= 0; $2${3: -= 1}) {
@@ -171,7 +172,11 @@ snippet ifmain
 	  ${1}
 	}
 snippet err
-	if (err) throw err;
+	if (err) return cb(err);
+snippet iferr
+	if (err) {
+	  ${1}
+	}
 snippet it
 	it("${1}", function(){
 	  ${2}
