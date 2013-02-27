@@ -93,6 +93,12 @@ function generate_git_bar {
   echo "${BLUE}(${branch}${s}${remote}${state}${BLUE})"
 }
 
+function bg_jobs(){
+  if [[ $(jobs) =~ "Stopped" ]]; then
+    echo "${RED}⌚ "
+  fi
+}
+
 function prompt_func() {
 
   # <user>@<host> <current working directory>
@@ -108,10 +114,10 @@ function prompt_func() {
   git rev-parse --git-dir > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     # In Git repo
-    PS1="${TITLEBAR}\n$(generate_git_bar)${PROMPT_CHAR}"
+    PS1="${TITLEBAR}\n$(bg_jobs)$(generate_git_bar)${PROMPT_CHAR}"
   else
     # Normal directory
-    PS1="${TITLEBAR}\n${PROMPT_CHAR}"
+    PS1="${TITLEBAR}\n$(bg_jobs)${PROMPT_CHAR}"
   fi
 
 }
