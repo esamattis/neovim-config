@@ -91,11 +91,10 @@ au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.conf setfiletype conf
 au BufNewFile,BufRead *.pde setfiletype arduino
 au BufNewFile,BufRead *.jade setfiletype jade
-
-" TODO: why does modula2 overrides this?
-au BufNewFile,BufRead *.md setfiletype markdown
-au BufNewFile,BufRead *.markdown setfiletype markdown
-
+augroup markdown
+    au!
+    au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
 
 
 
@@ -535,7 +534,7 @@ map <Leader>d :call SlimuxSendCode("\n")<CR>
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType html,markdown,ghmarkdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags

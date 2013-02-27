@@ -42,6 +42,7 @@ For lucid
 
 ## Influences from
 
+  * http://statico.github.com/vim.html
   * https://github.com/skwp/dotfiles
   * http://stevelosh.com/blog/2010/09/coming-home-to-vim/
   * http://nvie.com/posts/how-i-boosted-my-vim/
