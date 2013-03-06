@@ -11,7 +11,6 @@
 "============================================================================
 
 " In order to also check header files add this to your .vimrc:
-" (this usually creates a .gch file in your source directory)
 "
 "   let g:syntastic_c_check_header = 1
 "
@@ -19,6 +18,11 @@
 " libraries like gtk and glib add this line to your .vimrc:
 "
 "   let g:syntastic_c_no_include_search = 1
+"
+" To disable the include of the default include dirs (such as /usr/include)
+" add this line to your .vimrc:
+"
+"   let g:syntastic_c_no_default_include_dirs = 1
 "
 " To enable header files being re-checked on every file write add the
 " following line to your .vimrc. Otherwise the header files are checked only
@@ -69,9 +73,13 @@ if exists('loaded_gcc_syntax_checker')
 endif
 let loaded_gcc_syntax_checker = 1
 
-if !executable('gcc')
-    finish
+if !exists('g:syntastic_c_checker')
+    let g:syntastic_c_checker = "gcc"
 endif
+
+function SyntaxCheckers_c_gcc_IsAvailable()
+    return executable(g:syntastic_c_checker)
+endfunction
 
 let s:save_cpo = &cpo
 set cpo&vim
@@ -84,8 +92,8 @@ if !exists('g:syntastic_c_config_file')
     let g:syntastic_c_config_file = '.syntastic_c_config'
 endif
 
-function! SyntaxCheckers_c_GetLocList()
-    let makeprg = 'gcc -fsyntax-only '
+function! SyntaxCheckers_c_gcc_GetLocList()
+    let makeprg = g:syntastic_c_checker . ' -x c -fsyntax-only '
     let errorformat = '%-G%f:%s:,%-G%f:%l: %#error: %#(Each undeclared '.
                \ 'identifier is reported only%.%#,%-G%f:%l: %#error: %#for '.
                \ 'each function it appears%.%#,%-GIn file included%.%#,'.
@@ -106,8 +114,10 @@ function! SyntaxCheckers_c_GetLocList()
     " determine whether to parse header files as well
     if expand('%') =~? '.h$'
         if exists('g:syntastic_c_check_header')
-            let makeprg = 'gcc -c '.shellescape(expand('%')) .
+            let makeprg = g:syntastic_c_checker
+                        \ ' -c ' . shellescape(expand('%')) .
                         \ ' ' . g:syntastic_c_compiler_options .
+                        \ ' ' . syntastic#c#GetNullDevice() .
                         \ ' ' . syntastic#c#GetIncludeDirs('c')
         else
             return []
@@ -152,6 +162,10 @@ function! SyntaxCheckers_c_GetLocList()
         return errors
     endif
 endfunction
+
+call g:SyntasticRegistry.CreateAndRegisterChecker({
+    \ 'filetype': 'c',
+    \ 'name': 'gcc'})
 
 let &cpo = s:save_cpo
 unlet s:save_cpo
