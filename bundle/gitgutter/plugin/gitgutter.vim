@@ -82,18 +82,29 @@ function! s:directory_of_current_file()
   return shellescape(expand("%:p:h"))
 endfunction
 
+function! s:discard_stdout_and_stderr()
+  if !exists('s:discard')
+    if &shellredir ==? '>%s 2>&1'
+      let s:discard = ' > /dev/null 2>&1'
+    else
+      let s:discard = ' >& /dev/null'
+    endif
+  endif
+  return s:discard
+endfunction
+
 function! s:command_in_directory_of_current_file(cmd)
   return 'cd ' . s:directory_of_current_file() . ' && ' . a:cmd
 endfunction
 
 function! s:is_in_a_git_repo()
-  let cmd = 'git rev-parse > /dev/null 2>&1'
+  let cmd = 'git rev-parse' . s:discard_stdout_and_stderr()
   call system(s:command_in_directory_of_current_file(cmd))
   return !v:shell_error
 endfunction
 
 function! s:is_tracked_by_git()
-  let cmd = 'git ls-files --error-unmatch > /dev/null 2>&1 ' . shellescape(s:current_file())
+  let cmd = 'git ls-files --error-unmatch' . s:discard_stdout_and_stderr() . ' ' . shellescape(s:current_file())
   call system(s:command_in_directory_of_current_file(cmd))
   return !v:shell_error
 endfunction
@@ -103,7 +114,7 @@ endfunction
 " Diff processing {{{
 
 function! s:run_diff()
-  let cmd = 'git diff --no-ext-diff -U0 ' . shellescape(s:current_file()) .
+  let cmd = 'git diff --no-ext-diff --no-color -U0 ' . shellescape(s:current_file()) .
         \ ' | grep -e "^@@ "'
   let diff = system(s:command_in_directory_of_current_file(cmd))
   return diff
@@ -323,41 +334,41 @@ function! GitGutter()
 endfunction
 command GitGutter call GitGutter()
 
-function! DisableGitGutter()
+function! GitGutterDisable()
   let g:gitgutter_enabled = 0
   call s:clear_signs(s:current_file())
 endfunction
-command DisableGitGutter call DisableGitGutter()
+command GitGutterDisable call GitGutterDisable()
 
-function! EnableGitGutter()
+function! GitGutterEnable()
   let g:gitgutter_enabled = 1
   call GitGutter()
 endfunction
-command EnableGitGutter call EnableGitGutter()
+command GitGutterEnable call GitGutterEnable()
 
-function! ToggleGitGutter()
+function! GitGutterToggle()
   if g:gitgutter_enabled
-    call DisableGitGutter()
+    call GitGutterDisable()
   else
-    call EnableGitGutter()
+    call GitGutterEnable()
   endif
 endfunction
-command ToggleGitGutter call ToggleGitGutter()
+command GitGutterToggle call GitGutterToggle()
 
-function! DisableGitGutterLineHighlights()
+function! GitGutterLineHighlightsDisable()
   call s:update_line_highlights(0)
 endfunction
-command DisableGitGutterLineHighlights call DisableGitGutterLineHighlights()
+command GitGutterLineHighlightsDisable call GitGutterLineHighlightsDisable()
 
-function! EnableGitGutterLineHighlights()
+function! GitGutterLineHighlightsEnable()
   call s:update_line_highlights(1)
 endfunction
-command EnableGitGutterLineHighlights call EnableGitGutterLineHighlights()
+command GitGutterLineHighlightsEnable call GitGutterLineHighlightsEnable()
 
-function! ToggleGitGutterLineHighlights()
+function! GitGutterLineHighlightsToggle()
   call s:update_line_highlights(s:highlight_lines ? 0 : 1)
 endfunction
-command ToggleGitGutterLineHighlights call ToggleGitGutterLineHighlights()
+command GitGutterLineHighlightsToggle call GitGutterLineHighlightsToggle()
 
 function! GitGutterNextHunk()
   if s:is_active()
@@ -408,7 +419,7 @@ endfunction
 
 augroup gitgutter
   autocmd!
-  autocmd BufReadPost,BufWritePost,FileReadPost,FileWritePost * call GitGutter()
+  autocmd BufReadPost,BufWritePost,FileReadPost,FileWritePost,FocusGained * call GitGutter()
 augroup END
 
 " }}}

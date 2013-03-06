@@ -25,6 +25,13 @@ cd ~/.vim/bundle
 git clone git://github.com/airblade/vim-gitgutter.git
 ```
 
+Or for [Vundle](https://github.com/gmarik/vundle) users:
+
+Add `Bundle 'airblade/vim-gitgutter'` to your `~/.vimrc` and then:
+
+* either within Vim: `:BundleInstall`
+* or in your shell: `vim +BundleInstall +qall`
+
 
 ### Usage
 
@@ -34,15 +41,15 @@ If you want vim-gitgutter off by default, add `let g:gitgutter_enabled = 0` to y
 
 You can explicitly turn vim-gitgutter off and on:
 
-* turn off with `:DisableGitGutter`
-* turn on with `:EnableGitGutter`
-* toggle with `:ToggleGitGutter`.
+* turn off with `:GitGutterDisable`
+* turn on with `:GitGutterEnable`
+* toggle with `:GitGutterToggle`.
 
 And you can turn line highlighting on and off (defaults to off):
 
-* turn on with `:EnableGitGutterLineHighlights`
-* turn off with `:DisableGitGutterLineHighlights`
-* toggle with `:ToggleGitGutterLineHighlights`.
+* turn on with `:GitGutterLineHighlightsEnable`
+* turn off with `:GitGutterLineHighlightsDisable`
+* toggle with `:GitGutterLineHighlightsToggle`.
 
 Furthermore you can jump between hunks:
 
@@ -71,9 +78,27 @@ Vim only allows one sign per line.  Before adding a sign to a line, vim-gitgutte
 
 ### Alternatives
 
-I'm not aware of any other Vim plugins which (only) show git diffs in the gutter.  However these may be of interest:
+Related:
 
-* [quickfixsigns_vim][qf] has a large superset of this functionality.
+* [textobj-gitgutter][togg] (lets you treat diff hunks as text objects)
+
+Vim alternatives:
+
+* [git-gutter-vim][ggv]
+* [vim-git-inline-diff][vgid]
+* [quickfixsigns_vim][qf] (a superset of this functionality)
+* [iwilldiffer][iwd]
+* [svndiff][svndiff]
+* [sign-diff][signdiff]
+* [changesPlugin][changes]
+
+Other editors:
+
+* [Git Gutter][st2gg] for Sublime Text 2
+* [git-gutter.el][gge] for Emacs
+
+Also, this may be of interest:
+
 * [fugitive.vim][fugitive] is a full-on Git wrapper.  It doesn't show git diffs in the gutter (ha!) but it does a bazillion other git things.
 
 
@@ -99,4 +124,11 @@ Copyright Andrew Stewart, AirBlade Software Ltd.  Released under the MIT licence
   [siv1]: https://peepcode.com/products/smash-into-vim-i
   [siv2]: https://peepcode.com/products/smash-into-vim-ii
   [portfolio]: http://airbladesoftware.com/portfolio#vim
-
+  [vgid]: https://github.com/luxflux/vim-git-inline-diff
+  [gge]: https://github.com/syohex/emacs-git-gutter
+  [iwd]: https://bitbucket.org/sirpengi/iwilldiffer
+  [svndiff]: http://www.vim.org/scripts/script.php?script_id=1881
+  [signdiff]: http://www.vim.org/scripts/script.php?script_id=2712
+  [changes]: http://www.vim.org/scripts/script.php?script_id=3052
+  [ggv]: https://github.com/akiomik/git-gutter-vim
+  [togg]:https://github.com/gilligan/textobj-gitgutter 
