@@ -173,6 +173,10 @@ snippet ifmain
 	}
 snippet err
 	if (err) return cb(err);
+snippet rerr
+	if (err) return cb(err);
+snippet terr
+	if (err) throw err;
 snippet iferr
 	if (err) {
 	  ${1}
