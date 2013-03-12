@@ -86,7 +86,6 @@ au BufNewFile,BufRead *.zcml  setfiletype xml
 au BufNewFile,BufRead *.pt  setfiletype xml
 au BufNewFile,BufRead *.coffee  setfiletype coffee
 au BufNewFile,BufRead *.cson  setfiletype coffee
-au BufNewFile,BufRead *.json setfiletype json
 au BufNewFile,BufRead *.ru setfiletype ruby
 au BufNewFile,BufRead *.conf setfiletype conf
 au BufNewFile,BufRead *.pde setfiletype arduino
@@ -94,6 +93,11 @@ au BufNewFile,BufRead *.jade setfiletype jade
 augroup markdown
     au!
     au BufNewFile,BufRead *.md,*.markdown setlocal filetype=ghmarkdown
+augroup END
+
+augroup json
+    au!
+    au BufNewFile,BufRead *.json setlocal filetype=json
 augroup END
 
 
