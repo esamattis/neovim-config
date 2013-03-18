@@ -19,4 +19,5 @@ all: update install
 .PHONY friends:
 	ln -s .vim/others/tmux.conf ~/.tmux.conf || exit 0
 	ln -s .vim/others/gitconfig ~/.gitconfig || exit 0
+	ln -s .vim/others/jshintrc ~/.jshintrc || exit 0
 	echo "source ~/.vim/others/bashrc" >> ~/.bashrc
