@@ -1,4 +1,4 @@
-" ProTips to remember:
+﻿" ProTips to remember:
 " diw to delete the current word
 " di( to delete within the current parens
 " di" to delete the text between the quotes
