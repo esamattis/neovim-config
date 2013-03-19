@@ -1,9 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 
 set -eu
 
-function backup {
-    if [[ -e $1 ]] ; then
+backup () {
+    if [ -e $1 ] ; then
         mv $1 $1_$(date +"%F_%H-%M-%S")
     fi
 }
