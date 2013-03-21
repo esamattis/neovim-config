@@ -12,7 +12,7 @@ Some nice tools to have
 
 Checkers and linters for Syntastic (and some other tools)
 
-    sudo npm install -g jshint coffee-script jsonlint stylus less serve grunt
+    sudo npm install -g jshint coffee-script jsonlint stylus less serve grunt yalr
     sudo gem install sass
     sudo apt-get install pyflakes
 
