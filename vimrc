@@ -106,10 +106,7 @@ augroup END
 " My status lines
 " set statusline=%<%f%y\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 " With Syntastic
-" set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%{fugitive#statusline()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
-
-" Powerline
-set rtp+=~/.vim/bundle/powerline/powerline/bindings/vim
+set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%{fugitive#statusline()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
 
 
 " Show error signs on left
