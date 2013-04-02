@@ -8,8 +8,6 @@ stty -ixon
 # tmux
 source $HOME/.vim/others/bash_completion_tmux.sh
 
-# Source rvm if installed
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" 
 
 # Bundle helper for ruby development
 function be {
