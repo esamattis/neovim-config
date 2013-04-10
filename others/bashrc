@@ -8,6 +8,8 @@ stty -ixon
 # tmux
 source $HOME/.vim/others/bash_completion_tmux.sh
 
+export DEBFULLNAME="Esa-Matti Suuronen"
+export DEBEMAIL="esa-matti.suuronen@opinsys.fi"
 
 # Bundle helper for ruby development
 function be {
