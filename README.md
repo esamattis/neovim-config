@@ -37,9 +37,19 @@ Can't live without it.
 For lucid
 
     sudo apt-get install libevent-1.4-2
-    
+
   * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_i386.deb
   * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_amd64.deb
+
+### 1.8
+
+    sudo apt-get install checkinstall libevent1-dev libncurses5-dev
+    wget http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz
+    tar xzvf tmux-1.8.tar.gz
+    cd tmux-1.8/
+    ./configure
+    make
+    sudo checkinstall
 
 ## Influences from
 
