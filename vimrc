@@ -168,25 +168,12 @@ vnoremap < <gv
 vnoremap > >gv
 
 
-" Bubble single lines
-" http://vimcasts.org/episodes/bubbling-text/
-nmap <C-Up> [e
-nmap <C-Down> ]e
-" Bubble multiple lines
-vmap <C-Up> [egv
-vmap <C-Down> ]egv
-
-
 
 
 " Backups
 set backupdir=~/.vim/tmp/backup// " backups
 set directory=~/.vim/tmp/swap// " swap files
 set backup " enable backup
-
-
-
-
 
 
 
