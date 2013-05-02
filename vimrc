@@ -528,6 +528,10 @@ au VimEnter * unmap <Leader>lj
 au VimEnter * unmap <Leader>lg
 au VimEnter * unmap <Leader>lr
 
+"" align
+" Clashes with slimux
+au VimEnter * unmap <Leader>swp
+
 
 " Slimux key map
 map <Leader>s :SlimuxREPLSendLine<CR>
