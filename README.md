@@ -8,7 +8,7 @@ Dependecies
 
 Some nice tools to have
 
-    sudo apt-get install tmux curl elinks bvi hexer irb keychain htop iotop screen
+    sudo apt-get install tmux curl elinks bvi hexer irb keychain htop iotop screen tig
 
 Checkers and linters for Syntastic (and some other tools)
 
