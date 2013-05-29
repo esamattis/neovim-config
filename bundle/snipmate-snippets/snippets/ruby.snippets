@@ -32,6 +32,8 @@ snippet req
 	require "${1}"${2}
 snippet #
 	#{ ${1} }
+snippet ##
+	'#{ ${1} }'
 snippet end
 	__END__
 snippet case
@@ -584,7 +586,11 @@ snippet debug
 snippet pry
 	require 'pry'; binding.pry
 snippet l
-	logger.debug ${1}
+	logger.info ${1}
+snippet w
+	logger.warn ${1}
+snippet f
+	logger.fatal ${1}
 snippet le
 	$stderr.puts "${1}\n"
 snippet s
