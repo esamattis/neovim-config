@@ -160,9 +160,6 @@ COMMANDS 					*neocomplcache-commands*
 		you make a dictionary file by yourself, it may be
 		convenient.
 
-:NeoComplCacheCreateTags [bufname]		*:NeoComplCacheCreateTags*
-		Create tags from [bufname] buffer.
-		Select current buffer when [bufname] omitted.
 
 :NeoComplCacheSetFileType [filetype]		*:NeoComplCacheSetFileType*
 		Change filetype to [filetype] in current buffer.
@@ -1134,13 +1131,20 @@ EXAMPLES					*neocomplcache-examples*
 	if !exists('g:neocomplcache_omni_patterns')
 	  let g:neocomplcache_omni_patterns = {}
 	endif
-	let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-	let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-	let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+	if !exists('g:neocomplcache_force_omni_patterns')
+	  let g:neocomplcache_force_omni_patterns = {}
+	endif
+	let g:neocomplcache_omni_patterns.php =
+	\ '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+	let g:neocomplcache_omni_patterns.c =
+	\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
+	let g:neocomplcache_omni_patterns.cpp =
+	\ '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 	" For perlomni.vim setting.
 	" https://github.com/c9s/perlomni.vim
-	let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+	let g:neocomplcache_omni_patterns.perl =
+	\ '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 <
 ==============================================================================
 SOURCES						*neocomplcache-sources*
@@ -1873,6 +1877,12 @@ TODO						*neocomplcache-todo*
 
 ==============================================================================
 CHANGELOG					*neocomplcache-changelog*
+
+2013-06-03
+- Fixed syntax_complete problem.
+
+2013-06-02
+- Fixed converter_case.
 
 2013-05-09
 - Added sorter_length.

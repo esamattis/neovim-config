@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: converter_case.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 25 Apr 2013.
+" Last Modified: 02 Jun 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -37,13 +37,13 @@ let s:converter = {
       \}
 
 function! s:converter.filter(context) "{{{
-  if neocomplcache#is_text_mode()
+  if !neocomplcache#is_text_mode() && !neocomplcache#within_comment()
     return a:context.candidates
   endif
 
   let convert_candidates = filter(copy(a:context.candidates),
         \ "get(v:val, 'neocomplcache__convertable', 1)
-        \  && v:val.word =~ '^\\u\\+$\\|^\\u\\?\\l\\+$'")
+        \  && v:val.word =~ '^[a-zA-Z0-9_''-]\\+$'")
 
   if a:context.complete_str =~ '^\l\+$'
     for candidate in convert_candidates
