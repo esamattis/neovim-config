@@ -423,7 +423,9 @@ nmap <Leader>cd :cd %:p:h<CR>
 
 
 
-" diff will be opened automatically after the git commit.
+" diff will be opened automatically after the git commit. Disable
+" neocomplcache preview to prevent accidental closing of the diff window
+autocmd FileType gitcommit let g:neocomplcache_enable_auto_close_preview = 0
 autocmd FileType gitcommit DiffGitCached | wincmd p
 
 " Highlight VCS conflict markers
