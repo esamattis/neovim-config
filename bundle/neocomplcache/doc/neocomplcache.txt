@@ -1505,10 +1505,6 @@ info			String		(Optional)
 rank			Number		(Optional)
 			The completion priority.
 
-		*neocomplcache-candidate-attribute-neocomplcache__refresh*
-neocomplcache__refresh	Number		(Optional)
-			If it is non-zero, neocomplcache refresh
-			automatically.
 
 CONTEXT						*neocomplcache-context*
 
@@ -1771,7 +1767,7 @@ https://github.com/davidhalter/jedi-vim
 A: Please set |g:neocomplcache_force_omni_patterns| as below.
 >
 	autocmd FileType python setlocal omnifunc=jedi#complete
-	let g:jedi#popup_on_dot = 0
+	let g:jedi#auto_vim_configuration = 0
 	let g:neocomplcache_force_omni_patterns.python = '[^. \t]\.\w*'
 <
 Q: Candidates are not found in heavy completion(neco-look, etc).
@@ -1872,11 +1868,22 @@ Note: This settings works but may heavy.
 	let g:neocomplcache_omni_patterns.javascript = '\h\w*\|[^. \t]\.\w*'
 <
 
+Q: neocomplcache closes DiffGitCached window from vim-fugitive
+https://github.com/Shougo/neocomplcache.vim/issues/424
+A:
+>
+	let g:neocomplcache_enable_auto_close_preview = 0
+<
+
 ==============================================================================
 TODO						*neocomplcache-todo*
 
 ==============================================================================
 CHANGELOG					*neocomplcache-changelog*
+
+2013-06-06
+- Fixed <Plug>(neocomplcache_start_unite_quick_match).
+- Improved refresh behavior.
 
 2013-06-03
 - Fixed syntax_complete problem.

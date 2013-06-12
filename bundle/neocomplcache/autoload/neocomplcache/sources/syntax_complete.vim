@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: syntax_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 03 Jun 2013.
+" Last Modified: 05 Jun 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -57,10 +57,6 @@ function! s:source.finalize() "{{{
 endfunction"}}}
 
 function! s:source.get_keyword_list(complete_str) "{{{
-  if neocomplcache#within_comment()
-    return []
-  endif
-
   let list = []
 
   let filetype = neocomplcache#get_context_filetype()
@@ -141,7 +137,7 @@ function! s:caching_from_syn(filetype) "{{{
     if line =~ '^\h\w\+'
       " Change syntax group name.
       let group_name = matchstr(line, '^\S\+')
-      let line = substitute(line, '^\S\s*xxx', '', '')
+      let line = substitute(line, '^\S\+\s*xxx', '', '')
     endif
 
     if line =~ 'Syntax items' || line =~ '^\s*links to' ||
