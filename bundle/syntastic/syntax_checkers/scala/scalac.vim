@@ -26,12 +26,16 @@ endif
 
 function! SyntaxCheckers_scala_scalac_GetLocList()
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': 'scalac',
-                \ 'args': '-Ystop-after:parser '. g:syntastic_scala_options })
+        \ 'exe': 'scalac',
+        \ 'args': '-Ystop-after:parser '. g:syntastic_scala_options,
+        \ 'filetype': 'scala',
+        \ 'subchecker': 'scalac' })
 
     let errorformat = '%f\:%l: %trror: %m'
 
-    return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

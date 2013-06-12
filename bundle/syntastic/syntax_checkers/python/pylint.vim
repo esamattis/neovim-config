@@ -15,24 +15,27 @@ endfunction
 
 function! SyntaxCheckers_python_pylint_GetLocList()
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': 'pylint',
-                \ 'args': ' -f parseable -r n -i y',
-                \ 'subchecker': 'pylint' })
-    let errorformat = '%f:%l:%m,%Z,%-GNo config %m'
+        \ 'exe': 'pylint',
+        \ 'args': ' -f parseable -r n -i y',
+        \ 'filetype': 'python',
+        \ 'subchecker': 'pylint' })
 
-    let loclist=SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
+    let errorformat =
+        \ '%A%f:%l:%m,' .
+        \ '%A%f:(%l):%m,' .
+        \ '%-Z%p^%.%#,' .
+        \ '%-G%.%#'
 
-    let n = len(loclist) - 1
-    while n >= 0
+    let loclist=SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat,
+        \ 'postprocess': ['sort'] })
+
+    for n in range(len(loclist))
         let loclist[n]['type'] = match(['R', 'C', 'W'], loclist[n]['text'][2]) >= 0 ? 'W' : 'E'
-        let n -= 1
-    endwhile
+    endfor
 
-    return sort(loclist, 's:CmpLoclist')
-endfunction
-
-function! s:CmpLoclist(a, b)
-    return a:a['lnum'] - a:b['lnum']
+    return loclist
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

@@ -24,19 +24,33 @@ function! SyntaxCheckers_eruby_ruby_IsAvailable()
 endfunction
 
 function! SyntaxCheckers_eruby_ruby_GetLocList()
-    let ruby_exec=expand(g:syntastic_ruby_exec)
+    let exe = expand(g:syntastic_ruby_exec)
     if !has('win32')
-        let ruby_exec='RUBYOPT= ' . ruby_exec
+        let exe = 'RUBYOPT= ' . exe
     endif
 
-    "gsub fixes issue #7 rails has it's own eruby syntax
-    let makeprg=ruby_exec . ' -rerb -e "puts ERB.new(File.read(''' .
-        \ (expand("%")) .
-        \ ''').gsub(''<\%='',''<\%''), nil, ''-'').src" \| ' . ruby_exec . ' -c'
+    let fname = fnameescape(expand('%'))
 
-    let errorformat='%-GSyntax OK,%E-:%l: syntax error\, %m,%Z%p^,%W-:%l: warning: %m,%Z%p^,%-C%.%#'
+    let enc = &fileencoding != '' ? &fileencoding : &encoding
+    let encoding_string = enc ==# 'utf-8' ? ', :encoding => "UTF-8"' : ''
 
-    return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat})
+    "gsub fixes issue #7, rails has it's own eruby syntax
+    let makeprg =
+        \ exe . ' -rerb -e ' .
+        \ shellescape('puts ERB.new(File.read("' . fname . '"' . encoding_string . ').gsub(''<\%='',''<\%''), nil, ''-'').src') .
+        \ ' \| ' . exe . ' -c'
+
+    let errorformat =
+        \ '%-GSyntax OK,'.
+        \ '%E-:%l: syntax error\, %m,%Z%p^,'.
+        \ '%W-:%l: warning: %m,'.
+        \ '%Z%p^,'.
+        \ '%-C%.%#'
+
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat,
+        \ 'defaults': { 'bufnr': bufnr(""), 'vcol': 1 } })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

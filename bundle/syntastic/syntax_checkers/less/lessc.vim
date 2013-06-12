@@ -42,14 +42,18 @@ endfunction
 
 function! SyntaxCheckers_less_lessc_GetLocList()
     let makeprg = syntastic#makeprg#build({
-                \ 'exe': s:check_file,
-                \ 'args': g:syntastic_less_options,
-                \ 'tail': syntastic#util#DevNull() })
+        \ 'exe': s:check_file,
+        \ 'args': g:syntastic_less_options,
+        \ 'tail': syntastic#util#DevNull(),
+        \ 'filetype': 'less',
+        \ 'subchecker': 'lessc' })
+
     let errorformat = '%m in %f:%l:%c'
 
-    return SyntasticMake({ 'makeprg': makeprg,
-                         \ 'errorformat': errorformat,
-                         \ 'defaults': {'bufnr': bufnr(""), 'text': "Syntax error"} })
+    return SyntasticMake({
+        \ 'makeprg': makeprg,
+        \ 'errorformat': errorformat,
+        \ 'defaults': {'bufnr': bufnr(""), 'text': "Syntax error"} })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
