@@ -2,7 +2,6 @@
 " Language:             Ruby
 " Maintainer:           Mark Guzman <segfault@hasno.info>
 " URL:                  https://github.com/vim-ruby/vim-ruby
-" Anon CVS:             See above site
 " Release Coordinator:  Doug Kearns <dougkearns@gmail.com>
 " Maintainer Version:   0.8.1
 " ----------------------------------------------------------------------------
@@ -133,7 +132,7 @@ function! s:GetRubyVarType(v)
     let stopline = 1
     let vtp = ''
     let pos = getpos('.')
-    let sstr = '^\s*#\s*@var\s*'.a:v.'\>\s\+[^ \t]\+\s*$'
+    let sstr = '^\s*#\s*@var\s*'.escape(a:v, '*').'\>\s\+[^ \t]\+\s*$'
     let [lnum,lcol] = searchpos(sstr,'nb',stopline)
     if lnum != 0 && lcol != 0
         call setpos('.',pos)
@@ -275,7 +274,7 @@ class VimRubyCompletion
     pare = /^\s*class\s*(.*)\s*<\s*(.*)\s*\n/.match( classdef )
     load_buffer_class( $2 ) if pare != nil  && $2 != name # load parent class if needed
 
-    mixre = /.*\n\s*include\s*(.*)\s*\n/.match( classdef )
+    mixre = /.*\n\s*(include|prepend)\s*(.*)\s*\n/.match( classdef )
     load_buffer_module( $2 ) if mixre != nil && $2 != name # load mixins if needed
 
     begin
@@ -365,7 +364,7 @@ class VimRubyCompletion
   end
 
   def escape_vim_singlequote_string(str)
-    str.gsub(/'/,"\\'")
+    str.to_s.gsub(/'/,"\\'")
   end
 
   def get_buffer_entity_list( type )
@@ -771,10 +770,10 @@ class VimRubyCompletion
     constants = clean_sel( constants, message )
 
     valid = []
-    valid += methods.collect { |m| { :name => m, :type => 'm' } }
-    valid += variables.collect { |v| { :name => v, :type => 'v' } }
-    valid += classes.collect { |c| { :name => c, :type => 't' } }
-    valid += constants.collect { |d| { :name => d, :type => 'd' } }
+    valid += methods.collect { |m| { :name => m.to_s, :type => 'm' } }
+    valid += variables.collect { |v| { :name => v.to_s, :type => 'v' } }
+    valid += classes.collect { |c| { :name => c.to_s, :type => 't' } }
+    valid += constants.collect { |d| { :name => d.to_s, :type => 'd' } }
     valid.sort! { |x,y| x[:name] <=> y[:name] }
 
     outp = ""
