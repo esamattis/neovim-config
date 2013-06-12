@@ -1,7 +1,7 @@
 "=============================================================================
 " File: gist.vim
 " Author: Yasuhiro Matsumoto <mattn.jp@gmail.com>
-" Last Change: 21-Jan-2013.
+" Last Change: 11-Jun-2013.
 " Version: 7.1
 " WebPage: http://github.com/mattn/gist-vim
 " License: BSD
@@ -20,9 +20,9 @@ if !executable('curl')
 endif
 
 let s:configfile = expand('~/.gist-vim')
+let s:system = function(get(g:, 'webapi#system_function', 'system'))
 
 if !exists('g:github_user')
-  let s:system = function(get(g:, 'webapi#system_function', 'system'))
   let g:github_user = substitute(s:system('git config --get github.user'), "\n", '', '')
   if strlen(g:github_user) == 0
     let g:github_user = $GITHUB_USER
@@ -30,7 +30,10 @@ if !exists('g:github_user')
 endif
 
 if !exists('g:github_api_url')
-  let g:github_api_url = 'https://api.github.com'
+  let g:github_api_url = substitute(s:system('git config --get github.apiurl'), "\n", '', '')
+  if strlen(g:github_api_url) == 0
+    let g:github_api_url = 'https://api.github.com'
+  end
 endif
 
 if !exists('g:gist_update_on_write')
@@ -90,13 +93,14 @@ function! s:format_gist(gist)
     return ""
   endif
   let file = a:gist.files[files[0]]
+  let name = file.filename
   if has_key(file, "content")
     let code = file.content
     let code = "\n".join(map(split(code, "\n"), '"  ".v:val'), "\n")
   else
     let code = ""
   endif
-  return printf("gist: %s %s%s", a:gist.id, type(a:gist.description)==0?"": a:gist.description, code)
+  return printf("gist: %s %s %s%s", a:gist.id, name, type(a:gist.description)==0 || a:gist.description==""?"":'('.a:gist.description.')', code)
 endfunction
 
 " Note: A colon in the file name has side effects on Windows due to NTFS Alternate Data Streams; avoid it.
@@ -242,8 +246,7 @@ endfunction
 function! s:GistGet(gistid, clipboard)
   redraw | echon 'Getting gist... '
   let res = webapi#http#get(g:github_api_url.'/gists/'.a:gistid, '', { "Authorization": s:GistGetAuthHeader() })
-  let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-  if status =~ '^2'
+  if res.status =~ '^2'
     let gist = webapi#json#decode(res.content)
     if get(g:, 'gist_get_multiplefile', 0) != 0
       let num_file = len(keys(gist.files))
@@ -361,8 +364,7 @@ function! s:GistUpdate(content, gistid, gistnm, desc)
     let gist["description"] = a:desc
   else
     let res = webapi#http#get(g:github_api_url.'/gists/'.a:gistid, '', { "Authorization": auth })
-    let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-    if status =~ '^2'
+    if res.status =~ '^2'
       let old_gist = webapi#json#decode(res.content)
       let gist["description"] = old_gist.description
     endif
@@ -376,8 +378,7 @@ function! s:GistUpdate(content, gistid, gistnm, desc)
   \   "Authorization": auth,
   \   "Content-Type": "application/json",
   \})
-  let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-  if status =~ '^2'
+  if res.status =~ '^2'
     let obj = webapi#json#decode(res.content)
     let loc = obj["html_url"]
     redraw | echomsg 'Done: '.loc
@@ -385,8 +386,7 @@ function! s:GistUpdate(content, gistid, gistnm, desc)
     setlocal nomodified
   else
     let loc = ''
-    let status = matchstr(status, '^\d\+\s*\zs.*')
-    echohl ErrorMsg | echomsg 'Post failed: '.status | echohl None
+    echohl ErrorMsg | echomsg 'Post failed: ' . res.message | echohl None
   endif
   return loc
 endfunction
@@ -404,15 +404,13 @@ function! s:GistDelete(gistid)
   \   "Authorization": auth,
   \   "Content-Type": "application/json",
   \}, 'DELETE')
-  let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-  if status =~ '^2'
+  if res.status =~ '^2'
     redraw | echomsg 'Done: '
     if exists('b:gist')
       unlet b:gist
     endif
   else
-    let status = matchstr(status, '^\d\+\s*\zs.*')
-    echohl ErrorMsg | echomsg 'Delete failed: '.status | echohl None
+    echohl ErrorMsg | echomsg 'Delete failed: ' . res.message | echohl None
   endif
 endfunction
 
@@ -428,6 +426,17 @@ function! s:get_current_filename(no)
     let filename = printf('gistfile%d.txt', a:no)
   endif
   return filename
+endfunction
+
+function s:update_GistID(id)
+  let view = winsaveview()
+  normal! gg
+  if search('\<GistID\>:\s*$')
+    let line = getline('.')
+    let line = substitute(line, '\s\+$', '', 'g')
+    call setline('.', line . ' ' . a:id)
+  endif
+  call winrestview(view)
 endfunction
 
 " GistPost function:
@@ -465,8 +474,7 @@ function! s:GistPost(content, private, desc, anonymous)
 
   redraw | echon 'Posting it to gist... '
   let res = webapi#http#post(g:github_api_url.'/gists', webapi#json#encode(gist), header)
-  let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-  if status =~ '^2'
+  if res.status =~ '^2'
     let obj = webapi#json#decode(res.content)
     let loc = obj["html_url"]
     redraw | echomsg 'Done: '.loc
@@ -476,10 +484,10 @@ function! s:GistPost(content, private, desc, anonymous)
     \ "description": gist['description'],
     \ "private": a:private,
     \}
+    call s:update_GistID(b:gist["id"])
   else
     let loc = ''
-    let status = matchstr(status, '^\d\+\s*\zs.*')
-    echohl ErrorMsg | echomsg 'Post failed: '.status | echohl None
+    echohl ErrorMsg | echomsg 'Post failed: '. res.message | echohl None
   endif
   return loc
 endfunction
@@ -520,16 +528,20 @@ function! s:GistPostBuffers(private, desc, anonymous)
 
   redraw | echon 'Posting it to gist... '
   let res = webapi#http#post(g:github_api_url.'/gists', webapi#json#encode(gist), header)
-  let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-  if status =~ '^2'
+  if res.status =~ '^2'
     let obj = webapi#json#decode(res.content)
     let loc = obj["html_url"]
     redraw | echomsg 'Done: '.loc
-    let b:gist = {"id": matchstr(loc, '[^/]\+$'), "filename": filename, "private": a:private}
+    let b:gist = {
+    \ "filename": filename,
+    \ "id": matchstr(loc, '[^/]\+$'),
+    \ "description": gist['description'],
+    \ "private": a:private,
+    \}
+    call s:update_GistID(b:gist["id"])
   else
     let loc = ''
-    let status = matchstr(status, '^\d\+\s*\zs.*')
-    echohl ErrorMsg | echomsg 'Post failed: '.status | echohl None
+    echohl ErrorMsg | echomsg 'Post failed: ' . res.message | echohl None
   endif
   return loc
 endfunction
@@ -556,6 +568,8 @@ function! gist#Gist(count, line1, line2, ...)
   let bufnamemx = '^' . s:bufprefix .'\(\zs[0-9a-f]\+\ze\|\zs[0-9a-f]\+\ze[/\\].*\)$'
   if bufname =~ bufnamemx
     let gistidbuf = matchstr(bufname, bufnamemx)
+  elseif exists('b:gist') && has_key(b:gist, 'id')
+    let gistidbuf = b:gist['id']
   else
     let gistidbuf = matchstr(join(getline(a:line1, a:line2), "\n"), 'GistID:\s*\zs\w\+')
   endif
@@ -604,8 +618,7 @@ function! gist#Gist(count, line1, line2, ...)
       else
         let gistid = gistidbuf
         let res = webapi#http#post(g:github_api_url.'/gists/'.gistid.'/star', '', { "Authorization": auth }, 'PUT')
-        let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-        if status =~ '^2'
+        if res.status =~ '^2'
           echomsg "Stared" gistid
         else
           echohl ErrorMsg | echomsg 'Star failed' | echohl None
@@ -619,7 +632,7 @@ function! gist#Gist(count, line1, line2, ...)
       else
         let gistid = gistidbuf
         let res = webapi#http#post(g:github_api_url.'/gists/'.gistid.'/star', '', { "Authorization": auth }, 'DELETE')
-        if status =~ '^2'
+        if res.status =~ '^2'
           echomsg "Unstared" gistid
         else
           echohl ErrorMsg | echomsg 'Unstar failed' | echohl None
@@ -634,8 +647,7 @@ function! gist#Gist(count, line1, line2, ...)
       else
         let gistid = gistidbuf
         let res = webapi#http#post(g:github_api_url.'/gists/'.gistid.'/fork', '', { "Authorization": auth })
-        let status = matchstr(matchstr(res.header, '^Status:'), '^[^:]\+: \zs.*')
-        if status =~ '^2'
+        if res.status =~ '^2'
           let obj = webapi#json#decode(res.content)
           let gistid = obj["id"]
         else
@@ -712,7 +724,7 @@ function! gist#Gist(count, line1, line2, ...)
         call s:open_browser(url)
       endif
       let gist_put_url_to_clipboard_after_post = get(g:, 'gist_put_url_to_clipboard_after_post', 1)
-      if gist_put_url_to_clipboard_after_post > 0
+      if gist_put_url_to_clipboard_after_post > 0 || clipboard
         if gist_put_url_to_clipboard_after_post == 2
           let url = url . "\n"
         endif
