@@ -1,19 +1,9 @@
 " Handlebars syntax
 " Language:    Handlebars
 " Maintainer:  Bruno Michel <brmichel@free.fr>
-" Last Change: Jun 23th, 2011
-" Version:	   0.1
+" Last Change: Mar 8th, 2013
+" Version:	   0.3
 " URL:         https://github.com/nono/vim-handlebars
-
-
-" Read the HTML syntax to start with
-if version < 600
-  so <sfile>:p:h/html.vim
-else
-  runtime! syntax/html.vim
-  unlet b:current_syntax
-  syntax clear Javascript
-endif
 
 if version < 600
   syntax clear
@@ -21,13 +11,15 @@ elseif exists("b:current_syntax")
   finish
 endif
 
-" Standard HiLink will not work with included syntax files
-if version < 508
-  command! -nargs=+ HtmlHiLink hi link <args>
-else
-  command! -nargs=+ HtmlHiLink hi def link <args>
+if !exists("main_syntax")
+  let main_syntax = 'html'
 endif
 
+ru! syntax/html.vim
+unlet b:current_syntax
+
+
+syn keyword hbsTodo             TODO FIXME XXX contained
 
 syn match   hbsError            /}}}\?/
 syn match   hbsInsideError      /{{[{#<>=!\/]\?/   containedin=@hbsInside
@@ -43,7 +35,8 @@ syn region  hbsSection         start="{{[#/]"lc=2 end=/}}/me=e-2        containe
 syn region  hbsPartial         start=/{{[<>]/lc=2 end=/}}/me=e-2        containedin=hbsInside
 syn region  hbsMarkerSet       start=/{{=/lc=2    end=/=}}/me=e-2       containedin=hbsInside
 
-syn region  hbsComment         start=/{{!/          end=/}}/me=e-2      containedin=htmlHead contains=Todo
+syn region  hbsComment         start=/{{!/rs=s+2    end=/}}/re=e-2      containedin=htmlHead contains=hbsTodo,Todo
+syn region  hbsBlockComment    start=/{{!--/rs=s+2  end=/--}}/re=e-2    containedin=htmlHead contains=hbsTodo,Todo
 syn region  hbsQString         start=/'/ skip=/\\'/ end=/'/             containedin=hbsInside
 syn region  hbsDQString        start=/"/ skip=/\\"/ end=/"/             containedin=hbsInside
 
@@ -62,23 +55,26 @@ if version >= 508 || !exists("did_lisp_syntax_inits")
     command -nargs=+ HiLink hi def link <args>
   endif
 
-  HtmlHiLink hbsError         Error
-  HtmlHiLink hbsInsideError   Error
+  HiLink hbsTodo          Todo
 
-  HtmlHiLink hbsHandlebars    Identifier
-  HtmlHiLink hbsUnescape      Special
-  HtmlHiLink hbsOperators     Operator
+  HiLink hbsError         Error
+  HiLink hbsInsideError   Error
 
-  HtmlHiLink hbsConditionals  Conditional
-  HtmlHiLink hbsHelpers       Repeat
+  HiLink hbsHandlebars    Identifier
+  HiLink hbsUnescape      Special
+  HiLink hbsOperators     Operator
 
-  HtmlHiLink hbsSection       Number
-  HtmlHiLink hbsPartial       Include
-  HtmlHiLink hbsMarkerSet     Number
+  HiLink hbsConditionals  Conditional
+  HiLink hbsHelpers       Repeat
 
-  HtmlHiLink hbsComment       Comment
-  HtmlHiLink hbsQString       String
-  HtmlHiLink hbsDQString      String
+  HiLink hbsSection       Number
+  HiLink hbsPartial       Include
+  HiLink hbsMarkerSet     Number
+
+  HiLink hbsBlockComment  Comment
+  HiLink hbsComment       Comment
+  HiLink hbsQString       String
+  HiLink hbsDQString      String
 
   delcommand HiLink
 endif
