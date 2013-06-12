@@ -75,7 +75,11 @@ function! webapi#json#decode(json)
   endif
   let json = substitute(json, '\n', '', 'g')
   let json = substitute(json, '\\u34;', '\\"', 'g')
-  let json = substitute(json, '\\u\(\x\x\x\x\)', '\=s:nr2enc_char("0x".submatch(1))', 'g')
+  if v:version >= 703 && has('patch780')
+    let json = substitute(json, '\\u\(\x\x\x\x\)', '\=iconv(nr2char(str2nr(submatch(1), 16), 1), "utf-8", &encoding)', 'g')
+  else
+    let json = substitute(json, '\\u\(\x\x\x\x\)', '\=s:nr2enc_char("0x".submatch(1))', 'g')
+  endif
   if get(g:, 'webapi#json#allow_nil', 0) != 0
     let tmp = '__WEBAPI_JSON__'
     while 1
@@ -105,6 +109,7 @@ function! webapi#json#encode(val)
     let json = substitute(json, "\r", '\\r', 'g')
     let json = substitute(json, "\n", '\\n', 'g')
     let json = substitute(json, "\t", '\\t', 'g')
+    let json = substitute(json, '\([[:cntrl:]]\)', '\=printf("\x%02d", char2nr(submatch(1)))', 'g')
     return iconv(json, &encoding, "utf-8")
   elseif type(a:val) == 2
     let s = string(a:val)
