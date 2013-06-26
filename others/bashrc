@@ -69,7 +69,7 @@ function generate_git_bar {
   fi
 
   if [[ ${git_status}} =~ "Untracked files" ]]; then
-    state="${state}${RED}?"
+    state="${state}${RED}★"
   fi
 
 
