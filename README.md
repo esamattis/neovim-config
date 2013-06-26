@@ -26,7 +26,7 @@ Can't live without it.
 
 ## Bootstrap
 
-    wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/setupvim.sh  | sh
+    wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/bootstrap.sh  | sh
 
 ## Solarized for gnome-terminal
 
