@@ -109,7 +109,7 @@ function prompt_func() {
 
   # Use red # as prompt char when root
   if [ $(id -u) -eq 0 ]; then
-    prompt_char="${RED}# ${COLOR_NONE}"
+    prompt_char="${COLOR_NONE}# ${COLOR_NONE}"
     host="${RED}\u@\h"
   else
     prompt_char="${COLOR_NONE}$ "
