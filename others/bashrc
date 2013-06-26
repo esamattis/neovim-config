@@ -61,68 +61,70 @@ function generate_git_bar {
     ${git_status}} =~ "Changes not staged for commit" || \
     ${git_status}} =~ "Changes to be committed" # Old git?
   ]]; then
-    state="${RED}⚡"
+    flags="${RED}⚡"
   fi
 
   if [ "$(git stash list)" ]; then
-    state="${state}${RED}˷"
+    flags="${flags}${RED}˷"
   fi
 
   if [[ ${git_status}} =~ "Untracked files" ]]; then
-    state="${state}${RED}★"
+    flags="${flags}${RED}★"
   fi
 
 
-  # add an else if or two here if you want to get more specific
   if [[ ${git_status} =~ ${remote_pattern} ]]; then
     if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
-      remote="${YELLOW}↑"
+      flags="${flags}${YELLOW}↑"
     else
-      remote="${YELLOW}↓"
+      flags="${flags}${YELLOW}↓"
     fi
   fi
+
   if [[ ${git_status} =~ ${diverge_pattern} ]]; then
-    remote="${YELLOW}↕"
+    flags="${flags}${YELLOW}↕"
   fi
+
   if [[ ${git_status} =~ ${branch_pattern} ]]; then
-    branch=${BASH_REMATCH[1]}
+    branch="${BLUE}${BASH_REMATCH[1]}"
   elif [[ ${git_status} =~ ${detached_branch_pattern} ]]; then
     branch="${YELLOW}NO BRANCH"
   fi
 
-  # if [[ ${#state} -gt "0" || ${#remote} -gt "0" ]]; then
-  #   s="${COLOR_NONE} "
-  # fi
 
-  echo "${BLUE}(${branch}${s}${remote}${state}${BLUE})"
+  if [ "${flags}" ]; then
+    flags="${COLOR_NONE}|${flags}"
+  fi
+
+  echo "${COLOR_NONE}(${branch}${flags}${COLOR_NONE})"
 }
 
-function bg_jobs(){
-  if [[ $(jobs) =~ "Stopped" ]]; then
-    echo "${RED}⌚ "
+function stopped_jobs(){
+  if [[ "$(jobs)" =~ "Stopped" ]]; then
+    echo "${COLOR_NONE}${RED}⌚ "
   fi
 }
 
 function prompt_func() {
 
-  # <user>@<host> <current working directory>
-  TITLEBAR="${GREEN}\u@\h ${YELLOW}\w"
-
   # Use red # as prompt char when root
   if [ $(id -u) -eq 0 ]; then
-    PROMPT_CHAR="${RED}# ${COLOR_NONE}"
+    prompt_char="${RED}# ${COLOR_NONE}"
+    host="${RED}\u@\h"
   else
-    PROMPT_CHAR="${COLOR_NONE}$ "
+    prompt_char="${COLOR_NONE}$ "
+    host="${GREEN}\u@\h"
   fi
+
+  titlebar="${host} ${YELLOW}\w"
 
   git rev-parse --git-dir > /dev/null 2>&1
   if [ $? -eq 0 ]; then
     # In Git repo
-    PS1="${TITLEBAR}\n$(bg_jobs)$(generate_git_bar)${PROMPT_CHAR}"
-  else
-    # Normal directory
-    PS1="${TITLEBAR}\n$(bg_jobs)${PROMPT_CHAR}"
+    git_bar="$(generate_git_bar)"
   fi
+
+  PS1="${titlebar}\n$(stopped_jobs)${git_bar}${prompt_char}"
 
 }
 
