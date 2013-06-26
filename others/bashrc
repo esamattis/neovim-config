@@ -65,7 +65,7 @@ function generate_git_bar {
   fi
 
   if [ "$(git stash list)" ]; then
-    state="${RED}˷"
+    state="${state}${RED}˷"
   fi
 
   if [[ ${git_status}} =~ "Untracked files" ]]; then
