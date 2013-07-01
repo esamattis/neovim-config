@@ -68,14 +68,17 @@ function generate_git_bar {
     flags="${flags}${RED}⚡"
   fi
 
+  if [[ ${git_status}} =~ "Changes to be committed" ]]; then
+    flags="${flags}${RED}√"
+  fi
+
+  if [[ ${git_status}} =~ "Unmerged paths" ]]; then
+    flags="${flags}${RED}≈"
+  fi
+
   if [ "$(git stash list)" ]; then
     flags="${flags}${RED}˷"
   fi
-
-  if [[ ${git_status}} =~ "Changes to be committed" ]]; then
-    flags="${flags}${RED}★"
-  fi
-
 
   if [[ ${git_status} =~ ${remote_pattern} ]]; then
     if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
