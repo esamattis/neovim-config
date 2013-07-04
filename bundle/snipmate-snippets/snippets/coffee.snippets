@@ -12,11 +12,14 @@ snippet m
 	module.exports = 
 snippet #!
 	#!/usr/bin/env coffee
-snippet err
+snippet terr
 	throw err if err
 snippet rerr
 	return cb err if err
 snippet iferr
+	if err
+	  return ${1}
+snippet err
 	if err
 	  return ${1}
 snippet #
@@ -25,6 +28,10 @@ snippet u
 	undefined
 snippet _
 	_ = require "underscore"
+snippet b
+	b = require "backbone"
+snippet q
+	Q = require "q"
 snippet _s
 	_  = require "underscore"
 	_.mixin require "underscore.string"
