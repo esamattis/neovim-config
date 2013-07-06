@@ -129,6 +129,8 @@ function prompt_func() {
   if [ $? -eq 0 ]; then
     # In Git repo
     git_bar="$(generate_git_bar)"
+  else
+    git_bar=""
   fi
 
   PS1="${titlebar}\n$(stopped_jobs)${git_bar}${prompt_char}"
