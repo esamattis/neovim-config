@@ -101,14 +101,6 @@ augroup json
 augroup END
 
 
-
-
-" My status lines
-" set statusline=%<%f%y\ \ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
-" With Syntastic
-set statusline=%<%f%y\ %#warningmsg#%{SyntasticStatuslineFlag()}%{fugitive#statusline()}%*\ %h%m%r%=%-14.(%l/%L,%c%V%)\ %P
-
-
 " Show error signs on left
 let g:syntastic_enable_signs=1
 " Shortcut for Syntastic error panel
