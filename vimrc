@@ -69,6 +69,8 @@ endif
 " Command for resetting tab width
 command -nargs=1 TabWidth setlocal shiftwidth=<args> tabstop=<args> softtabstop=<args>
 
+" Transfrom file 2 spaces to 4 spaces
+command T2to4 :%s/^\s*/&&/g | TabWidth 4
 
 
 " CSS properties and classes often use dash in their names. Add it to word
