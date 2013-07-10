@@ -106,7 +106,9 @@ function generate_git_bar {
     flags="${COLOR_NONE}|${flags}"
   fi
 
-  echo "${COLOR_NONE}(${branch}${flags}${COLOR_NONE})"
+  hash=$(git rev-parse HEAD | head -c 7)
+
+  echo "${COLOR_NONE}(${branch}${COLOR_NONE}|${YELLOW}${hash}${flags}${COLOR_NONE})"
 }
 
 function stopped_jobs(){
