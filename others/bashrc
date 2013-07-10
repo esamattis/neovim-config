@@ -96,9 +96,9 @@ function generate_git_bar {
   if [[ ${git_status} =~ ${branch_pattern} ]]; then
     branch="${BLUE}${BASH_REMATCH[1]}"
   elif [[ ${git_status} =~ ${detached_branch_pattern} ]]; then
-    branch="${YELLOW}NO BRANCH"
+    branch="${RED}NO BRANCH"
   elif [[ ${git_status} =~ ${detached_at_pattern} ]]; then
-    branch="${YELLOW}${BASH_REMATCH[1]}"
+    branch="${RED}${BASH_REMATCH[1]}"
   fi
 
 
