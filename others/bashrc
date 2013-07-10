@@ -55,6 +55,7 @@ function generate_git_bar {
   detached_branch_pattern="# Not currently on any branch"
   remote_pattern="# Your branch is (.*) of"
   diverge_pattern="# Your branch and (.*) have diverged"
+  detached_at_pattern="^# HEAD detached at ([^${IFS}]*)"
 
   if [[ ${git_status}} =~ "Changed but not updated" ]]; then
     flags="${RED}?" # Old git???
@@ -96,6 +97,8 @@ function generate_git_bar {
     branch="${BLUE}${BASH_REMATCH[1]}"
   elif [[ ${git_status} =~ ${detached_branch_pattern} ]]; then
     branch="${YELLOW}NO BRANCH"
+  elif [[ ${git_status} =~ ${detached_at_pattern} ]]; then
+    branch="${YELLOW}${BASH_REMATCH[1]}"
   fi
 
 
