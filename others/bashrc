@@ -13,7 +13,7 @@ export DEBEMAIL="esa-matti.suuronen@opinsys.fi"
 
 # Bundle helper for ruby development
 function be {
-  bundle exec $@
+  bundle exec "$@"
 }
 
 ## put to ~/.bashrc if in use
