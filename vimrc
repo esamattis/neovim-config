@@ -33,12 +33,17 @@ set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_mo
 " terminal does not support a scrolling region.
 set ttyfast
 
-" Fix Home and End
-" http://stackoverflow.com/questions/1523746/fix-home-and-end
-set term=xterm
+if &term =~ '^screen'
+  " Page keys http://sourceforge.net/p/tmux/tmux-code/ci/master/tree/FAQ
+  execute "set t_kP=\e[5;*~"
+  execute "set t_kN=\e[6;*~"
 
-set t_Co=256
-colorscheme default
+  " Arrow keys http://unix.stackexchange.com/a/34723
+  execute "set <xUp>=\e[1;*A"
+  execute "set <xDown>=\e[1;*B"
+  execute "set <xRight>=\e[1;*C"
+  execute "set <xLeft>=\e[1;*D"
+endif
 
 
 syntax on
