@@ -111,7 +111,9 @@ augroup END
 " Show error signs on left
 let g:syntastic_enable_signs=1
 " Shortcut for Syntastic error panel
-nnoremap <leader>e :Errors<CR>
+
+let g:syntastic_always_populate_loc_list=1
+nnoremap <leader>e :call ToggleLocationList()<CR>
 
 
 " Show statusline always
