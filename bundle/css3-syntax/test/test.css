@@ -1,11 +1,13 @@
 .align {
-  justify-self: head;
-  justify-content: foot;
-  justify-items: true;
-  align-self: flex-start;
-  align-content: flex-end;
-  align-items: space-between;
+  justify-self: safe;
+  justify-content: true;
+  justify-items: self-start;
+  align-self: self-end;
+  align-content: flex-start;
+  align-items: flex-end;
   display: space-around;
+  display: space-between;
+  display: space-evenly;
 }
 
 .animations {
@@ -59,6 +61,10 @@
   break-inside: auto;
 }
 
+.cascade {
+  all: unset;
+}
+
 .colors {
   opacity: rgba(0, 0, 0, 1);
   display: hsla(0, 0, 0, 1)
@@ -67,20 +73,26 @@
 
 .content {
   move-to: inhibit;
-  page-polcy: here;
+  page-policy: here;
   display: first;
   display: last;
 }
 
+.counter-styles {
+  negative: disclosure-open;
+  prefix: disclosure-closed;
+  suffix: simp-chinese-informal;
+  range: simp-chinese-formal;
+  pad: trad-chinese-informal;
+  fallback: trad-chinese-formal;
+  symbols: ethiopic-numeric;
+  additive-symbols: symbols("*" "\2020" "\2021" "\A7");
+  speak-as: auto;
+}
+
 .exclusions {
-  shape-image-threshold: maximum;
-  shape-inside: outside-shape;
-  shape-outside: auto;
-  wrap: auto;
-  wrap-flow: auto;
-  wrap-margin: auto;
-  wrap-padding: auto;
-  wrap-through: auto;
+  wrap-flow: minimum;
+  wrap-through: maximum;
 }
 
 .flexbox {
@@ -92,6 +104,44 @@
   flex-grow: column-reverse;
   flex-shrink: wrap-reverse;
   flex-wrap: auto;
+}
+
+.fonts {
+  font-feature-settings: common-ligatures;
+  font-kerning: no-common-ligatures;
+  font-language-override: discretionary-ligatures;
+  font-synthesis: no-discretionary-ligatures;
+  font-variant-alternates: historical-ligatures;
+  font-variant-caps: no-historical-ligatures;
+  font-variant-east-asian: contextual;
+  font-variant-ligatures: no-contextual;
+  font-variant-numeric: stylistic(feature-value-name);
+  font-variant-position: historical-forms;
+  display: styleset(feature-value-name #);
+  display: character-variant(feature-vlue-name #);
+  display: swash(feature-value-name);
+  display: ornaments(feature-value-name);
+  display: annotation(feature-value-name);
+  display: all-small-caps;
+  display: petite-caps;
+  display: all-petite-caps;
+  display: unicase;
+  display: titling-caps;
+  display: lining-nums;
+  display: oldstyle-nums;
+  display: proportional-nums;
+  display: tabular-nums;
+  display: diagonal-fractions;
+  display: stacked-fractions;
+  display: ordinal;
+  display: slashed-zero;
+  display: jis78;
+  display: jis83;
+  display: jis90;
+  display: jis04;
+  display: simplified;
+  display: traditional;
+  display: proportional-width;
 }
 
 .gcpm {
@@ -106,18 +156,18 @@
 }
 
 .grid-layout {
-  grid-cell: grid;
-  grid-column: rows;
-  grid-row: inline-grid;
-  grid-column-align: auto;
-  grid-row-align: auto;
-  grid-column-sizing: auto;
-  grid-row-sizing: auto;
-  grid-column-span: auto;
-  grid-row-span: auto;
-  grid-columns: auto;
-  grid-flow: auto;
-  grid-rows: auto;
+  grid-after: grid;
+  grid-area: subgrid;
+  grid-auto-columns: rows;
+  grid-auto-flow: inline-grid;
+  grid-auto-rows: auto;
+  grid-before: auto;
+  grid-column: auto;
+  grid-definition-columns: auto;
+  grid-definition-rows: auto;
+  grid-end: auto;
+  grid-row: auto;
+  grid-start: auto;
   grid-template: auto;
 }
 
@@ -171,119 +221,7 @@
 }
 
 .lists::marker {
-  type: box;
-  negative: check;
-  prefix: afar;
-  suffix: agaw;
-  range: ancient-tamil;
-  fallback: arabic-indic;
-  glyphs: ari;
-  additive-glyphs: asterisks;
-  display: bengali;
-  display: binary;
-  display: blin;
-  display: burmese;
-  display: cambodian;
-  display: circled-decimal;
-  display: circled-korean-consonants;
-  display: circled-korean-syllables;
-  display: circled-lower-latin;
-  display: circled-upper-latin;
-  display: cjk-decimal;
-  display: cjk-earthly-branch;
-  display: cjk-heavenly-stem;
-  display: dash;
-  display: devanagari;
-  display: diamond;
-  display: dizi;
-  display: dotted-decimal;
-  display: double-circled-decimal;
-  display: eastern-nagari;
-  display: filled-circled-decimal;
-  display: footnotes;
-  display: fullwidth-decimal;
-  display: fullwidth-lower-alpha;
-  display: fullwidth-lower-roman;
-  display: fullwidth-upper-alpha;
-  display: fullwidth-upper-roman;
-  display: gedeo;
-  display: greek;
-  display: gujarati;
-  display: gumuz;
-  display: gurmukhi;
-  display: hadiyya;
-  display: harari;
-  display: hindi;
-  display: japanese-formal;
-  display: japanese-informal;
-  display: kaffa;
-  display: kannada;
-  display: kebena;
-  display: kembata;
-  display: khmer;
-  display: konso;
-  display: korean-consonant;
-  display: korean-hangul-formal;
-  display: korean-hanja-formal;
-  display: korean-hanja-informal;
-  display: korean-syllable;
-  display: kunama;
-  display: lao;
-  display: lepcha;
-  display: lower-alpha-symbolic;
-  display: lower-armenian;
-  display: lower-belorussian;
-  display: lower-bulgarian;
-  display: lower-hexadecimal;
-  display: lower-macedonian;
-  display: lower-oromo-qubee;
-  display: lower-russian;
-  display: lower-russian-full;
-  display: lower-serbo-croatian;
-  display: lower-ukrainian;
-  display: lower-ukrainian-full;
-  display: malayalam;
-  display: marathi;
-  display: meen;
-  display: mongolian;
-  display: myanmar;
-  display: new-base-60;
-  display: octal;
-  display: oriya;
-  display: oromo;
-  display: parenthesized-decimal;
-  display: parenthesized-hangul-consonants;
-  display: parenthesized-hangul-syllable;
-  display: parenthesized-lower-latin;
-  display: persian;
-  display: persian-abjad;
-  display: persian-alphabetic;
-  display: saho;
-  display: sidama;
-  display: silti;
-  display: simple-lower-roman;
-  display: simple-upper-roman;
-  display: super-decimal;
-  display: tamil;
-  display: telugu;
-  display: thai;
-  display: thai-alphabetic;
-  display: tibetan;
-  display: tigre;
-  display: upper-alpha-symbolic;
-  display: upper-armenian;
-  display: upper-belorussian;
-  display: upper-bulgarian;
-  display: upper-hexadecimal;
-  display: upper-macedonian;
-  display: upper-oromo-qubee;
-  display: upper-russian;
-  display: upper-russian-full;
-  display: upper-serbo-croatian;
-  display: upper-ukrainian;
-  display: upper-ukrainian-full;
-  display: wolaita;
-  display: yemsa;
+  display: auto;
 }
 
 .marquee {
@@ -294,6 +232,26 @@
   display: alternate;
   display: marquee-line;
   display: marquee-block;
+}
+
+.masking {
+  mask-image: evenodd;
+  mask-source-type: luminance;
+  mask-repeat: alpha;
+  mask-position: auto;
+  mask-clip: auto;
+  mask-origin: auto;
+  mask-size: auto;
+  mask: auto;
+  mask-type: auto;
+  mask-box-image-source: auto;
+  mask-box-image-slice: auto;
+  mask-box-image-width: auto;
+  mask-box-image-outset: auto;
+  mask-box-image-repeat: auto;
+  mask-box-image: auto;
+  clip-path: auto;
+  clip-rule: auto;
 }
 
 @media screen and (min-width: 999px) {
@@ -315,14 +273,25 @@
   column-width: auto;
 }
 
+.overflow {
+  max-lines: paged-x;
+  display: paged-y;
+  display: paged-x-controls;
+  display: paged-y-controls;
+  display: fragments;
+}
+
 .preslev {
   presentation-level: increment;
 }
 
-@region .regions {
+.regions:region(p),
+.regions::region(p) {
   flow-from: break;
   flow-into: region;
-  region-overflow: avoid-region;
+  region-fragment: avoid-region;
+  display: element;
+  display: content;
 }
 
 .ruby {
@@ -333,56 +302,106 @@
   display: line-edge;
 }
 
+.selectors:not([DISABLED]),
+.selectors:matches(:hover, :focus),
+.selectors:any-link,
+.selectors:local-link,
+.selectors:local-link(0),
 .selectors:target,
+.selectors:scope,
+.selectors:current,
+.selectors:current(p, li, dt, dd),
+.selectors:past,
+.selectors:future,
 .selectors:enabled,
 .selectors:disabled,
 .selectors:checked,
 .selectors:indeterminate,
+.selectors:default,
+.selecors:in-range,
+.selectors:out-of-range,
+.selectors:required,
+.selectors:optional,
+.selectors:read-only,
+.selectors:read-write,
 .selectors:root,
 .selectors:empty,
-.selectors:first-of-type,
-.selectors:last-child,
-.selectors:last-of-type,
-.selectors:only-child,
-.selectors:only-of-type,
 .selectors:nth-child(2n+1),
-.selectors:nth-of-type(odd),
-.selectors:nth-last-child(2n+0),
-.selectors:nth-last-of-type(even),
-.selectors:not([DISABLED]), {
+.selectors:last-child,
+.selectors:nth-last-child(-n+2),
+.selectors:only-child,
+.selectors:first-of-type,
+.selectors:nth-of-type(2n+1),
+.selectors:last-of-type,
+.selectors:nth-last-of-type(n+2),
+.selectors:only-of-type,
+.selectors:nth-match(2n+1),
+.selectors:nth-last-match(-n+2),
+.selectors:column(p, li, dt, dd),
+.selectors:nth-column(2n+1),
+.selectors:nth-last-column(-n+2) {
   display: auto;
+}
+
+.shapes {
+  shape-image-threshold: rectangle(1px 1px 1198px 398px);
+  shape-inside: inset-rectangle(400px 100px 400px 200px);
+  shape-outside: circle(600px 200px 100px);
+  display: ellipse(0 0 250px 100px);
+  display: polygon(350px,75px  379px,161px 469px,161px 397px,215px 423px,301px 350px,250px 277px,301px 303px,215px 231px,161px 321px,161px);
+}
+
+.sizing {
+  display: max-content;
+  display: fit-content;
+  display: fill-available;
+  display: repudiate-floats;
+  display: contain-floats;
+}
+
+@supports (display: auto) or
+  (display: auto) not
+  (display: auto) {
+    .supports {
+      display: auto;
+    }
 }
 
 .text {
   hanging-punctuation: loose;
   line-break: strict;
-  overflow-wrap: objects;
-  tab-size: ink;
-  text-align-last: edges;
-  text-autospace: wavy;
-  text-decoration-color: filled;
-  text-decoration-line: dot;
-  text-decoration-skip: triangle;
-  text-decoration-style: sesame;
-  text-emphasis: hanging;
-  text-emphasis-color: distribute;
-  text-emphasis-position: kashida;
-  text-emphasis-style: preserve;
-  text-justify: alphabetic;
+  word-wrap: auto;
+  overflow-wrap: hanging;
+  tab-size: distribute;
+  text-align-last: kashida;
+  text-autospace: preserve;
+  text-justify: each-line;
   text-shadow: allow-end;
-  text-space-collapse: force-end;
   text-underline-position: keep-all;
-  text-wrap: match-parent;
   word-break: double-circle;
-  display: each-line;
   display: inter-word;
   display: inter-ideograph;
   display: inter-cluster;
   display: preserve-breaks;
   display: full-width;
-  display: full-size-kana;
   display: break-all;
   display: break-word;
+}
+
+.text-decor-3 {
+  text-decoration-color: filled;
+  text-decoration-line: dot;
+  text-decoration-skip: triangle;
+  text-decoration-style: sesame;
+  text-emphasis: objects;
+  text-emphasis-color: ink;
+  text-emphasis-position: edges;
+  text-emphasis-style: wavy;
+  display: alphabetic;
+  display: spaces;
+  display: box-decoration;
+  display: under;
+  display: over;
 }
 
 .transforms {
@@ -447,27 +466,21 @@
   display: 1dpcm;
   display: 1dppx;
   display: calc(100%/3 - 2*1em - 2*1px);
-  display: cycle(italic, normal);
+  display: toggle(italic, normal);
   display: initial;
+}
+
+.variables {
+  var-foo: var(foo);
 }
 
 .writing-modes {
   text-orientation: before;
   text-combine-horizontal: after;
-  text-combine-mode: numeric;
-  writing-mode: alpha;
-  display: latin;
-  display: alphanumeric;
+  writing-mode: isolate;
   display: isolate;
   display: plaintext;
-  display: min-content
-  display: max-content;
-  display: fit-content;
-  display: fill-available;
-  display: compress;
-  display: no-compress;
-  display: use-glyphs;
-  display: mixed-right;
+  display: mixed;
   display: upright;
   display: sideways;
   display: sideways-right;
@@ -479,35 +492,39 @@
 }
 
 .html5-elements,
-section,
+template,
 article,
+section,
+nav,
 aside,
 hgroup,
 header,
 footer,
-nav,
 figure,
 figcaption,
-video,
-audio,
-source,
-embed,
-mark,
-progress,
-meter,
+main,
 data,
 time,
+mark,
 ruby,
 rt,
 rp,
 bdi,
 wbr,
+embed,
+video,
+audio,
+source,
+track,
 canvas,
-command,
-details,
-summary,
 datalist,
 keygen,
-output {
+output,
+progress,
+meter,
+details,
+summary,
+menuitem,
+dialog {
   display: auto;
 }
