@@ -546,7 +546,6 @@ let g:neocomplcache_max_list = 10
 if !exists('g:neocomplcache_omni_patterns')
   let g:neocomplcache_omni_patterns = {}
 endif
-let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
 
 " Open snippet file of the filetype currently being edited
