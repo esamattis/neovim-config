@@ -4,7 +4,7 @@
 
 Dependecies
 
-    sudo apt-get install vim-nox exuberant-ctags git-core build-essential ruby ruby1.8-dev
+    sudo apt-get install vim-nox git-core build-essential
 
 Some nice tools to have
 
