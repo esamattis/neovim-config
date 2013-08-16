@@ -32,7 +32,7 @@ Can't live without it.
 
   * https://github.com/sigurdga/gnome-terminal-colors-solarized
 
-## Shitty color under tmux
+## Fix shitty colors under tmux
 
   * http://snk.tuxfamily.org/log/vim-256color-bce.html
 
