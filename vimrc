@@ -84,7 +84,8 @@ au FileType css,jade,stylus,less,scss,handlebars,html,coffee,eruby,javascript se
 
 
 " Makefiles and gitconfig require tab
-au FileType make,gitconfig setlocal noexpandtab
+au FileType make,gitconfig,go setlocal noexpandtab
+
 
 
 
