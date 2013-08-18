@@ -543,12 +543,21 @@ autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 " NeoComplCache config
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_min_syntax_length = 3
+
+" Disable preview for Go complete. Conflicted with neocomplcache menu
+set completeopt-=preview
+
+if !exists('neocomplcache_omni_functions')
+  let g:neocomplcache_omni_functions = {}
+endif
+
 let g:neocomplcache_max_list = 10
 if !exists('g:neocomplcache_omni_patterns')
   let g:neocomplcache_omni_patterns = {}
 endif
 let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-
+let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
 
 " Open snippet file of the filetype currently being edited
 command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
@@ -576,5 +585,3 @@ autocmd BufReadPost $HOME/.vim/localrc setfiletype vim
 
 " Seed it with localrc.default when created
 autocmd BufNewFile $HOME/.vim/localrc setfiletype vim | read $HOME/.vim/localrc.default
-
-
