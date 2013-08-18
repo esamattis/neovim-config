@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: init.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 24 Jun 2013.
+" Last Modified: 02 May 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -401,7 +401,7 @@ function! neocomplcache#init#_variables() "{{{
         \'[[:alnum:]:_]\+[*[{}]')
   call neocomplcache#util#set_default_dictionary(
         \'g:neocomplcache_next_keyword_patterns', 'html,xhtml,xml,mkd',
-        \'[^"]*"\|[[:alnum:]_:-]*>')
+        \'[[:alnum:]_:-]*>\|[^"]*"')
   "}}}
 
   " Initialize same file type lists. "{{{
@@ -449,12 +449,6 @@ function! neocomplcache#init#_variables() "{{{
   call neocomplcache#util#set_default_dictionary(
         \ 'g:neocomplcache_same_filetype_lists',
         \ 'lingr-say', 'lingr-messages,lingr-members')
-  call neocomplcache#util#set_default_dictionary(
-        \ 'g:neocomplcache_same_filetype_lists',
-        \ 'J6uil_say', 'J6uil')
-  call neocomplcache#util#set_default_dictionary(
-        \ 'g:neocomplcache_same_filetype_lists',
-        \ 'vimconsole', 'vim')
 
   " Interactive filetypes.
   call neocomplcache#util#set_default_dictionary(
@@ -596,7 +590,7 @@ function! neocomplcache#init#_variables() "{{{
         \ 'g:neocomplcache_text_mode_filetypes', {})
   call neocomplcache#util#set_default_dictionary(
         \ 'g:neocomplcache_text_mode_filetypes',
-        \ 'text,help,tex,gitcommit,vcs-commit,markdown', 1)
+        \ 'text,help,tex,gitcommit,vcs-commit', 1)
   "}}}
 
   " Initialize tags filter patterns. "{{{
@@ -664,8 +658,6 @@ function! neocomplcache#init#_current_neocomplcache() "{{{
         \ 'complete_pos' : -1,
         \ 'candidates' : [],
         \ 'complete_results' : [],
-        \ 'complete_sources' : [],
-        \ 'manual_sources' : [],
         \ 'start_time' : reltime(),
         \}
 endfunction"}}}

@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: buffer_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 27 May 2013.
+" Last Modified: 01 May 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -48,8 +48,6 @@ function! s:source.hooks.on_init(context) "{{{
 
   augroup neocomplcache "{{{
     " Caching events
-    autocmd BufEnter,BufRead,BufWinEnter *
-          \ call s:check_source()
     autocmd CursorHold,CursorHoldI *
           \ call s:check_cache()
     autocmd BufWritePost *
@@ -255,27 +253,29 @@ function! s:check_source() "{{{
     return
   endif
 
-  for bufnumber in range(1, bufnr('$'))
-    " Check new buffer.
-    let bufname = fnamemodify(bufname(bufnumber), ':p')
-    if (!has_key(s:buffer_sources, bufnumber)
-          \ || s:check_changed_buffer(bufnumber))
-          \ && !has_key(s:disable_caching_list, bufnumber)
-          \ && (!neocomplcache#is_locked(bufnumber) ||
-          \    g:neocomplcache_disable_auto_complete)
-          \ && !getwinvar(bufwinnr(bufnumber), '&previewwindow')
-          \ && getfsize(bufname) <
-          \      g:neocomplcache_caching_limit_file_size
-      " Caching.
-      call s:word_caching(bufnumber)
-    endif
+  let bufnumber = bufnr('%')
 
-    if has_key(s:buffer_sources, bufnumber)
-      let source = s:buffer_sources[bufnumber]
-      call neocomplcache#cache#check_cache_list('buffer_cache',
-            \ source.path, s:async_dictionary_list, source.keyword_cache, 1)
-    endif
-  endfor
+  " Check new buffer.
+  let bufname = fnamemodify(bufname(bufnumber), ':p')
+  if (!has_key(s:buffer_sources, bufnumber)
+        \ || s:check_changed_buffer(bufnumber))
+        \ && !has_key(s:disable_caching_list, bufnumber)
+        \ && (!neocomplcache#is_locked(bufnumber) ||
+        \    g:neocomplcache_disable_auto_complete)
+        \ && !getwinvar(bufwinnr(bufnumber), '&previewwindow')
+        \ && getfsize(bufname) <
+        \      g:neocomplcache_caching_limit_file_size
+    " Caching.
+    call s:word_caching(bufnumber)
+  endif
+
+  if !has_key(s:buffer_sources, bufnumber)
+    return
+  endif
+
+  let source = s:buffer_sources[bufnumber]
+  call neocomplcache#cache#check_cache_list('buffer_cache',
+        \ source.path, s:async_dictionary_list, source.keyword_cache, 1)
 endfunction"}}}
 function! s:check_cache() "{{{
   let release_accessd_time =

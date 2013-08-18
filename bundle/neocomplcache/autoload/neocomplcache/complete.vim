@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: complete.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 06 Jun 2013.
+" Last Modified: 01 May 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -75,7 +75,10 @@ function! neocomplcache#complete#manual_complete(findstart, base) "{{{
 
       if (g:neocomplcache_enable_cursor_hold_i
             \      || v:version > 703 || v:version == 703 && has('patch561'))
-            \ && len(a:base) < g:neocomplcache_auto_completion_start_length
+            \ && (len(a:base) < g:neocomplcache_auto_completion_start_length
+            \   || !empty(filter(copy(neocomplcache.candidates),
+            \          "get(v:val, 'neocomplcache__refresh', 0)"))
+            \   || len(neocomplcache.candidates) >= g:neocomplcache_max_list)
         " Note: If Vim is less than 7.3.561, it have broken register "." problem.
         let dict.refresh = 'always'
       endif
@@ -95,9 +98,14 @@ function! neocomplcache#complete#sources_manual_complete(findstart, base) "{{{
       return -2
     endif
 
+    let all_sources = neocomplcache#available_sources()
+    let sources = get(a:000, 0, keys(all_sources))
+    let s:use_sources = neocomplcache#helper#get_sources_list(
+          \ type(sources) == type([]) ? sources : [sources])
+
     " Get complete_pos.
     let complete_results = neocomplcache#complete#_get_results(
-          \ neocomplcache#get_cur_text(1), neocomplcache.manual_sources)
+          \ neocomplcache#get_cur_text(1), s:use_sources)
     let neocomplcache.complete_pos =
           \ neocomplcache#complete#_get_complete_pos(complete_results)
 

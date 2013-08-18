@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: handler.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 02 Jun 2013.
+" Last Modified: 26 Apr 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -62,16 +62,20 @@ function! neocomplcache#handler#_on_write_post() "{{{
   let neocomplcache = neocomplcache#get_current_neocomplcache()
 
   " Restore foldinfo.
-  for winnr in filter(range(1, winnr('$')),
-        \ "!empty(getwinvar(v:val, 'neocomplcache_foldinfo'))")
-    let neocomplcache_foldinfo =
-          \ getwinvar(winnr, 'neocomplcache_foldinfo')
-    call setwinvar(winnr, '&foldmethod',
-          \ neocomplcache_foldinfo.foldmethod)
-    call setwinvar(winnr, '&foldexpr',
-          \ neocomplcache_foldinfo.foldexpr)
-    call setwinvar(winnr,
-          \ 'neocomplcache_foldinfo', {})
+  " Note: settabwinvar() in insert mode has bug before 7.3.768.
+  for tabnr in (v:version > 703 || (v:version == 703 && has('patch768')) ?
+        \ range(1, tabpagenr('$')) : [tabpagenr()])
+    for winnr in filter(range(1, tabpagewinnr(tabnr, '$')),
+          \ "!empty(gettabwinvar(tabnr, v:val, 'neocomplcache_foldinfo'))")
+      let neocomplcache_foldinfo =
+            \ gettabwinvar(tabnr, winnr, 'neocomplcache_foldinfo')
+      call settabwinvar(tabnr, winnr, '&foldmethod',
+            \ neocomplcache_foldinfo.foldmethod)
+      call settabwinvar(tabnr, winnr, '&foldexpr',
+            \ neocomplcache_foldinfo.foldexpr)
+      call settabwinvar(tabnr, winnr,
+            \ 'neocomplcache_foldinfo', {})
+    endfor
   endfor
 endfunction"}}}
 function! neocomplcache#handler#_on_complete_done() "{{{
@@ -191,21 +195,28 @@ endfunction"}}}
 
 function! s:save_foldinfo() "{{{
   " Save foldinfo.
-  let winnrs = filter(range(1, winnr('$')),
-        \ "winbufnr(v:val) == bufnr('%')")
+  " Note: settabwinvar() in insert mode has bug before 7.3.768.
+  for tabnr in filter((v:version > 703 || (v:version == 703 && has('patch768')) ?
+        \ range(1, tabpagenr('$')) : [tabpagenr()]),
+        \ "index(tabpagebuflist(v:val), bufnr('%')) >= 0")
+    let winnrs = range(1, tabpagewinnr(tabnr, '$'))
+    if tabnr == tabpagenr()
+      call filter(winnrs, "winbufnr(v:val) == bufnr('%')")
+    endif
 
-  " Note: for foldmethod=expr or syntax.
-  call filter(winnrs, "
-        \  (getwinvar(v:val, '&foldmethod') ==# 'expr' ||
-        \   getwinvar(v:val, '&foldmethod') ==# 'syntax') &&
-        \  getwinvar(v:val, '&modifiable')")
-  for winnr in winnrs
-    call setwinvar(winnr, 'neocomplcache_foldinfo', {
-          \ 'foldmethod' : getwinvar(winnr, '&foldmethod'),
-          \ 'foldexpr'   : getwinvar(winnr, '&foldexpr')
-          \ })
-    call setwinvar(winnr, '&foldmethod', 'manual')
-    call setwinvar(winnr, '&foldexpr', 0)
+    " Note: for foldmethod=expr or syntax.
+    call filter(winnrs, "
+          \  (gettabwinvar(tabnr, v:val, '&foldmethod') ==# 'expr' ||
+          \   gettabwinvar(tabnr, v:val, '&foldmethod') ==# 'syntax') &&
+          \  gettabwinvar(tabnr, v:val, '&modifiable')")
+    for winnr in winnrs
+      call settabwinvar(tabnr, winnr, 'neocomplcache_foldinfo', {
+            \ 'foldmethod' : gettabwinvar(tabnr, winnr, '&foldmethod'),
+            \ 'foldexpr'   : gettabwinvar(tabnr, winnr, '&foldexpr')
+            \ })
+      call settabwinvar(tabnr, winnr, '&foldmethod', 'manual')
+      call settabwinvar(tabnr, winnr, '&foldexpr', 0)
+    endfor
   endfor
 endfunction"}}}
 function! s:check_in_do_auto_complete() "{{{
@@ -216,6 +227,8 @@ function! s:check_in_do_auto_complete() "{{{
   " Detect completefunc.
   if &l:completefunc !~# '^neocomplcache#'
     if g:neocomplcache_force_overwrite_completefunc
+          \ || &l:completefunc == ''
+          \ || &l:completefunc ==# 'neocomplcache#complete#sources_manual_complete'
       " Set completefunc.
       let &l:completefunc = 'neocomplcache#complete#manual_complete'
     else

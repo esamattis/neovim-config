@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 09 Jun 2013.
+" Last Modified: 01 May 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -224,7 +224,6 @@ function! neocomplcache#is_locked(...) "{{{
   let bufnr = a:0 > 0 ? a:1 : bufnr('%')
   return !neocomplcache#is_enabled() || &paste
         \ || g:neocomplcache_disable_auto_complete
-        \ || &l:completefunc == ''
         \ || neocomplcache#get_current_neocomplcache().lock
         \ || (g:neocomplcache_lock_buffer_name_pattern != '' &&
         \   bufname(bufnr) =~ g:neocomplcache_lock_buffer_name_pattern)
@@ -360,10 +359,6 @@ function! neocomplcache#complete_check() "{{{
 endfunction"}}}
 function! neocomplcache#check_invalid_omnifunc(omnifunc) "{{{
   return a:omnifunc == '' || (a:omnifunc !~ '#' && !exists('*' . a:omnifunc))
-endfunction"}}}
-function! neocomplcache#skip_next_complete() "{{{
-  let neocomplcache = neocomplcache#get_current_neocomplcache()
-  let neocomplcache.skip_next_complete = 1
 endfunction"}}}
 
 function! neocomplcache#set_dictionary_helper(variable, keys, value) "{{{
