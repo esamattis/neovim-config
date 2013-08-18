@@ -4,7 +4,7 @@
 
 Dependecies
 
-    sudo apt-get install vim-nox exuberant-ctags git-core build-essential ruby ruby1.8-dev
+    sudo apt-get install vim-nox git-core build-essential
 
 Some nice tools to have
 
@@ -32,7 +32,7 @@ Can't live without it.
 
   * https://github.com/sigurdga/gnome-terminal-colors-solarized
 
-## Shitty color under tmux
+## Fix shitty colors under tmux
 
   * http://snk.tuxfamily.org/log/vim-256color-bce.html
 
