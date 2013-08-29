@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Fix broken GOPATH in current tmux session
+
+if [ "$GOPATH" = "" ]; then
+    echo "No GOPATH set here. Cannot fix :("
+    exit 1
+fi
+
+tmux set-environment GOPATH $GOPATH
+tmux set-environment PATH $PATH

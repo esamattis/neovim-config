@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Create or attach to exising tmux Go worksapce in the current working
+# directory
+
+NAME=$(basename $(pwd))
+
+export PATH=~/code/dyntftp/bin:$PATH
+export GOPATH=$(pwd)
+
+tmux att -d -t $NAME || tmux new -s $NAME
+
