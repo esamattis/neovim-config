@@ -5,8 +5,8 @@
 
 NAME=$(basename $(pwd))
 
-export PATH=~/code/dyntftp/bin:$PATH
 export GOPATH=$(pwd)
+export PATH=$GOPATH/bin:$PATH
 
 tmux att -d -t $NAME || tmux new -s $NAME
 
