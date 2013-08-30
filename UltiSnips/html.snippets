@@ -1,0 +1,16 @@
+snippet doc "HTML 5 document skeleton" !b
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>${1}</title>
+    </head>
+    <body>
+    ${2}
+    </body>
+</html>
+endsnippet
+
+snippet t "A simple HTML tag" !w
+<${1:div}>${2}</${1/(\w+).*/$1/}>
+endsnippet
