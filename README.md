@@ -32,20 +32,7 @@ Can't live without it.
 
   * https://github.com/sigurdga/gnome-terminal-colors-solarized
 
-## Fix shitty colors under tmux
-
-  * http://snk.tuxfamily.org/log/vim-256color-bce.html
-
-## tmux
-
-For lucid
-
-    sudo apt-get install libevent-1.4-2
-
-  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_i386.deb
-  * https://launchpad.net/ubuntu/+archive/primary/+files/tmux_1.5-1~lucid1_amd64.deb
-
-### 1.8
+## tmux 1.8
 
     sudo apt-get install checkinstall libevent1-dev libncurses5-dev
     wget http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz
@@ -57,6 +44,7 @@ For lucid
 
 ## Influences from
 
+  * http://snk.tuxfamily.org/log/vim-256color-bce.html
   * http://statico.github.com/vim.html
   * https://github.com/skwp/dotfiles
   * http://stevelosh.com/blog/2010/09/coming-home-to-vim/
