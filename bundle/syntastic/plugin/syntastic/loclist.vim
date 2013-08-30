@@ -92,26 +92,26 @@ function! g:SyntasticLoclist.warnings()
 endfunction
 
 " cache used by EchoCurrentError()
-function! g:SyntasticLoclist.messages()
+function! g:SyntasticLoclist.messages(buf)
     if !exists("self._cachedMessages")
         let self._cachedMessages = {}
+        let errors = self.errors() + (self._quietWarnings ? [] : self.warnings())
 
-        for e in self.errors()
-            if !has_key(self._cachedMessages, e['lnum'])
-                let self._cachedMessages[e['lnum']] = e['text']
+        for e in errors
+            let b = e['bufnr']
+            let l = e['lnum']
+
+            if !has_key(self._cachedMessages, b)
+                let self._cachedMessages[b] = {}
+            endif
+
+            if !has_key(self._cachedMessages[b], l)
+                let self._cachedMessages[b][l] = e['text']
             endif
         endfor
-
-        if !self._quietWarnings
-            for e in self.warnings()
-                if !has_key(self._cachedMessages, e['lnum'])
-                    let self._cachedMessages[e['lnum']] = e['text']
-                endif
-            endfor
-        endif
     endif
 
-    return self._cachedMessages
+    return get(self._cachedMessages, a:buf, {})
 endfunction
 
 "Filter the list and return new native loclist
@@ -143,7 +143,12 @@ endfunction
 
 "display the cached errors for this buf in the location list
 function! g:SyntasticLoclist.show()
-    call setloclist(0, self.filteredRaw())
+    if !exists('w:syntastic_loclist_set')
+        let w:syntastic_loclist_set = 0
+    endif
+    call setloclist(0, self.filteredRaw(), g:syntastic_reuse_loc_lists && w:syntastic_loclist_set ? 'r' : ' ')
+    let w:syntastic_loclist_set = 1
+
     if self.hasErrorsOrWarningsToDisplay()
         let num = winnr()
         exec "lopen " . g:syntastic_loc_list_height
@@ -152,11 +157,17 @@ function! g:SyntasticLoclist.show()
         endif
 
         " try to find the loclist window and set w:quickfix_title
+        let errors = getloclist(0)
         for buf in tabpagebuflist()
             if buflisted(buf) && bufloaded(buf) && getbufvar(buf, '&buftype') ==# 'quickfix'
                 let win = bufwinnr(buf)
                 let title = getwinvar(win, 'quickfix_title')
-                if title ==# ':setloclist()' || strpart(title, 0, 16) ==# ':SyntasticCheck '
+
+                " TODO: try to make sure we actually own this window; sadly,
+                " errors == getloclist(0) is the only somewhat safe way to
+                " achieve that
+                if strpart(title, 0, 16) ==# ':SyntasticCheck ' ||
+                            \ ( (title == '' || title ==# ':setloclist()') && errors == getloclist(0) )
                     call setwinvar(win, 'quickfix_title', ':SyntasticCheck ' . self._name)
                 endif
             endif

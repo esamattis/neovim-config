@@ -119,6 +119,28 @@ function! syntastic#util#bufIsActive(buffer)
     return 0
 endfunction
 
+" start in directory a:where and walk up the parent folders until it
+" finds a file matching a:what; return path to that file
+function! syntastic#util#findInParent(what, where)
+    let here = fnamemodify(a:where, ':p')
+
+    while !empty(here)
+        let p = split(globpath(here, a:what), '\n')
+
+        if !empty(p)
+            return fnamemodify(p[0], ':p')
+        elseif here == '/'
+            break
+        endif
+
+        " we use ':h:h' rather than ':h' since ':p' adds a trailing '/'
+        " if 'here' is a directory
+        let here = fnamemodify(here, ':p:h:h')
+    endwhile
+
+    return ''
+endfunction
+
 " Returns unique elements in a list
 function! syntastic#util#unique(list)
     let seen = {}
@@ -132,10 +154,48 @@ function! syntastic#util#unique(list)
     return uniques
 endfunction
 
+" A less noisy shellescape()
+function! syntastic#util#shescape(string)
+    return a:string =~ '\m^[A-Za-z0-9_/.-]\+$' ? a:string : shellescape(a:string)
+endfunction
+
+" A less noisy shellescape(expand())
+function! syntastic#util#shexpand(string)
+    return syntastic#util#shescape(expand(a:string))
+endfunction
+
+" decode XML entities
+function! syntastic#util#decodeXMLEntities(string)
+    let str = a:string
+    let str = substitute(str, '&lt;', '<', 'g')
+    let str = substitute(str, '&gt;', '>', 'g')
+    let str = substitute(str, '&quot;', '"', 'g')
+    let str = substitute(str, '&apos;', "'", 'g')
+    let str = substitute(str, '&amp;', '\&', 'g')
+    return str
+endfunction
+
 function! syntastic#util#debug(msg)
     if g:syntastic_debug
         echomsg "syntastic: debug: " . a:msg
     endif
+endfunction
+
+function! syntastic#util#info(msg)
+    echomsg "syntastic: info: " . a:msg
+endfunction
+
+function! syntastic#util#warn(msg)
+    echohl WarningMsg
+    echomsg "syntastic: warning: " . a:msg
+    echohl None
+endfunction
+
+function! syntastic#util#error(msg)
+    execute "normal \<Esc>"
+    echohl ErrorMsg
+    echomsg "syntastic: error: " . a:msg
+    echohl None
 endfunction
 
 function! syntastic#util#deprecationWarn(msg)
@@ -144,7 +204,7 @@ function! syntastic#util#deprecationWarn(msg)
     endif
 
     call add(s:deprecationNoticesIssued, a:msg)
-    echomsg "syntastic: warning: " . a:msg
+    call syntastic#util#warn(a:msg)
 endfunction
 
 let &cpo = s:save_cpo

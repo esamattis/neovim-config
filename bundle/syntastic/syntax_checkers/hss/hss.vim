@@ -1,7 +1,7 @@
 "============================================================================
-"File:        mandoc.vim
+"File:        hss.vim
 "Description: Syntax checking plugin for syntastic.vim
-"Maintainer:  LCD 47 <lcd047 at gmail dot com>
+"Maintainer:  Justin Donaldson (jdonaldson@gmail.com)
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -9,33 +9,30 @@
 "             See http://sam.zoy.org/wtfpl/COPYING for more details.
 "
 "============================================================================
-if exists("g:loaded_syntastic_nroff_mandoc_checker")
+
+if exists("g:loaded_syntastic_hss_hss_checker")
     finish
 endif
-let g:loaded_syntastic_nroff_mandoc_checker=1
+let g:loaded_syntastic_hss_hss_checker=1
 
-function! SyntaxCheckers_nroff_mandoc_IsAvailable()
-    return executable("mandoc")
+function! SyntaxCheckers_hss_hss_IsAvailable()
+    return executable('hss')
 endfunction
 
-function! SyntaxCheckers_nroff_mandoc_GetLocList()
+function! SyntaxCheckers_hss_hss_GetLocList()
     let makeprg = syntastic#makeprg#build({
-        \ 'exe': 'mandoc',
-        \ 'args': '-Tlint',
-        \ 'filetype': 'nroff',
-        \ 'subchecker': 'mandoc' })
+	\ 'exe': 'hss',
+	\ 'args' : '-output ' . syntastic#util#DevNull(),
+	\ 'filetype': 'hss',
+	\ 'subchecker': 'hss' })
 
-    let errorformat =
-        \ '%E%f:%l:%c: %tRROR: %m,' .
-        \ '%W%f:%l:%c: %tARNING: %m'
+    let errorformat = '%E%f:%l: %m'
 
     return SyntasticMake({
-        \ 'makeprg': makeprg,
-        \ 'errorformat': errorformat,
-        \ 'returns': [0, 2, 3, 4] })
+	\ 'makeprg': makeprg,
+	\ 'errorformat': errorformat })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'nroff',
-    \ 'name': 'mandoc'})
-
+    \ 'filetype': 'hss',
+    \ 'name': 'hss'})

@@ -17,10 +17,16 @@ let s:defaultCheckers = {
         \ 'objcpp':     ['gcc'],
         \ 'perl':       ['perl', 'perlcritic'],
         \ 'php':        ['php', 'phpcs', 'phpmd'],
+        \ 'puppet':     ['puppet', 'puppetlint'],
         \ 'python':     ['python', 'flake8', 'pylint'],
         \ 'ruby':       ['mri'],
         \ 'sh':         ['sh'],
         \ 'tex':        ['lacheck']
+    \ }
+
+let s:defaultFiletypeMap = {
+        \ 'gentoo-metadata': 'xml',
+        \ 'lhaskell': 'haskell'
     \ }
 
 let g:SyntasticRegistry = {}
@@ -198,7 +204,8 @@ endfunction
 "resolve filetype aliases, and replace - with _ otherwise we cant name
 "syntax checker functions legally for filetypes like "gentoo-metadata"
 function! s:SyntasticRegistryNormaliseFiletype(ftalias)
-    let ft = get(g:syntastic_filetype_map, a:ftalias, a:ftalias)
+    let ft = get(s:defaultFiletypeMap, a:ftalias, a:ftalias)
+    let ft = get(g:syntastic_filetype_map, ft, ft)
     let ft = substitute(ft, '-', '_', 'g')
     return ft
 endfunction

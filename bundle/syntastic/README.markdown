@@ -26,14 +26,13 @@ user is notified and is happy because they didn't have to compile their code or
 execute their script to find them.
 
 At the time of this writing, syntax checking plugins exist for Ada,
-AppleScript, Bourne shell, C, C++, C#, CoffeeScript, Coco, Coq, CSS,
-Cucumber, CUDA, D, Dart, DocBook, Elixir, Erlang, eRuby, Fortran, Gentoo
-metadata, Go, Haml, Haskell, Haxe, HTML, Java, JavaScript, JSON, LESS,
-LISP, LLVM intermediate language, Lua, MATLAB, NASM, Objective-C,
-Objective-C++, OCaml, Perl, Perl POD, PHP, Puppet, Python,
-reStructuredText, Ruby, Rust, SASS/SCSS, Scala, Slim, Tcl, TeX, Twig,
-TypeScript, Vala, VHDL, xHtml, XML, XSLT, YAML, z80, Zope page
-templates, zsh.
+AppleScript, AsciiDoc, Bourne shell, C, C++, C#, CoffeeScript, Coco, Coq,
+CSS, Cucumber, CUDA, D, Dart, DocBook, Elixir, Erlang, eRuby, Fortran,
+Gentoo metadata, Go, Haml, Haskell, Haxe, HSS, HTML, Java, JavaScript, JSON,
+LESS, LISP, LLVM intermediate language, Lua, MATLAB, NASM, Objective-C,
+Objective-C++, OCaml, Perl, Perl POD, PHP, Puppet, Python, reStructuredText,
+Ruby, Rust, SASS/SCSS, Scala, Slim, Tcl, TeX, Twig, TypeScript, Vala, VHDL,
+xHtml, XML, XSLT, YAML, z80, Zope page templates, zsh.
 
 ## Screenshot
 
@@ -99,9 +98,9 @@ To get information or make suggestions check out the [google group](https://grou
 
 __Q. I installed syntastic but it isn't reporting any errors...__
 
-A. The most likely reason is that the syntax checker that it requires isn't installed. For example: python requires either `flake8`, `pyflakes` or `pylint` to be installed and in `$PATH`. To see which executable is required, just look in `syntax_checkers/<filetype>.vim`.  Note that aliases do not work; the actual executable must be available in your `$PATH`.  Symbolic links are okay.
+A. The most likely reason is that none of the syntax checkers that it requires is installed. For example: python requires either `flake8`, `pyflakes` or `pylint` to be installed and in `$PATH`. To see which executables are supported, just look in `syntax_checkers/<filetype>/*.vim`. Note that aliases do not work; the actual executable must be available in your `$PATH`. Symbolic links are okay.  You can see syntastic's idea of available checkers by running `:SyntasticInfo`.
 
-Another reason it could fail is that the error output for the syntax checker may have changed. In this case, make sure you have the latest version of the syntax checker installed. If it still fails then create an issue - or better yet, create a pull request.
+Another reason it could fail is that either the command line options or the error output for a syntax checker may have changed. In this case, make sure you have the latest version of the syntax checker installed. If it still fails then create an issue - or better yet, create a pull request.
 
 __Q. Recently some of my syntax checker options have stopped working...__
 
@@ -111,7 +110,7 @@ e.g. Previously there was `g:syntastic_phpcs_conf`, now you must use `g:syntasti
 
 See `:help syntastic-checker-options` for more information.
 
-__Q. I run a chacker and the location list is not updated...__
+__Q. I run a checker and the location list is not updated...__
 
 A. By default, the location list is changed only when you run the `:Errors` command, in order to minimise conflicts with other plugins.  If you want the location list to always be updated when you run the checkers, add this line to your vimrc:
 ```vim
@@ -122,7 +121,7 @@ __Q. How can I pass additional arguments to a checker?__
 
 A. Almost all syntax checkers use the `syntastic#makeprg#build()` function. Those checkers that do can be configured using global variables. The general form of the global args variables are:
 ```vim
-syntastic_[filetype]_[subchecker]_args
+syntastic_<filetype>_<subchecker>_args
 ```
 
 So, If you wanted to pass "--my --args --here" to the ruby mri checker you would add this line to your vimrc:
