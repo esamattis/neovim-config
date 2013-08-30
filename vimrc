@@ -560,8 +560,6 @@ endif
 let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
 
-" Open snippet file of the filetype currently being edited
-command SnippetsEdit execute "edit ~/.vim/bundle/snipmate-snippets/snippets/" . &ft . ".snippets"
 
 " Edir shortcut for this config
 command Vimrc e ~/.vim/vimrc
