@@ -5,7 +5,25 @@ ${2}
 }
 endsnippet
 
-snippet cb "Callback" !w
+snippet f, "Basic function with comma" !w
+function${3}(${1}) {
+${2}
+},
+endsnippet
+
+snippet f; "Basic function with semicolon" !w
+function${3}(${1}) {
+${2}
+};
+endsnippet
+
+snippet c "Callback" !w
+function(${1:err}) {
+${2}
+})
+endsnippet
+
+snippet c; "Callback with semicolon" !w
 function(${1:err}) {
 ${2}
 });
