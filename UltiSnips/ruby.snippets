@@ -2,3 +2,17 @@ snippet '\.i' "inspect object" !wr
 .inspect${1}
 endsnippet
 
+snippet bp "Breakpoint" !b
+debugger; nil
+endsnippet
+
+snippet '#' "variable expansion" !wr
+#{ ${1} }
+endsnippet
+
+
+snippet it "it block" !b
+it "${1}" do
+  ${2}
+end
+endsnippet
