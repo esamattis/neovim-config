@@ -93,6 +93,10 @@ shell(ctrl+c) and restart it(assuming the command to start is 'make run-server')
 
     :SlimuxSendKeysPrompt
     KEYS>C-C 'make run-server' Enter
+    
+or run previous command with
+
+    KEYS>Up Enter
 
 In short, some strings such as 'C-C' or 'Enter' have special meanings,
 while others are sent as a sequence of character keys(in the above example, 'make run-server')
@@ -114,6 +118,7 @@ put to your `.vimrc`
     map <Leader>s :SlimuxREPLSendLine<CR>
     vmap <Leader>s :SlimuxREPLSendSelection<CR>
     map <Leader>a :SlimuxShellLast<CR>
+    map <Leader>k :SlimuxSendKeysLast<CR>
 
 Or if you like something more Emacs Slime style try something like this:
 
@@ -121,6 +126,12 @@ Or if you like something more Emacs Slime style try something like this:
     vmap <C-c><C-c> :SlimuxREPLSendSelection<CR>
 
 You may also add shortcuts to other commands too.
+
+For Scheme Slimux has few extra bindings. Enable them with
+
+    let g:slimux_scheme_keybindings=1
+
+For more information refer to the [scheme plugin header](https://github.com/epeli/slimux/blob/master/ftplugin/scheme.vim).
 
 
 ## Adding support for new languages
@@ -164,6 +175,7 @@ maybe one of these is:
   * <https://github.com/jgdavey/vim-turbux>
   * <http://www.vim.org/scripts/script.php?script_id=2531>
   * <https://github.com/ervandew/screen>
+  * <https://github.com/mhinz/vim-tmuxify>
 
 
 
