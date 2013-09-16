@@ -139,7 +139,13 @@ function prompt_func() {
   fi
 
   PS1="${titlebar}\n$(stopped_jobs)${git_bar}${prompt_char}"
-  echo -ne "\033]0;${USER}@${HOSTNAME}: ${PWD/$HOME/~}\007"
+  title="\033]0;"
+  if [ "$SSH_CONNECTION" != "" -o "${USER}" = "root" ]; then
+    title="${title}${USER}@${HOSTNAME}: "
+  fi
+  title="${title}${PWD/$HOME/~}\007"
+
+  echo -ne $title
 
 }
 
