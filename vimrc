@@ -245,9 +245,6 @@ set smartcase
 " Show jump list of all search matches in all buffers
 map <Leader>b :Bsgrep <c-r>/<cr>
 
-" Do Grep.vim on the search register
-map <Leader>g :execute ":Grep -ri " . substitute(@/, "^\\\\v", "", "")<CR>
-
 " Close quickfix window when leaving. TODO: improve
 au WinLeave * cclose
 
@@ -526,10 +523,6 @@ au VimEnter * unmap <Leader>lb
 au VimEnter * unmap <Leader>lj
 au VimEnter * unmap <Leader>lg
 au VimEnter * unmap <Leader>lr
-
-"" align
-" Clashes with slimux
-au VimEnter * unmap <Leader>swp
 
 
 " Slimux key map
