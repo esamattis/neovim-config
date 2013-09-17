@@ -17,10 +17,18 @@
 "
 
 
-" Activate all plugins from the bundle
-" call pathogen#runtime_append_all_bundles()
-call pathogen#infect('~/.vim/bundle')
+let g:pathogen_disabled = []
 
+if system("uname --machine") =~? "armv6l"
+    call add(g:pathogen_disabled, "neocomplcache")
+    call add(g:pathogen_disabled, "gitgutter")
+    call add(g:pathogen_disabled, "gundo")
+    call add(g:pathogen_disabled, "buffersaurus")
+    call add(g:pathogen_disabled, "syntastic")
+endif
+
+" Activate plugins from the bundle
+call pathogen#infect('~/.vim/bundle')
 
 "" Leader mappings
 let mapleader = ","
