@@ -34,7 +34,7 @@ Can't live without it.
 
 ## tmux 1.8
 
-    sudo apt-get install checkinstall libevent1-dev libncurses5-dev
+    sudo apt-get install checkinstall libevent-dev libncurses5-dev
     wget http://downloads.sourceforge.net/project/tmux/tmux/tmux-1.8/tmux-1.8.tar.gz
     tar xzvf tmux-1.8.tar.gz
     cd tmux-1.8/
