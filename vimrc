@@ -25,6 +25,8 @@ if system("uname --machine") =~? "armv6l"
     call add(g:pathogen_disabled, "gundo")
     call add(g:pathogen_disabled, "buffersaurus")
     call add(g:pathogen_disabled, "syntastic")
+    call add(g:pathogen_disabled, "ultisnips")
+    call add(g:pathogen_disabled, "ctrlp")
 endif
 
 " Activate plugins from the bundle
