@@ -19,6 +19,7 @@
 
 let g:pathogen_disabled = []
 
+" Disable some plugins for slow arm boxes (raspberrypi)
 if system("uname --machine") =~? "armv6l"
     call add(g:pathogen_disabled, "neocomplcache")
     call add(g:pathogen_disabled, "gitgutter")
@@ -565,14 +566,14 @@ let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
 
 
-" Edir shortcut for this config
+" Edit shortcut for this config
 command Vimrc e ~/.vim/vimrc
 
 
 "" Local Vim configuration
 """"""""""""""""""""""""""
 
-" Load load it always on startup
+" Load it always on startup
 if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
