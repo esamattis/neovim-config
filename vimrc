@@ -255,6 +255,7 @@ noremap <Leader>q :Bclose<CR>
 
 " Write buffer (save)
 noremap <Leader>w :w<CR>
+imap ,w <esc>:w<CR>
 
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
