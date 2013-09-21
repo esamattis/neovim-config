@@ -12,5 +12,7 @@ snippet doc "HTML 5 document skeleton" !b
 endsnippet
 
 snippet < "A simple HTML tag" !w
-<${1:div}>${2}</${1/(\w+).*/$1/}>
+<${1:div}>
+${2}
+</${1/(\w+).*/$1/}>
 endsnippet

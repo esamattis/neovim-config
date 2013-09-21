@@ -19,6 +19,7 @@
 
 let g:pathogen_disabled = []
 
+" Disable some plugins for slow arm boxes (raspberrypi)
 if system("uname --machine") =~? "armv6l"
     call add(g:pathogen_disabled, "neocomplcache")
     call add(g:pathogen_disabled, "gitgutter")
@@ -34,6 +35,15 @@ call pathogen#infect('~/.vim/bundle')
 
 "" Leader mappings
 let mapleader = ","
+
+" let g:yankstack_map_keys = 0
+call yankstack#setup()
+map <C-p> <Plug>yankstack_substitute_older_paste
+map <C-n> <Plug>yankstack_substitute_newer_paste
+
+" Make Y behave like other capitals. Yank to end of line.
+map Y y$
+
 
 set ai
 set modeline
@@ -169,10 +179,6 @@ imap jj <esc>
 " Start window scrolling n lines before hitting the edge
 set scrolloff=3
 
-" Make Y behave like other capitals. Yank to end of line.
-map Y y$
-
-let g:yankring_history_dir = "$HOME/.vim"
 
 
 " Reselect visual block after indent/outdent
@@ -255,6 +261,7 @@ noremap <Leader>q :Bclose<CR>
 
 " Write buffer (save)
 noremap <Leader>w :w<CR>
+imap ,w <esc>:w<CR>
 
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
@@ -408,7 +415,8 @@ au VimResized * exe "normal! \<c-w>="
 map <F5> :redraw! \| :noh \| <cr><c-w>=
 
 
-map <Leader>t :CtrlP<CR>
+" map <Leader>t :CtrlP<CR>
+let g:ctrlp_map = '<Leader>t'
 map <Leader>T :CtrlPClearAllCaches<CR>
 
 " Open file tree
@@ -564,14 +572,14 @@ let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
 
 
-" Edir shortcut for this config
+" Edit shortcut for this config
 command Vimrc e ~/.vim/vimrc
 
 
 "" Local Vim configuration
 """"""""""""""""""""""""""
 
-" Load load it always on startup
+" Load it always on startup
 if filereadable($HOME . "/.vim/localrc")
     source $HOME/.vim/localrc
 endif
