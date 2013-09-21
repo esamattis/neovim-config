@@ -36,6 +36,15 @@ call pathogen#infect('~/.vim/bundle')
 "" Leader mappings
 let mapleader = ","
 
+" let g:yankstack_map_keys = 0
+call yankstack#setup()
+map <C-p> <Plug>yankstack_substitute_older_paste
+map <C-n> <Plug>yankstack_substitute_newer_paste
+
+" Make Y behave like other capitals. Yank to end of line.
+map Y y$
+
+
 set ai
 set modeline
 set wildignore=*.swp,*.bak,*.pyc,*.class,eggs,develop-eggs,*.egg-info,*~,node_modules
@@ -170,10 +179,6 @@ imap jj <esc>
 " Start window scrolling n lines before hitting the edge
 set scrolloff=3
 
-" Make Y behave like other capitals. Yank to end of line.
-map Y y$
-
-let g:yankring_history_dir = "$HOME/.vim"
 
 
 " Reselect visual block after indent/outdent
@@ -410,7 +415,8 @@ au VimResized * exe "normal! \<c-w>="
 map <F5> :redraw! \| :noh \| <cr><c-w>=
 
 
-map <Leader>t :CtrlP<CR>
+" map <Leader>t :CtrlP<CR>
+let g:ctrlp_map = '<Leader>t'
 map <Leader>T :CtrlPClearAllCaches<CR>
 
 " Open file tree
