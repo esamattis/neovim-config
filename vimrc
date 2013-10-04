@@ -270,14 +270,12 @@ imap ,w <esc>:w<CR>
 " the g again.
 set gdefault
 
-
-
-
 " Pasting
 """""""""
-" Jump directly to insert mode with paste using F2 key
-map <F2> :set paste<CR>i
-imap <F2> <ESC>:set paste<CR>i<Right>
+" Enter paste mode with Ctrl+i
+map <C-i> :set paste<CR>i
+"" Conflicts with ultisnips expand
+" imap <C-I> <ESC>:set paste<CR>i<Right>
 
 " Always disable paste mode when leaving insert mode
 au InsertLeave * set nopaste
