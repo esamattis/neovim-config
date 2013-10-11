@@ -1,4 +1,7 @@
 #!/bin/sh
 cd ~/.vim
 git status
+git stash
 git pull origin master
+git push sshorigin master
+git stash pop
