@@ -11,5 +11,5 @@ read ok
 git stash
 git pull --rebase origin master
 git push sshorigin master
-git stash pop
 git fetch origin
+git stash pop
