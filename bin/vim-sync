@@ -1,7 +1,14 @@
 #!/bin/sh
+
+set -eu
+
 cd ~/.vim
 git status
+
+echo -n "Press enter to continue"
+read ok
+
 git stash
-git pull origin master
+git pull --rebase origin master
 git push sshorigin master
 git stash pop
