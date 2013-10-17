@@ -54,3 +54,27 @@ endsnippet
 snippet e "console.error()" !b
 console.error(${1});
 endsnippet
+
+snippet q "var Q" !b
+var Q = require("q");
+endsnippet
+
+snippet m "module.exports" !b
+module.exports = 
+endsnippet
+
+snippet i "Mocha it" !bw
+it("${1}", function() {
+${2}
+});
+endsnippet
+
+snippet desc "Mocha describe" !b
+describe("${1}", function() {
+${2}
+});
+endsnippet
+
+snippet mocha "Mocha globals" !b
+/*global it, describe, before, beforeEach, after, afterEach */
+endsnippet
