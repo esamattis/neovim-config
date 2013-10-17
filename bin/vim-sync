@@ -10,6 +10,6 @@ read ok
 
 git stash
 git pull --rebase origin master
-git push sshorigin master
+git push sshorigin master || true
 git fetch origin
 git stash pop
