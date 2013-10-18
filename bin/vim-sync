@@ -1,14 +1,12 @@
 #!/bin/sh
 
 set -eu
+set -x
 
 cd ~/.vim
 
 [ -z "$(git status --short)" ] || {
     git status
-    echo
-    echo
-    echo "Local changes!" >&2
     exit 1
 }
 
