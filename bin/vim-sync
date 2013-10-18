@@ -13,5 +13,4 @@ cd ~/.vim
 }
 
 git pull --rebase origin master
-git push sshorigin master || true
-git fetch origin
+git push sshorigin master && git fetch origin
