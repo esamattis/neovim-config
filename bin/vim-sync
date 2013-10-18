@@ -3,13 +3,15 @@
 set -eu
 
 cd ~/.vim
-git status
 
-echo -n "Press enter to continue"
-read ok
+[ -z "$(git status --short)" ] || {
+    git status
+    echo
+    echo
+    echo "Local changes!" >&2
+    exit 1
+}
 
-git stash
 git pull --rebase origin master
 git push sshorigin master || true
 git fetch origin
-git stash pop
