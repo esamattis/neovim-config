@@ -39,6 +39,8 @@ done
 
 [ "$username" = "" ] && username="ubuntu"
 
+set -eu
+
 lxc-start -n $container --daemon
 lxc-wait -n $container -s RUNNING
 
