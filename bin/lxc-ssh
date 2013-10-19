@@ -43,7 +43,7 @@ while true; do
     esac
 done
 
-[ "$container" = "" -o "$container" = "" ] && help && exit 1
+[ "$container" = "" ] && help && exit 1
 
 
 set -eu
