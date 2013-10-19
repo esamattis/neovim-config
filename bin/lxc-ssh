@@ -58,8 +58,8 @@ for i in $(seq 100); do
     if [ "$ip" != "" ]; then
         break
     fi
-    sleep 1
     echo "Waiting for container to get network. Attempt $i/100..."
+    sleep 1
 done
 
 if [ "$ip" = "" ]; then
