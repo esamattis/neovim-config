@@ -2,7 +2,7 @@
 
 help(){
     echo "
-    Usage: $(basename $0) <-n container> [username] -- [ssh opts]
+    Usage: $(basename $0) <-n container> [-i interface] [username] -- [ssh opts]
 
     Ensure that container is running and login to it using ssh
     "
@@ -10,12 +10,19 @@ help(){
 }
 
 ssh_opts=""
+username="ubuntu"
+interface="eth0"
 
 while true; do
     case "$1" in
     -n|--name)
         shift
         container="$1"
+        shift
+       ;;
+    -i|--interface)
+        shift
+        interface="$1"
         shift
        ;;
     -h|--help)
@@ -38,7 +45,6 @@ done
 
 [ "$container" = "" -o "$container" = "" ] && help && exit 1
 
-[ "$username" = "" ] && username="ubuntu"
 
 set -eu
 
@@ -46,8 +52,7 @@ lxc-start -n $container --daemon
 lxc-wait -n $container -s RUNNING
 
 for i in $(seq 100); do
-    ifconfig=$(lxc-attach -n $container /sbin/ifconfig eth0 2>&1)
-    echo "$ifconfig"
+    ifconfig=$(lxc-attach -n $container /sbin/ifconfig $interface)
     ip="$(echo "$ifconfig" | sed -rn '2 s/^\s+inet addr:([0-9\.]+).*$/\1/p')"
 
     if [ "$ip" != "" ]; then
