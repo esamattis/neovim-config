@@ -9,11 +9,6 @@ help(){
 
 }
 
-if [ "$(whoami)" != "root" ]; then
-    echo "Not root. Trying sudo..."
-    set -x
-    exec sudo "$0" "$@"
-fi
 
 ssh_opts=""
 username="ubuntu"
@@ -51,6 +46,11 @@ done
 
 [ "$container" = "" ] && help && exit 1
 
+if [ "$(whoami)" != "root" ]; then
+    echo "Not root. Trying sudo..."
+    set -x
+    exec sudo "$0" "$@"
+fi
 
 set -eu
 
