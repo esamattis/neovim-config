@@ -2,13 +2,10 @@
 
 ## Install
 
-Dependecies
+Vim and tools
 
-    sudo apt-get install vim-nox git-core build-essential
+    sudo apt-get install vim-nox git-core tmux curl wget bvi
 
-Some nice tools to have
-
-    sudo apt-get install tmux curl elinks bvi hexer irb keychain htop iotop tig
 
 Checkers and linters for Syntastic (and some other tools)
 
