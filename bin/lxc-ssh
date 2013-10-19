@@ -1,0 +1,65 @@
+#!/bin/sh
+
+help(){
+    echo "
+    Usage: $(basename $0) <-n name> [username] -- [ssh opts]
+
+    Execute given script in a temporary container.
+
+    This must executed from the project root.
+    "
+
+}
+
+
+while true; do
+    case "$1" in
+    -n|--name)
+        shift
+        container="$1"
+        shift
+       ;;
+    -h|--help)
+        help && exit 0
+        ;;
+    "--")
+        shift
+        ssh_opts="$@"
+        break
+        ;;
+    "")
+        break
+        ;;
+    *)
+        username="$1"
+        shift
+        ;;
+    esac
+done
+
+[ "$container" = "" -o "$container" = "" ] && help && exit 1
+
+[ "$username" = "" ] && username="ubuntu"
+
+lxc-start -n $container --daemon
+lxc-wait -n $container -s RUNNING
+
+for i in $(seq 100); do
+    ifconfig=$(lxc-attach -n $container /sbin/ifconfig eth0 2>&1)
+    echo "$ifconfig"
+    ip="$(echo "$ifconfig" | sed -rn '2 s/^\s+inet addr:([0-9\.]+).*$/\1/p')"
+
+    if [ "$ip" != "" ]; then
+        break
+    fi
+    sleep 1
+    echo "Waiting for container to get network. Attempt $i/100..."
+done
+
+if [ "$ip" = "" ]; then
+    echo "Container failed to get network!"
+    exit 1
+fi
+
+set -x
+ssh $username@$ip $ssh_opts
