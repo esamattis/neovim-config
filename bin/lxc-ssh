@@ -2,11 +2,9 @@
 
 help(){
     echo "
-    Usage: $(basename $0) <-n name> [username] -- [ssh opts]
+    Usage: $(basename $0) <-n container> [username] -- [ssh opts]
 
-    Execute given script in a temporary container.
-
-    This must executed from the project root.
+    Ensure that container is running and login to it using ssh
     "
 
 }
