@@ -9,6 +9,7 @@ help(){
 
 }
 
+ssh_opts=""
 
 while true; do
     case "$1" in
