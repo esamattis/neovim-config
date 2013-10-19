@@ -9,6 +9,12 @@ help(){
 
 }
 
+if [ "$(whoami)" != "root" ]; then
+    echo "Not root. Trying sudo..."
+    set -x
+    exec sudo "$0" "$@"
+fi
+
 ssh_opts=""
 username="ubuntu"
 interface="eth0"
@@ -68,4 +74,4 @@ if [ "$ip" = "" ]; then
 fi
 
 set -x
-ssh $username@$ip $ssh_opts
+exec ssh $username@$ip $ssh_opts
