@@ -24,6 +24,7 @@ wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/maste
 cd $HOME/.vim
 make friends
 
+set +x
 echo
 echo "Subshell installed. Start it with ~/.epeli/login"
 echo
