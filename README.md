@@ -4,7 +4,7 @@
 
 Vim and tools
 
-    sudo apt-get install vim-nox git-core tmux curl wget bvi
+    sudo apt-get install vim-nox git-core tmux curl wget bvi build-essential
 
 
 Checkers and linters for Syntastic (and some other tools)
