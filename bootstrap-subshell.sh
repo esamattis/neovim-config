@@ -13,7 +13,9 @@ echo ". $HOME/.bashrc" > ".bash_profile"
 cat > $HOME/login<<EOF
 #!/bin/sh
 export HOME=$HOME
+echo
 echo "Starting new bash shell Vim superpowers!"
+echo
 exec bash --login
 EOF
 chmod +x $HOME/login
@@ -22,4 +24,7 @@ wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/maste
 cd $HOME/.vim
 make friends
 
+echo
+echo "Subshell installed. Start it with ~/.epeli/login"
+echo
 
