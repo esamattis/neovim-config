@@ -4,7 +4,6 @@ all: update install
 	chmod +x ~/.vim/bin/*
 	ln -fs ~/.vim/vimrc ~/.vimrc
 	ln -fs ~/.vim/gvimrc ~/.gvimrc
-	vim -c 'call pathogen#helptags()' -c 'qa!' > /dev/null
 	@echo
 	@echo "Cool all done!"
 	@echo
