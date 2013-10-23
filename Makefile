@@ -5,7 +5,6 @@ all: update install
 	ln -fs ~/.vim/vimrc ~/.vimrc
 	ln -fs ~/.vim/gvimrc ~/.gvimrc
 	vim -c 'call pathogen#helptags()' -c 'qa!' > /dev/null
-	vim -version || exit 0
 	@echo
 	@echo "Cool all done!"
 	@echo
