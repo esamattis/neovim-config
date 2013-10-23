@@ -25,6 +25,14 @@ Can't live without it.
 
     wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/bootstrap.sh  | sh
 
+or if you do not want to override existing config you can configure a subshell
+
+    wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/bootstrap-subshell.sh  | sh
+
+then start the subshell:
+
+    .epeli/login
+
 ## Solarized for gnome-terminal
 
   * https://github.com/sigurdga/gnome-terminal-colors-solarized
