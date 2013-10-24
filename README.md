@@ -27,11 +27,9 @@ Can't live without it.
 
 or if you do not want to override existing config you can configure a subshell
 
-    wget -qO - https://github.com/epeli/vimconfig/raw/master/bootstrap-subshell.sh  | sh
+    wget https://github.com/epeli/vimconfig/raw/master/bootstrap-subshell.sh
+    sh bootstrap-subshell.sh
 
-then start the subshell:
-
-    .epeli/login
 
 ## Solarized for gnome-terminal
 
