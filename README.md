@@ -23,11 +23,11 @@ Can't live without it.
 
 ## Bootstrap
 
-    wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/bootstrap.sh  | sh
+    wget -qO - https://github.com/epeli/vimconfig/raw/master/bootstrap.sh  | sh
 
 or if you do not want to override existing config you can configure a subshell
 
-    wget -q --no-check-certificate -O - https://github.com/epeli/vimconfig/raw/master/bootstrap-subshell.sh  | sh
+    wget -qO - https://github.com/epeli/vimconfig/raw/master/bootstrap-subshell.sh  | sh
 
 then start the subshell:
 
