@@ -501,7 +501,9 @@ autocmd BufRead,BufNewFile *.rb set cinwords=if,else,for,while,begin,class,do
 
 " Ruby uses 2 spaces as indentation
 au FileType ruby,haml,eruby setlocal shiftwidth=2 tabstop=2 softtabstop=2
-
+" ! and ? can be part of ruby methods
+au FileType ruby,haml,eruby setlocal iskeyword+=!
+au FileType ruby,haml,eruby setlocal iskeyword+=?
 
 
 " Python
