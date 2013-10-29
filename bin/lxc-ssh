@@ -16,7 +16,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 ssh_opts=""
-username="ubuntu"
+username=""
 interface="eth0"
 
 while true; do
@@ -53,6 +53,11 @@ done
 
 
 set -eu
+
+if [ "$username" = "" ]; then
+    read -p "username[ubuntu]> " username
+fi
+[ "$username" = "" ] && username="ubuntu"
 
 lxc-start -n $container --daemon
 lxc-wait -n $container -s RUNNING
