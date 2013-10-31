@@ -31,7 +31,7 @@ function syntastic#postprocess#compressWhitespace(errors)
     for e in a:errors
         let e['text'] = substitute(e['text'], "\001", '', 'g')
         let e['text'] = substitute(e['text'], '\n', ' ', 'g')
-        let e['text'] = substitute(e['text'], '\s\{2,}', ' ', 'g')
+        let e['text'] = substitute(e['text'], '\m\s\{2,}', ' ', 'g')
         call add(llist, e)
     endfor
 
@@ -64,6 +64,11 @@ function! syntastic#postprocess#decodeXMLEntities(errors)
     endfor
 
     return llist
+endfunction
+
+" filter out errors referencing other files
+function! syntastic#postprocess#filterForeignErrors(errors)
+    return filter(copy(a:errors), 'get(v:val, "bufnr") == ' . bufnr(''))
 endfunction
 
 let &cpo = s:save_cpo
