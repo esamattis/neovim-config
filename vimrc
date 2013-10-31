@@ -136,6 +136,8 @@ let g:syntastic_enable_signs=1
 let g:syntastic_always_populate_loc_list=1
 nnoremap <leader>e :call ToggleLocationList()<CR>
 
+let g:syntastic_sh_checkers = ['sh', 'shellcheck']
+
 
 " Show statusline always
 set laststatus=2
