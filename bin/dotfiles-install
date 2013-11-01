@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -x
+
+ln -s .vim/others/tmux.conf ~/.tmux.conf
+ln -s .vim/others/gitconfig ~/.gitconfig
+ln -s .vim/others/jshintrc ~/.jshintrc
+
+grep -xq 'source ~/.vim/others/bashrc' ~/.bashrc || {
+    echo 'source ~/.vim/others/bashrc' >> ~/.bashrc
+}

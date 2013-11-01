@@ -4,8 +4,7 @@
 
 Vim and tools
 
-    sudo apt-get install vim-nox git-core tmux curl wget bvi build-essential
-
+    sudo apt-get install vim-nox git-core tmux curl wget bvi
 
 Checkers and linters for Syntastic (and some other tools)
 
@@ -14,21 +13,16 @@ Checkers and linters for Syntastic (and some other tools)
     sudo gem install sass
     sudo apt-get install pyflakes
 
+## Bootstrap
 
-Caps Lock to Esc
+    sh <(wget -qO - https://github.com/epeli/vimconfig/raw/master/install.sh)
+
+### Caps Lock to Esc
 
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
 Can't live without it.
 
-## Bootstrap
-
-    wget -qO - https://github.com/epeli/vimconfig/raw/master/bootstrap.sh  | sh
-
-or if you do not want to override existing config you can configure a subshell
-
-    wget https://github.com/epeli/vimconfig/raw/master/bootstrap-subshell.sh
-    sh bootstrap-subshell.sh
 
 
 ## Solarized for gnome-terminal
