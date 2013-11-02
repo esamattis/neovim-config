@@ -1,8 +1,5 @@
 #!/bin/sh
 
-RED="\[\033[0;31m\]"
-COLOR_NONE="\[\e[0m\]"
-
 set -eu
 cd
 
@@ -11,7 +8,7 @@ echo "Installing Epeli's Vim configuration"
 backup () {
     if [ -e $1 ] ; then
         backup_name="${1}_backup_by_epeli_$(date +"%F_%H-%M-%S")"
-        echo -e "${RED}Creating backup for $1 -> $backup_name${COLOR_NONE}"
+        echo "Creating backup for $1 -> $backup_name"
         mv "$1" "$backup_name"
     fi
 }
