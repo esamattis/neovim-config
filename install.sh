@@ -4,11 +4,40 @@ RED="\[\033[0;31m\]"
 COLOR_NONE="\[\e[0m\]"
 
 set -eu
-
 cd
 
 echo "Installing Epeli's Vim configuration"
-read -p "In subshell y/n? [y]>" use_subshell
+
+backup () {
+    if [ -e $1 ] ; then
+        backup_name="${1}_backup_by_epeli_$(date +"%F_%H-%M-%S")"
+        echo -e "${RED}Creating backup for $1 -> $backup_name${COLOR_NONE}"
+        mv "$1" "$backup_name"
+    fi
+}
+
+install_packages=""
+ensure_deb () {
+    which "$1" || {
+        echo "Package $2 is not installed."
+        read -p "apt-get install it (y/n)?" install_it
+        if [ $install_it = "y" ]; then
+            install_packages="$install_packages $2"
+        fi
+    }
+}
+
+ensure_deb vim vim-nox
+ensure_deb git git-core
+ensure_deb tmux tmux
+if [ "$install_packages" != "" ]; then
+    sudo -k
+    sudo apt-get install -y $install_packages
+fi
+
+
+echo
+read -p "Create subshell y/n? [y]>" use_subshell
 [ "$use_subshell" = "" ] && use_subshell="y"
 
 if [ "$use_subshell" = "y" ]; then
@@ -34,13 +63,6 @@ chmod +x $subshell_loc/login
 export HOME="$subshell_loc"
 fi
 
-backup () {
-    if [ -e $1 ] ; then
-        backup_name="${1}_backup_by_epeli_$(date +"%F_%H-%M-%S")"
-        echo "${RED}Creating backup for $1 -> $backup_name${COLOR_NONE}"
-        mv "$1" "$backup_name"
-    fi
-}
 
 backup $HOME/.vim
 backup $HOME/.vimrc
