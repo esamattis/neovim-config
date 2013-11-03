@@ -13,11 +13,11 @@ Checkers and linters for Syntastic (and some other tools)
     sudo gem install sass
     sudo apt-get install pyflakes
 
-## Bootstrap
+### Bootstrap
 
     sh <(wget -qO - https://github.com/epeli/vimconfig/raw/master/install.sh)
 
-### Caps Lock to Esc
+## Caps Lock to Esc
 
     xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
 
