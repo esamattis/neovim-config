@@ -44,6 +44,8 @@ map <C-n> <Plug>yankstack_substitute_newer_paste
 " Make Y behave like other capitals. Yank to end of line.
 map Y y$
 
+" Select recently pasted text
+map <Leader>v `[v`]
 
 set ai
 set modeline
