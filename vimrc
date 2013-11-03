@@ -421,6 +421,9 @@ map <F5> :redraw! \| :noh \| <cr><c-w>=
 let g:ctrlp_map = '<Leader>t'
 map <Leader>T :CtrlPClearAllCaches<CR>
 
+" Ignore Bundler vendor dir
+let g:ctrlp_custom_ignore = 'vendor/bundle'
+
 " Open file tree
 map <Leader>n :LustyFilesystemExplorer<CR>
 " Open bufexplorer
