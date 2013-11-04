@@ -54,12 +54,13 @@ done
 
 set -eu
 
+lxc-start -n $container --daemon
+
 if [ "$username" = "" ]; then
     read -p "username[ubuntu]> " username
 fi
 [ "$username" = "" ] && username="ubuntu"
 
-lxc-start -n $container --daemon
 lxc-wait -n $container -s RUNNING
 
 for i in $(seq 100); do
