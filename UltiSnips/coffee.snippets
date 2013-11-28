@@ -30,3 +30,12 @@ endsnippet
 snippet bp "Breakpoint" !b
 debugger
 endsnippet
+
+snippet '#' "variable expansion" !wr
+#{ ${1} }
+endsnippet
+
+snippet ifmain "main if" !b
+if require.main is module
+${1}
+endsnippet
