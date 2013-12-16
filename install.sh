@@ -34,8 +34,8 @@ fi
 
 
 echo
-read -p "Create subshell y/n? [y]>" use_subshell
-[ "$use_subshell" = "" ] && use_subshell="y"
+read -p "Create in subshell y/n? [n]>" use_subshell
+[ "$use_subshell" = "" ] && use_subshell="n"
 
 if [ "$use_subshell" = "y" ]; then
     default_subshell_loc="$HOME/epeli"
