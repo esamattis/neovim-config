@@ -329,6 +329,9 @@ command ShowUnsaved w !diff -u % -
 " Open tagbar and close it after selection
 command T TagbarOpenAutoClose
 
+" put tagbar panel to left
+let g:tagbar_left = 1
+
 " Cooler tab completion for vim commands
 " http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
 set wildmode=longest,list
