@@ -27,6 +27,7 @@ ensure_deb () {
 ensure_deb vim vim-nox
 ensure_deb git git-core
 ensure_deb tmux tmux
+ensure_deb ctags exuberant-ctags
 if [ "$install_packages" != "" ]; then
     sudo -k
     sudo apt-get install -y $install_packages

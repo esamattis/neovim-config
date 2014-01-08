@@ -326,6 +326,8 @@ command MM wall|make
 command ShowUnsaved w !diff -u % -
 
 
+" Open tagbar and close it after selection
+command T TagbarOpenAutoClose
 
 " Cooler tab completion for vim commands
 " http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
