@@ -12,3 +12,9 @@ cd ~/.vim
 
 git pull --rebase origin master
 git push sshorigin master && git fetch origin
+
+echo
+echo "Now on"
+echo
+git log -1
+
