@@ -267,6 +267,7 @@ noremap <Leader>q :Bclose<CR>
 noremap <Leader>w :w<CR>
 imap ,w <esc>:w<CR>
 
+
 " Apply  substitutions globally on lines. For example, instead of
 " :%s/foo/bar/g you just type :%s/foo/bar/. This is almost always what you
 " want (when was the last time you wanted to only replace the first occurrence
@@ -557,6 +558,8 @@ map <Leader>a :SlimuxShellLast<CR>
 map <Leader>d :call SlimuxSendCode("\n")<CR>
 map <Leader>k :SlimuxSendKeysLast<CR>
 
+" Save and slimux send in insert mode too
+imap ,k <esc>:w<CR>:SlimuxSendKeysLast<CR>
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
