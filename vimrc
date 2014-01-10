@@ -252,6 +252,15 @@ set ignorecase
 set smartcase
 
 
+" Jump to definition with ctags
+noremap <Leader>g <C-]>
+
+" Go to next matched tag
+noremap <C-g> :tnext<cr>
+
+" Go to previous matched tag
+noremap <C-f> :tprevious<cr>
+
 
 " Buffersaurus
 " Show jump list of all search matches in all buffers
