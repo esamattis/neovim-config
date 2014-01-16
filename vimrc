@@ -155,8 +155,11 @@ function! GitTracks(...)
 endfun
 
 function SetGitStatus()
-    let g:git_status = GitTracks() ? fugitive#head() : 'NOT tracked!'
-    let g:airline_section_b = '%{g:git_status}'
+    " no need to execute git commands if airline is not in use
+    if exists('g:loaded_airline')
+        let g:git_status = GitTracks() ? fugitive#head() : 'NOT tracked!'
+        let g:airline_section_b = '%{g:git_status}'
+    endif
 endfunction
 
 " Update git status only on certain hooks instead directly on the airline to
