@@ -20,7 +20,7 @@
 let g:pathogen_disabled = []
 
 " Disable some plugins for slow arm boxes (raspberrypi)
-if system("uname --machine") =~? "armv6l" || strlen($VIM_LITE) != 0
+if strlen($VIM_LITE) != 0
     call add(g:pathogen_disabled, "neocomplcache")
     call add(g:pathogen_disabled, "gitgutter")
     call add(g:pathogen_disabled, "gundo")
