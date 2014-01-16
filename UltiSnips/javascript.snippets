@@ -82,3 +82,13 @@ endsnippet
 snippet mocha "Mocha globals" !b
 /*global it, describe, before, beforeEach, after, afterEach */
 endsnippet
+
+snippet ifmain "if (require.main === module)" !b
+if (require.main === module) {
+${1}
+}
+endsnippet
+
+snippet bs "Super (Backbone)" !b
+${1:Backbone.Model}.prototype.apply.${2:constructor}(this, arguments);
+endsnippet
