@@ -144,6 +144,15 @@ let g:syntastic_sh_checkers = ['sh', 'shellcheck']
 " Show statusline always
 set laststatus=2
 
+" http://stackoverflow.com/a/21152503/153718
+function! GitTracks(...)
+  let file = a:0 ? a:1 : expand('%')
+  let message = system('git ls-files -- ' . file)
+  let is_tracked = (message =~ '^fatal:') ? 0 : strlen(message)
+  return is_tracked
+endfun
+
+let g:airline_section_b = "%{GitTracks() ? fugitive#head() : 'NOT\ tracked!'}"
 
 " change the terminal's title
 set title
