@@ -28,6 +28,8 @@ if system("uname --machine") =~? "armv6l"
     call add(g:pathogen_disabled, "syntastic")
     call add(g:pathogen_disabled, "ultisnips")
     call add(g:pathogen_disabled, "ctrlp")
+    call add(g:pathogen_disabled, "airline")
+    call add(g:pathogen_disabled, "fugitive")
 endif
 
 " Activate plugins from the bundle
