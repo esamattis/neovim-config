@@ -154,7 +154,14 @@ function! GitTracks(...)
   return is_tracked
 endfun
 
-let g:airline_section_b = "%{GitTracks() ? fugitive#head() : 'NOT\ tracked!'}"
+function SetGitStatus()
+    let g:git_status = GitTracks() ? fugitive#head() : 'NOT tracked!'
+    let g:airline_section_b = '%{g:git_status}'
+endfunction
+
+" Update git status only on certain hooks instead directly on the airline to
+" avoid some rendering glitches
+au BufNewFile,BufRead,BufEnter,BufWritePost * :call SetGitStatus()
 
 " change the terminal's title
 set title
