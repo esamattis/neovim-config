@@ -1,4 +1,4 @@
-
+extends html
 
 snippet m "private method" !b
 private function ${1}(${2})
@@ -16,4 +16,16 @@ endsnippet
 
 snippet t "$this->" !w
 $this->${1}
+endsnippet
+
+snippet l "error_log()" !w
+error_log(${1});
+endsnippet
+
+snippet pp "pretty format" !w
+print_r(${1}, true)
+endsnippet
+
+snippet ? "<?php" !w
+<?php ${1} ?>
 endsnippet
