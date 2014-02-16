@@ -1,23 +1,22 @@
 # html5.vim
 
-HTML5 omnicomplete funtion and syntax for Vim.
+HTML5 + inline SVG omnicomplete funtion, indent and syntax for Vim.
 Based on the default htmlcomplete.vim.
 
 ## Feature
 
 - Support all new elements and attribute.
+- Support all SVG elements
 - Support [microdata][microdata].
 - Support [RDFa][RDFa].
 - Support [WAI-ARIA][aria].
 
 ## Install
 
-Goto [get][html5.vim] vimball file. Open it with vim and execute :so%
-or 
+Use [Vundle][] or [pathogen.vim][] is recommended.
 
-    git clone git://github.com/othree/html5.vim.git
-    cd html5.vim
-    make install
+[Vundle]:https://github.com/gmarik/vundle
+[pathogen.vim]:https://github.com/tpope/vim-pathogen
 
 ## Configure
 
@@ -39,19 +38,13 @@ Disable WAI-ARIA attribute support:
 
 ## Change Log
 
-### Version 0.26
+### Version 0.27
 
-- Support multi-value attributes (Most of them are WAI-ARIA attributes)
-- Some old complete function bug fix
-
-### Version 0.25
-
-- WAI-ARIA support bug fix
-- WAI-ARIA complete supports all doctypes now
+- Support inline SVG
 
 ## License
 
-Copyright (c) 2010 Wei-Ko Kao
+Copyright (c) 2010-2013 Wei-Ko Kao, 2012 HT de Beer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -82,6 +75,7 @@ THE SOFTWARE.
 7. [WAI-ARIA][7]
 8. [IANA Language Sub Tags][8]
 9. [IANA Charset][9]
+10. [SVG Spec][10]
 
 [html5.vim]:http://www.vim.org/scripts/script.php?script_id=3236
 
@@ -98,3 +92,4 @@ THE SOFTWARE.
 [7]:http://www.w3.org/TR/wai-aria/
 [8]:http://www.iana.org/assignments/language-subtag-registry
 [9]:http://www.iana.org/assignments/character-sets 
+[10]:http://www.w3.org/TR/SVG/
