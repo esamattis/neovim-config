@@ -15,6 +15,10 @@ snippet '#' "variable expansion" !wr
 endsnippet
 
 
+snippet dir "Current directory" !b
+DIR = File.expand_path File.dirname(__FILE__)
+endsnippet
+
 snippet it "it block" !b
 it "${1}" do
   ${2}
