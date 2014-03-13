@@ -104,7 +104,10 @@ ${1}
 endsnippet
 
 snippet bs "Super (Backbone)" !b
-${1:Backbone.Model}.prototype.apply.${2:constructor}(this, arguments);
+${1:Backbone.Model}.prototype.${2:constructor}.apply(this, arguments);
+endsnippet
+snippet super "Super (Backbone)" !b
+${1:Backbone.Model}.prototype.${2:constructor}.apply(this, arguments);
 endsnippet
 
 snippet exit "process.exit(0);" !b
