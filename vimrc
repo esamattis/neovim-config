@@ -142,6 +142,8 @@ nnoremap <leader>e :call ToggleLocationList()<CR>
 
 let g:syntastic_sh_checkers = ['sh', 'shellcheck']
 
+" Use JSXhint when available. JSXhint is superset of jshint so it can be used
+" in place of JSHint.
 call system('which jsxhint')
 if  v:shell_error == 0
     let g:syntastic_javascript_checkers = ['jsxhint']
