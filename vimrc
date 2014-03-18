@@ -142,6 +142,13 @@ nnoremap <leader>e :call ToggleLocationList()<CR>
 
 let g:syntastic_sh_checkers = ['sh', 'shellcheck']
 
+call system('which jsxhint')
+if  v:shell_error == 0
+    let g:syntastic_javascript_checkers = ['jsxhint']
+else
+    let g:syntastic_javascript_checkers = ['jshint']
+endif
+
 
 " Show statusline always
 set laststatus=2
