@@ -117,3 +117,23 @@ endsnippet
 snippet jsx "Add JSX comment" !b
 /** @jsx React.DOM */
 endsnippet
+
+snippet react "Create React Component" !b
+var ${1} = React.createClass({
+    render: function() {
+        return (
+            ${2}
+        );
+    }
+});
+endsnippet
+
+snippet req "require(module)" !b
+var ${1:React} = require("${1/(.*)/$1/}");
+endsnippet
+
+snippet remove "Remove element from array" !b
+var ${3:i} = ${1:array}.indexOf(${2:value});
+if (${3/(.*)/$1/} > -1) ${1/(.*)/$1/}.splice(${3/(.*)/$1/}, 1);
+endsnippet
+
