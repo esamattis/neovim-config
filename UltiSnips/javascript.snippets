@@ -128,8 +128,8 @@ var ${1} = React.createClass({
 });
 endsnippet
 
-snippet req "require(module)" !b
-var ${1:React} = require("${1/(.*)/$1/}");
+snippet re "require(module)" !b
+var ${1:React} = require("$2${1/(.*)/$1/}");
 endsnippet
 
 snippet remove "Remove element from array" !b
