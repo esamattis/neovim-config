@@ -1,4 +1,3 @@
-
 export TERM=screen-256color
 export EDITOR=vim
 
@@ -25,7 +24,6 @@ function be {
 # Restore keychain
 alias keychain-enable='keychain --nogui -q -Q id_rsa && . ~/.keychain/`uname -n`-sh'
 
-alias ircproxy='ssh -t jyulakka ssh -t melmacian.net "tmux att -d -t irc"'
 
 if [ -d ~/.vim/bin ] ; then
     PATH=~/.vim/bin:"${PATH}"
