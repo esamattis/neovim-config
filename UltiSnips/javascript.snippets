@@ -119,13 +119,34 @@ snippet jsx "Add JSX comment" !b
 endsnippet
 
 snippet react "Create React Component" !b
-var ${1} = React.createClass({
+/**
+ * ${1/(.*)/$1/}
+ *
+ * @namespace components
+ * @class ${1/(.*)/$1/}
+ */
+var ${1:Component} = React.createClass({
     render: function() {
         return (
             ${2}
         );
     }
 });
+endsnippet
+
+snippet me "Create method with docstring" !b
+/**
+ * ${3:TODO}
+ *
+ * @method ${1/(.*)/$1/}
+ */
+${1:method}: function(){
+${2}
+}
+endsnippet
+
+snippet use "use strict" !b
+"use strict";
 endsnippet
 
 snippet re "require(module)" !b
@@ -137,3 +158,9 @@ var ${3:i} = ${1:array}.indexOf(${2:value});
 if (${3/(.*)/$1/} > -1) ${1/(.*)/$1/}.splice(${3/(.*)/$1/}, 1);
 endsnippet
 
+
+snippet ** "yuidoc comment" !b
+/**
+ * @${2}
+ */
+endsnippet
