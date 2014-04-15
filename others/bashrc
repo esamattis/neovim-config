@@ -4,6 +4,10 @@ export EDITOR=vim
 # Disable terminal flow control
 stty -ixon
 
+# http://briancarper.net/blog/248/
+# Append to ~/.bash_history instead of overriding it
+shopt -s histappend
+
 # tmux
 source $HOME/.vim/others/bash_completion_tmux.sh
 
@@ -143,8 +147,12 @@ function prompt_func() {
   fi
   title="${title}${PWD/$HOME/~}\007"
 
+  # Write last command to ~/.bash_history
+  history -a
+  # Reload history from ~/.bash_history in the case it was updated from another
+  # terminal
+  history -n
   echo -ne $title
-
 }
 
 PROMPT_COMMAND=prompt_func
