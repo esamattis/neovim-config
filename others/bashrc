@@ -53,11 +53,11 @@ COLOR_NONE="\[\e[0m\]"
 
 function generate_git_bar {
   git_status="$(git status 2> /dev/null)"
-  branch_pattern="^# On branch ([^${IFS}]*)"
-  detached_branch_pattern="# Not currently on any branch"
-  remote_pattern="# Your branch is (.*) of"
-  diverge_pattern="# Your branch and (.*) have diverged"
-  detached_at_pattern="^# HEAD detached at ([^${IFS}]*)"
+  branch_pattern="On branch ([^${IFS}]*)"
+  detached_branch_pattern="Not currently on any branch"
+  remote_pattern="Your branch is (.*) of"
+  diverge_pattern="Your branch and (.*) have diverged"
+  detached_at_pattern="HEAD detached at ([^${IFS}]*)"
 
   if [[ ${git_status}} =~ "Changed but not updated" ]]; then
     flags="${RED}?" # Old git???
