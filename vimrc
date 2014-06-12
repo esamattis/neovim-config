@@ -640,6 +640,7 @@ let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
 " Edit shortcut for this config
 command Vimrc e ~/.vim/vimrc
 
+abbreviate lenght length
 
 "" Local Vim configuration
 """"""""""""""""""""""""""
