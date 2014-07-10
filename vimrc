@@ -616,6 +616,14 @@ autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
+" Wildfire
+
+let g:wildfire_objects = {
+    \ "*" : ["i'", 'i"', "i)", "i]", "i}", "ip"],
+    \ "clojure" : ["a'", 'a"', "a)", "a]", "a}", "ap"],
+\ }
+
+
 " NeoComplCache config
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_smart_case = 1
@@ -661,3 +669,4 @@ autocmd BufReadPost $HOME/.vim/localrc setfiletype vim
 
 " Seed it with localrc.default when created
 autocmd BufNewFile $HOME/.vim/localrc setfiletype vim | read $HOME/.vim/localrc.default
+
