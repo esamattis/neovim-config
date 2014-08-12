@@ -9,6 +9,10 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Do nothing if we don't find the @jsx pragma.
+exec 'source '.expand('<sfile>:p:h:h').'/jsx-pragma.vim'
+if g:jsx_pragma_required && !b:jsx_pragma_found | finish | endif
+
 " Prologue; load in XML syntax.
 if exists('b:current_syntax')
   let s:current_syntax=b:current_syntax
@@ -21,7 +25,7 @@ endif
 
 " Highlight JSX regions as XML; recursively match.
 syn region jsxRegion contains=@XMLSyntax,jsxRegion,jsBlock,jsStringD,jsStringS
-  \ start=+<\z([a-zA-Z0-9:\-]\+\)+
+  \ start=+<\@<!<\z([a-zA-Z][a-zA-Z0-9:\-]*\)+
   \ skip=+<!--\_.\{-}-->+
   \ end=+</\z1\_\s\{-}>+
   \ end=+/>+
