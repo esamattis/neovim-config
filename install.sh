@@ -14,22 +14,22 @@ backup () {
 }
 
 install_packages=""
-ensure_deb () {
-    which "$1" || {
-        echo "Package $2 is not installed."
-        read -p "apt-get install it y/n? [n]>" install_it
-        if [ $install_it = "y" ]; then
-            install_packages="$install_packages $2"
+
+install_if_missing() {
+    dpkg -s $1 > /dev/null 2>&1 || {
+        read -p "apt-get install $1 y/n? [n]>" install_it
+        if [ "$install_it" = "y" ]; then
+            install_packages="$install_packages $1"
         fi
     }
 }
 
-ensure_deb vim vim-nox
-ensure_deb git git-core
-ensure_deb tmux tmux
-ensure_deb ctags exuberant-ctags
+install_if_missing vim-nox
+install_if_missing git
+install_if_missing tmux
+install_if_missing exuberant-ctags
+
 if [ "$install_packages" != "" ]; then
-    sudo -k
     sudo apt-get install -y $install_packages
 fi
 
