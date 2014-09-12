@@ -17,7 +17,7 @@ install_packages=""
 ensure_deb () {
     which "$1" || {
         echo "Package $2 is not installed."
-        read -p "apt-get install it (y/n)?" install_it
+        read -p "apt-get install it y/n? [n]" install_it
         if [ $install_it = "y" ]; then
             install_packages="$install_packages $2"
         fi
