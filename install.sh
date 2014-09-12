@@ -17,7 +17,7 @@ install_packages=""
 
 install_if_missing() {
     dpkg -s $1 > /dev/null 2>&1 || {
-        read -p "apt-get install $1 y/n? [n]>" install_it
+        read -p "sudo apt-get install $1 y/n? [n]>" install_it
         if [ "$install_it" = "y" ]; then
             install_packages="$install_packages $1"
         fi
