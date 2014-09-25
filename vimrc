@@ -36,7 +36,7 @@ endif
 call pathogen#infect('~/.vim/bundle')
 
 "" Leader mappings
-let mapleader = " "
+let mapleader = ","
 
 " let g:yankstack_map_keys = 0
 call yankstack#setup()
@@ -250,10 +250,10 @@ vnoremap / /\v
 " Word scouting
 " Hilight all words matching the one under the cursor and mark the position to
 " 'p'. Return to original word with <Leader><Space>
-noremap , mp*N
-" noremap  <Leader><Space> 'p \| :noh<cr>
+noremap <Space> mp*N
+noremap  <Leader><Space> 'p \| :noh<cr>
 " Same for visual mode selection too
-vmap , mpy/<C-r>"<cr>
+vmap <Space> mpy/<C-r>"<cr>
 
 " Find break points
 map <Leader>B obp<TAB><ESC>v^<Space>dd<Leader>b
