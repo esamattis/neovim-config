@@ -132,20 +132,20 @@ endsnippet
 
 snippet react "Create React Component" !b
 /**
- * ${1/(.*)/$1/}
- *
  * @namespace components
  * @class ${1/(.*)/$1/}
  * @constructor
  * @param {Object} props
  */
-var ${1:Component} = React.createClass({
+var ${1/(.*)/$1/} = React.createClass({
     render: function() {
         return (
-            ${2}
+            <div className="${1/(.*)/$1/}">${2}</div>
         );
     }
 });
+
+module.exports = ${1:Component};
 endsnippet
 
 snippet me "Create method with docstring" !b
