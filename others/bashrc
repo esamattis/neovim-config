@@ -28,6 +28,9 @@ function be {
 # Restore keychain
 alias keychain-enable='keychain --nogui -q -Q id_rsa && . ~/.keychain/`uname -n`-sh'
 
+if [ -d ~/.local/bin ] ; then
+    PATH=~/.local/bin:"${PATH}"
+fi
 
 if [ -d ~/.vim/bin ] ; then
     PATH=~/.vim/bin:"${PATH}"
