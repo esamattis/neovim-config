@@ -68,7 +68,13 @@ function! s:SelectPane(tmux_packet)
     " Put tmux panes in the buffer. Must use cat here because tmux might fail
     " here due to some libevent bug in linux.
     " Try 'tmux list-panes -a > panes.txt' to see if it is fixed
-    read !tmux list-panes -F '\#{pane_id}: \#{session_name}:\#{window_index}.\#{pane_index}: \#{window_name}: \#{pane_title} [\#{pane_width}x\#{pane_height}] \#{?pane_active,(active),}' -a | cat
+    " if g:slimux_select_from_current_window = 1, then list panes from current
+    " window only.
+    if exists("g:slimux_select_from_current_window") && g:slimux_select_from_current_window == 1
+        read !tmux list-panes -F '\#{pane_id}: \#{session_name}:\#{window_index}.\#{pane_index}: \#{window_name}: \#{pane_title} [\#{pane_width}x\#{pane_height}] \#{?pane_active,(active),}' | cat
+    else
+        read !tmux list-panes -F '\#{pane_id}: \#{session_name}:\#{window_index}.\#{pane_index}: \#{window_name}: \#{pane_title} [\#{pane_width}x\#{pane_height}] \#{?pane_active,(active),}' -a | cat
+    endif
 
     " Move cursor to first item
     call setpos(".", [0, 3, 0, 0])
@@ -122,7 +128,7 @@ function! s:Send(tmux_packet)
           let local_text = strpart(text, 0, s:sent_text_length_limit)
           let text = strpart(text, s:sent_text_length_limit)
           let local_text = s:EscapeText(local_text)
-          call system("tmux set-buffer " . local_text)
+          call system("tmux set-buffer -- " . local_text)
           call system("tmux paste-buffer -t " . target)
       endwhile
 
@@ -175,6 +181,19 @@ function! s:GetVisual() range
     return selection
 endfunction
 
+function! s:GetBuffer()
+    let l:winview = winsaveview()
+    let reg_save = getreg('"')
+    let regtype_save = getregtype('"')
+    let cb_save = &clipboard
+    set clipboard&
+    silent normal! ggVGy
+    let selection = getreg('"')
+    call setreg('"', reg_save, regtype_save)
+    let &clipboard = cb_save
+    call winrestview(l:winview)
+    return selection
+endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Code interface
@@ -197,8 +216,22 @@ function! SlimuxSendCode(text)
   call s:Send(b:code_packet)
 endfunction
 
+function! s:SlimeSendRange()  range abort
+    if !exists("b:code_packet")
+        let b:code_packet = { "target_pane": "", "type": "code" }
+    endif
+    let rv = getreg('"')
+    let rt = getregtype('"')
+    sil exe a:firstline . ',' . a:lastline . 'yank'
+    call SlimuxSendCode(@")
+    call setreg('"',rv, rt)
+endfunction
+
+
 command! SlimuxREPLSendLine call SlimuxSendCode(getline(".") . "\n")
 command! -range=% -bar -nargs=* SlimuxREPLSendSelection call SlimuxSendCode(s:GetVisual())
+command! -range -bar -nargs=0 SlimuxREPLSendLine <line1>,<line2>call s:SlimeSendRange()
+command! -range=% -bar -nargs=* SlimuxREPLSendBuffer call SlimuxSendCode(s:GetBuffer())
 command! SlimuxREPLConfigure call SlimuxConfigureCode()
 
 
@@ -215,7 +248,7 @@ let s:previous_cmd = ""
 function! SlimuxSendCommand(cmd)
 
   let s:previous_cmd = a:cmd
-  let s:cmd_packet["text"] = a:cmd . ""
+  let s:cmd_packet["text"] = a:cmd . "\n"
   call s:Send(s:cmd_packet)
 
 endfunction
