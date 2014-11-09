@@ -53,6 +53,9 @@ function! s:SelectPane(tmux_packet)
     " Create new buffer in a horizontal split
     belowright new
 
+    " Get some basic syntax highlighting
+    set filetype=markdown
+
     " Set header for the menu buffer
     call setline(1, "# Enter: Select pane - Space: Test - Esc/q: Cancel")
     call setline(2, "")
@@ -75,6 +78,10 @@ function! s:SelectPane(tmux_packet)
     else
         read !tmux list-panes -F '\#{pane_id}: \#{session_name}:\#{window_index}.\#{pane_index}: \#{window_name}: \#{pane_title} [\#{pane_width}x\#{pane_height}] \#{?pane_active,(active),}' -a | cat
     endif
+
+    " Resize the split to the number of lines in the buffer,
+    " limit to 10 lines maximum.
+    execute min([ 10, line('$') ]) . 'wincmd _'
 
     " Move cursor to first item
     call setpos(".", [0, 3, 0, 0])
