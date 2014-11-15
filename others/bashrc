@@ -123,14 +123,22 @@ function stopped_jobs(){
 }
 
 function prompt_func() {
+  exit_status=$?
 
   # Use red # as prompt char when root
   if [ $(id -u) -eq 0 ]; then
-    prompt_char="${COLOR_NONE}# "
+    prompt_char="# "
     host="${RED}\u@\h"
   else
-    prompt_char="${COLOR_NONE}$ "
+    prompt_char="$ "
     host="${GREEN}\u@\h"
+  fi
+
+  # Tun prompt char to red if the last command failed
+  if [ ! ${exit_status} -eq 0 ]; then
+    prompt_char="${RED}${prompt_char}${COLOR_NONE}"
+  else
+    prompt_char="${COLOR_NONE}${prompt_char}"
   fi
 
   titlebar="${host} ${YELLOW}\w"
