@@ -670,3 +670,9 @@ autocmd BufReadPost $HOME/.vim/localrc setfiletype vim
 " Seed it with localrc.default when created
 autocmd BufNewFile $HOME/.vim/localrc setfiletype vim | read $HOME/.vim/localrc.default
 
+
+" python3
+let g:syntastic_python_pyflakes_exe = 'pyflakes3'
+let g:syntastic_python_python_exec = 'python3'
+let g:syntastic_python_checkers = ['python', 'pyflakes']
+
