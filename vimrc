@@ -670,6 +670,8 @@ autocmd BufReadPost $HOME/.vim/localrc setfiletype vim
 " Seed it with localrc.default when created
 autocmd BufNewFile $HOME/.vim/localrc setfiletype vim | read $HOME/.vim/localrc.default
 
+" React jsx
+let g:jsx_ext_required = 0
 
 " python3
 let g:syntastic_python_pyflakes_exe = 'pyflakes3'
