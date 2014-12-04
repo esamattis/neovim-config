@@ -124,7 +124,7 @@ function tmux_bg(){
   # if not inside tmux check for existing detached tmux sessions
   if [ "${TMUX:-}" = "" ]; then
     tmux ls > /dev/null 2>&1 && {
-      echo "(${GREEN}tmux${COLOR_NONE})"
+      echo "${COLOR_NONE}(${GREEN}tmux${COLOR_NONE})"
     }
   fi
 }
