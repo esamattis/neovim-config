@@ -120,6 +120,15 @@ function stopped_jobs(){
   fi
 }
 
+function tmux_bg(){
+  # if not inside tmux check for existing detached tmux sessions
+  if [ "${TMUX:-}" = "" ]; then
+    tmux ls > /dev/null 2>&1 && {
+      echo "(${GREEN}tmux${COLOR_NONE})"
+    }
+  fi
+}
+
 function prompt_func() {
   exit_status=$?
 
@@ -149,7 +158,7 @@ function prompt_func() {
     git_bar=""
   fi
 
-  PS1="${titlebar}\n$(stopped_jobs)${git_bar}${prompt_char}"
+  PS1="${titlebar}\n$(stopped_jobs)$(tmux_bg)${git_bar}${prompt_char}"
   title="\033]0;"
   if [ "$SSH_CONNECTION" != "" -o "${USER}" = "root" ]; then
     title="${title}${HOSTNAME}: "
