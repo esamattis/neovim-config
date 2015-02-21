@@ -155,9 +155,9 @@ function! SyntaxCheckers_java_javac_GetLocList() dict " {{{1
 
     " unashamedly stolen from *errorformat-javac* (quickfix.txt) and modified to include error types
     let errorformat =
-        \ '%E%f:%l:\ error:\ %m,'.
-        \ '%W%f:%l:\ warning:\ %m,'.
-        \ '%A%f:%l:\ %m,'.
+        \ '%E%f:%l: error: %m,'.
+        \ '%W%f:%l: warning: %m,'.
+        \ '%A%f:%l: %m,'.
         \ '%+Z%p^,'.
         \ '%+C%.%#,'.
         \ '%-G%.%#'
@@ -360,13 +360,14 @@ function! s:GetMavenClasspath() " {{{2
 
             let mvn_properties = s:GetMavenProperties()
 
-            let output_dir = 'target/classes'
+            let sep = syntastic#util#Slash()
+            let output_dir = join(['target', 'classes'], sep)
             if has_key(mvn_properties, 'project.build.outputDirectory')
                 let output_dir = mvn_properties['project.build.outputDirectory']
             endif
             let mvn_classpath = s:AddToClasspath(mvn_classpath, output_dir)
 
-            let test_output_dir = 'target/test-classes'
+            let test_output_dir = join(['target', 'test-classes'], sep)
             if has_key(mvn_properties, 'project.build.testOutputDirectory')
                 let test_output_dir = mvn_properties['project.build.testOutputDirectory']
             endif
@@ -388,14 +389,16 @@ function! s:MavenOutputDirectory() " {{{2
         if has_key(mvn_properties, 'project.properties.build.dir')
             let output_dir = mvn_properties['project.properties.build.dir']
         endif
-        if stridx(expand('%:p:h', 1), 'src.main.java') >= 0
-            let output_dir .= '/target/classes'
+
+        let sep = syntastic#util#Slash()
+        if stridx(expand('%:p:h', 1), join(['src', 'main', 'java'], sep)) >= 0
+            let output_dir = join ([output_dir, 'target', 'classes'], sep)
             if has_key(mvn_properties, 'project.build.outputDirectory')
                 let output_dir = mvn_properties['project.build.outputDirectory']
             endif
         endif
-        if stridx(expand('%:p:h', 1), 'src.test.java') >= 0
-            let output_dir .= '/target/test-classes'
+        if stridx(expand('%:p:h', 1), join(['src', 'test', 'java'], sep)) >= 0
+            let output_dir = join([output_dir, 'target', 'test-classes'], sep)
             if has_key(mvn_properties, 'project.build.testOutputDirectory')
                 let output_dir = mvn_properties['project.build.testOutputDirectory']
             endif
