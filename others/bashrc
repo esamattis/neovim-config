@@ -166,11 +166,8 @@ function prompt_func() {
   fi
   title="${title}${PWD/$HOME/~}\007"
 
-  # Write last command to ~/.bash_history
+  # Append last command to ~/.bash_history
   history -a
-  # Reload history from ~/.bash_history in the case it was updated from another
-  # terminal
-  history -n
   echo -ne $title
 }
 
