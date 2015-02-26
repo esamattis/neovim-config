@@ -6,15 +6,15 @@
 " GetLatestVimScripts: 2423 1 :AutoInstall: gist.vim
 " script type: plugin
 
-if &cp || (exists('g:loaded_gist_vim') && g:loaded_gist_vim)
+if &compatible || (exists('g:loaded_gist_vim') && g:loaded_gist_vim)
   finish
 endif
 let g:loaded_gist_vim = 1
 
 function! s:CompleteArgs(arg_lead,cmdline,cursor_pos)
-    return ["-p", "-P", "-a", "-m", "-e", "-s", "-d", "+1", "-1", "-f", "-c", "-l", "-la", "-ls",
+    return ["-p", "-P", "-a", "-m", "-e", "-s", "-d", "+1", "-1", "-f", "-c", "-l", "-la", "-ls", "-b",
                 \ "--listall", "--liststar", "--list", "--multibuffer", "--private", "--public", "--anonymous", "--description", "--clipboard",
-                \ "--rawurl", "--delete", "--edit", "--star", "--unstar", "--fork"
+                \ "--rawurl", "--delete", "--edit", "--star", "--unstar", "--fork", "--browser"
                 \ ]
 endfunction
 
