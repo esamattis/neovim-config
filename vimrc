@@ -21,7 +21,7 @@ let g:pathogen_disabled = []
 
 " Disable some plugins for slow arm boxes (raspberrypi)
 if strlen($VIM_LITE) != 0
-    call add(g:pathogen_disabled, "neocomplcache")
+    call add(g:pathogen_disabled, "neocomplete")
     call add(g:pathogen_disabled, "gitgutter")
     call add(g:pathogen_disabled, "gundo")
     call add(g:pathogen_disabled, "buffersaurus")
@@ -500,10 +500,7 @@ nmap <Leader>cd :cd %:p:h<CR>
 
 
 
-
-" diff will be opened automatically after the git commit. Disable
-" neocomplcache preview to prevent accidental closing of the diff window
-autocmd FileType gitcommit let g:neocomplcache_enable_auto_close_preview = 0
+autocmd FileType gitcommit let g:neocomplete#enable_auto_close_preview = 0
 autocmd FileType gitcommit DiffGitCached | wincmd p
 
 " Highlight VCS conflict markers
@@ -623,26 +620,15 @@ let g:wildfire_objects = {
     \ "clojure" : ["a'", 'a"', "a)", "a]", "a}", "ap"],
 \ }
 
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
 
-" NeoComplCache config
-let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_min_syntax_length = 3
 
 " Disable preview for Go complete. Conflicted with neocomplcache menu
 set completeopt-=preview
-
-if !exists('neocomplcache_omni_functions')
-  let g:neocomplcache_omni_functions = {}
-endif
-
-let g:neocomplcache_max_list = 10
-if !exists('g:neocomplcache_omni_patterns')
-  let g:neocomplcache_omni_patterns = {}
-endif
-
-let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-let g:neocomplcache_omni_patterns.go = '\h\w*\.\?'
 
 
 " Edit shortcut for this config
