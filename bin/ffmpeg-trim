@@ -1,0 +1,58 @@
+#!/bin/sh
+
+set -eu
+
+output_dir="$1"
+input_file="$2"
+
+which ffmpeg || {
+    >&2 echo "Cannot find ffmpeg"
+    exit 1
+}
+
+if [ ! -f "$input_file" ]; then
+    >&2 echo "$input_file is not a file"
+    exit 1
+fi
+
+if [ ! -d "$output_dir" ]; then
+    >&2 echo "$output_dir is not a dir"
+    exit 1
+fi
+
+ffmpeg_command="ffmpeg -i $input_file -codec copy"
+
+name=$(basename "$input_file")
+extension="${name##*.}"
+extension=$(echo $extension | tr "[:upper:]" "[:lower:]")
+name_prefix="${name%.*}"
+archive_dir="$(dirname $input_file)/archive"
+
+
+read -p "Start from [HH:MM:SS]> " start_from
+if [ "$start_from" != "" ]; then
+    ffmpeg_command="$ffmpeg_command -ss $start_from"
+fi
+
+read -p "Stop to [HH:MM:SS]> " stop_to
+if [ "$stop_to" != "" ]; then
+    ffmpeg_command="$ffmpeg_command -to $stop_to"
+fi
+
+read -p "Name suffix> " name_suffix
+
+ffmpeg_command="$ffmpeg_command $output_dir/${name_prefix}${name_suffix}.${extension}"
+
+
+echo $ffmpeg_command
+$ffmpeg_command
+
+read -p "Archive y/n? [y]>" do_archive
+[ "$do_archive" = "" ] && do_archive="y"
+
+if [ "$do_archive" = "y" ]; then
+    mkdir -p $archive_dir
+    mv $input_file $archive_dir
+fi
+
+
