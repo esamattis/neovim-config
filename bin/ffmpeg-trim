@@ -1,5 +1,9 @@
 #!/bin/sh
 
+
+start_from="$3"
+stop_to="$4"
+
 set -eu
 
 output_dir="$1"
@@ -28,13 +32,18 @@ extension=$(echo $extension | tr "[:upper:]" "[:lower:]")
 name_prefix="${name%.*}"
 archive_dir="$(dirname $input_file)/archive"
 
+if [ "$start_from" = "" ]; then
+    read -p "Start from [HH:MM:SS]> " start_from
+fi
 
-read -p "Start from [HH:MM:SS]> " start_from
 if [ "$start_from" != "" ]; then
     ffmpeg_command="$ffmpeg_command -ss $start_from"
 fi
 
-read -p "Stop to [HH:MM:SS]> " stop_to
+if [ "$stop_to" = "" ]; then
+    read -p "Stop to [HH:MM:SS]> " stop_to
+fi
+
 if [ "$stop_to" != "" ]; then
     ffmpeg_command="$ffmpeg_command -to $stop_to"
 fi
@@ -53,6 +62,7 @@ read -p "Archive y/n? [y]>" do_archive
 if [ "$do_archive" = "y" ]; then
     mkdir -p $archive_dir
     mv $input_file $archive_dir
+    echo "Archived to $archive_dir"
 fi
 
 
