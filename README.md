@@ -15,7 +15,7 @@ Checkers and linters for Syntastic (and some other tools)
 
 ### Bootstrap
 
-    sh <(wget -qO - https://github.com/epeli/vimconfig/raw/master/install.sh)
+    wget -qO - https://github.com/epeli/vimconfig/raw/master/install.sh | sh
 
 ## Caps Lock to Esc
 

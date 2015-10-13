@@ -1,4 +1,5 @@
 #!/bin/sh
+{ # do not allow partial exection
 
 set -eu
 cd
@@ -86,3 +87,4 @@ else
     echo "Install other dotfiles with ~/.vim/bin/dotfiles-install"
 fi
 
+}
