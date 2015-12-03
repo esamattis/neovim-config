@@ -433,6 +433,7 @@ noremap - @@
 " Easier curly braces insertion
 imap § {
 imap ½ }
+imap ° }
 
 
 "" Extend navigation keys
