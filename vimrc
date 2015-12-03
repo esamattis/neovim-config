@@ -467,12 +467,12 @@ map <F5> :redraw! \| :noh \| <cr><c-w>=
 
 
 " Remove unused searchparty bindings
-au VimEnter * unmap <Leader>mf
-au VimEnter * unmap <Leader>mp
-au VimEnter * unmap <Leader>ms
-au VimEnter * unmap <Leader>md
-au VimEnter * unmap <Leader>mm
-au VimEnter * unmap <Leader>mah
+" au VimEnter * unmap <Leader>mf
+" au VimEnter * unmap <Leader>mp
+" au VimEnter * unmap <Leader>ms
+" au VimEnter * unmap <Leader>md
+" au VimEnter * unmap <Leader>mm
+" au VimEnter * unmap <Leader>mah
 
 " map <Leader>t :CtrlP<CR>
 let g:ctrlp_map = '<Leader>t'
