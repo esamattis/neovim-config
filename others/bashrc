@@ -56,6 +56,19 @@ WHITE="\[\033[1;37m\]"
 LIGHT_GRAY="\[\033[0;37m\]"
 COLOR_NONE="\[\e[0m\]"
 
+function generate_nvm_info {
+  local version_pattern="node\/v([\.0-9]+)\/bin"
+  local version=""
+
+  if [ "$NVM_BIN" != "" ]; then
+    local version="sdaf"
+    if [[ $NVM_BIN =~ ${version_pattern} ]]; then
+      version="${BLUE}${BASH_REMATCH[1]}"
+    fi
+    echo "${COLOR_NONE}(${YELLOW}nvm${COLOR_NONE}|${version})"
+  fi
+}
+
 function generate_git_bar {
   git_status="$(git status 2> /dev/null)"
   branch_pattern="On branch ([^${IFS}]*)"
@@ -161,7 +174,7 @@ function prompt_func() {
     git_bar=""
   fi
 
-  PS1="${titlebar}\n${_jobs}$(tmux_bg)${git_bar}${prompt_char}"
+  PS1="${titlebar}\n${_jobs}$(tmux_bg)${git_bar}$(generate_nvm_info)${prompt_char}"
   title="\033]0;"
   if [ "$SSH_CONNECTION" != "" -o "${USER}" = "root" ]; then
     title="${title}${HOSTNAME}: "
