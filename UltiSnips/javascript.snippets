@@ -26,7 +26,7 @@ var self = this;
 endsnippet
 
 snippet p "Promise" !w
-new Promise(function(resolve, reject){
+new Promise((resolve, reject) => {
 ${1}
 });
 endsnippet
@@ -196,7 +196,7 @@ snippet ** "yuidoc comment" !b
 endsnippet
 
 snippet t "then after a promise" !w
-.then(function(${1:val}) {
+.then((${1:val}) => {
 ${2}
 })${3}
 endsnippet
