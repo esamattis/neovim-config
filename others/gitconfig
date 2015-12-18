@@ -35,3 +35,5 @@
   stag = for-each-ref --sort='*authordate' --format='%(refname:short)' refs/tags
   rh = reset HEAD
   stash-rebase = "!f() { git stash && git rebase -i origin/${1-master} && git stash pop; }; f"
+[init]
+	templatedir = ~/.vim/others/git_template

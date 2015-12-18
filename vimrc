@@ -502,6 +502,9 @@ autocmd FileType gitcommit DiffGitCached | wincmd p
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
+" Highlight git commit preventing epelinocommit string
+match ErrorMsg 'epelinocommit'
+
 
 
 
