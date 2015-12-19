@@ -504,6 +504,7 @@ match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 " Highlight git commit preventing epelinocommit string
 match ErrorMsg 'epelinocommit'
+match ErrorMsg 'epelihidegit'
 
 
 
