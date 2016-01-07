@@ -89,9 +89,10 @@ let [s:pref, s:bpref, s:opts, s:new_opts, s:lc_opts] =
 	\ 'user_command':          ['s:usrcmd', ''],
 	\ 'validate':              ['s:validate', ''],
 	\ 'working_path_mode':     ['s:pathmode', 'ra'],
-	\ 'line_prefix':					 ['s:lineprefix', '> '],
+	\ 'line_prefix':           ['s:lineprefix', '> '],
 	\ 'open_single_match':     ['s:opensingle', []],
 	\ 'brief_prompt':          ['s:brfprt', 0],
+	\ 'match_current_file':    ['s:matchcrfile', 0],
 	\ }, {
 	\ 'open_multiple_files':   's:opmul',
 	\ 'regexp':                's:regexp',
@@ -494,9 +495,12 @@ fu! s:MatchIt(items, pat, limit, exc)
 		\ : s:martcs.a:pat
 	for item in a:items
 		let id += 1
-		try | if !( s:ispath && item == a:exc ) && call(s:mfunc, [item, pat]) >= 0
-			cal add(lines, item)
-		en | cat | brea | endt
+		try
+			if (s:matchcrfile || !( s:ispath && item == a:exc )) && 
+						\call(s:mfunc, [item, pat]) >= 0
+				cal add(lines, item)
+			en
+		cat | brea | endt
 		if a:limit > 0 && len(lines) >= a:limit | brea | en
 	endfo
 	let s:mdata = [s:dyncwd, s:itemtype, s:regexp, s:sublist(a:items, id, -1)]
@@ -910,7 +914,7 @@ fu! s:MapSpecs()
 	if !( exists('s:smapped') && s:smapped == s:bufnr )
 		" Correct arrow keys in terminal
 		if ( has('termresponse') && v:termresponse =~ "\<ESC>" )
-			\ || &term =~? '\vxterm|<k?vt|gnome|screen|linux|ansi'
+			\ || &term =~? '\vxterm|<k?vt|gnome|screen|linux|ansi|tmux'
 			for each in ['\A <up>','\B <down>','\C <right>','\D <left>']
 				exe s:lcmap.' <esc>['.each
 			endfo
