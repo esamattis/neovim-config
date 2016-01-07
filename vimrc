@@ -129,7 +129,7 @@ augroup END
 
 augroup json
     au!
-    au BufNewFile,BufRead *.json setlocal filetype=json
+    au BufNewFile,BufRead *.json,.eslintrc,.babelrc setlocal filetype=json
 augroup END
 
 
