@@ -15,6 +15,9 @@ bind "set show-all-if-ambiguous on"
 # Ignore from history
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
 
+# Useful timestamp format
+HISTTIMEFORMAT='%F %T '
+
 # http://briancarper.net/blog/248/
 # Append to ~/.bash_history instead of overriding it
 shopt -s histappend
