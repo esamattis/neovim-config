@@ -12,6 +12,11 @@ shopt -s checkwinsize
 # matches to be listed immediately instead of ringing the bell.
 bind "set show-all-if-ambiguous on"
 
+# Incremental searching with Up and Down.  Eg. typing ssh <up arrow> searches
+# through prior ssh commands rather than your entire command history.
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
 # Ignore from history
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
 
