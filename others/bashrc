@@ -4,6 +4,11 @@ export EDITOR=vim
 # Disable terminal flow control
 stty -ixon
 
+# This alters the default behavior of the completion functions.  If set 
+# to on, words which have more than one possible completion cause the 
+# matches to be listed immediately instead of ringing the bell.
+bind "set show-all-if-ambiguous on"
+
 # http://briancarper.net/blog/248/
 # Append to ~/.bash_history instead of overriding it
 shopt -s histappend
