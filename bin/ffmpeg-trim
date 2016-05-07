@@ -9,6 +9,11 @@ set -eu
 output_dir="$1"
 input_file="$2"
 
+
+if [ "${FFMPEG_PATH:-}" != "" ]; then
+    export PATH="$FFMPEG_PATH":"$PATH"
+fi
+
 which ffmpeg || {
     >&2 echo "Cannot find ffmpeg"
     exit 1
@@ -50,11 +55,14 @@ fi
 
 read -p "Name suffix> " name_suffix
 
-ffmpeg_command="$ffmpeg_command $output_dir/${name_prefix}${name_suffix}.${extension}"
+tmp="$(mktemp -p "$output_dir").$extension"
+ffmpeg_command="$ffmpeg_command $tmp"
 
 
 echo $ffmpeg_command
 $ffmpeg_command
+
+mv "$tmp" "$output_dir/${name_prefix}${name_suffix}.${extension}"
 
 read -p "Archive y/n? [y]>" do_archive
 [ "$do_archive" = "" ] && do_archive="y"
