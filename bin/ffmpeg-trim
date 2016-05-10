@@ -55,8 +55,9 @@ fi
 
 read -p "Name suffix> " name_suffix
 
-tmp="$(mktemp -p "$output_dir").$extension"
-ffmpeg_command="$ffmpeg_command $tmp"
+export TMPDIR="$output_dir"
+tmp="$(mktemp -p "$output_dir" -t ffmpegtrim.XXXXXX.mp4)"
+ffmpeg_command="$ffmpeg_command -y $tmp"
 
 
 echo $ffmpeg_command
