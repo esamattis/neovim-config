@@ -28,7 +28,7 @@ install_if_missing() {
 install_if_missing vim-nox
 install_if_missing git
 install_if_missing tmux
-install_if_missing exuberant-ctags
+
 
 if [ "$install_packages" != "" ]; then
     sudo apt-get install -y $install_packages
