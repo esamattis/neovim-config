@@ -31,6 +31,15 @@ ${1}
 });
 endsnippet
 
+snippet ss "style={styles.}" !w
+style={styles.${1}}
+endsnippet
+
+snippet rp "style={styles.}" !w
+React.PropTypes.${1}.isRequired,
+endsnippet
+
+
 snippet j "JSON.stringify()" !w
 JSON.stringify(${1})
 endsnippet
@@ -77,10 +86,6 @@ snippet d "console.log()" !b
 debug(${1});
 endsnippet
 
-snippet { "React JSX comment" !w
-{/* ${1} */}
-endsnippet
-
 snippet l "console.log()" !b
 console.log(${1});
 endsnippet
@@ -105,10 +110,8 @@ snippet m "module.exports" !b
 module.exports = 
 endsnippet
 
-snippet i "Mocha it" !bw
-it("${1}", function() {
-${2}
-});
+snippet i "import" !bw
+import ${1} from "./$2${1/(.*)/$1/}";
 endsnippet
 
 snippet desc "Mocha describe" !b
@@ -138,9 +141,6 @@ snippet exit "process.exit(0);" !b
 process.exit(${1:0});
 endsnippet
 
-snippet jsx "Add JSX comment" !b
-/** @jsx React.DOM */
-endsnippet
 
 snippet react "Create React Component" !b
 /**
@@ -199,6 +199,11 @@ snippet t "then after a promise" !w
 .then((${1:val}) => {
 ${2}
 })${3}
+endsnippet
+
+
+snippet { "translation" !i
+{t("${1}")}
 endsnippet
 
 snippet enext "eslint-disable-next-line" !w
