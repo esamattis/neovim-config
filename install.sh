@@ -25,13 +25,15 @@ install_if_missing() {
     }
 }
 
-install_if_missing vim-nox
-install_if_missing git
-install_if_missing tmux
 
+if [ -x "$(which apt-get)" ]; then
+    install_if_missing vim-nox
+    install_if_missing git
+    install_if_missing tmux
 
-if [ "$install_packages" != "" ]; then
-    sudo apt-get install -y $install_packages
+    if [ "$install_packages" != "" ]; then
+        sudo apt-get install -y $install_packages
+    fi
 fi
 
 
