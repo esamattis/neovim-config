@@ -473,12 +473,7 @@ map <Leader>T :CtrlPClearAllCaches<CR>
 " Ignore Bundler vendor dir
 let g:ctrlp_custom_ignore = 'vendor/bundle'
 
-" Open file tree
-map <Leader>n :LustyFilesystemExplorer<CR>
-" Open bufexplorer
-map <Leader>m :LustyBufferExplorer<CR>
-" Opens filesystem explorer at the directory of the current file
-map <Leader>f :LustyFilesystemExplorerFromHere <CR>
+
 
 
 " Move by screen lines instead of file line. Nice with long lines.
@@ -588,12 +583,22 @@ au VimEnter * unmap <Leader>bd
 
 
 " LustyExplorer
-au VimEnter * unmap <Leader>lf
-au VimEnter * unmap <Leader>lb
-au VimEnter * unmap <Leader>lj
-au VimEnter * unmap <Leader>lg
-au VimEnter * unmap <Leader>lr
+if exists("g:loaded_lustyexplorer")
 
+    " Open file tree
+    map <Leader>n :LustyFilesystemExplorer<CR>
+    " Open bufexplorer
+    map <Leader>m :LustyBufferExplorer<CR>
+    " Opens filesystem explorer at the directory of the current file
+    map <Leader>f :LustyFilesystemExplorerFromHere <CR>
+    
+    au VimEnter * unmap <Leader>lf
+    au VimEnter * unmap <Leader>lb
+    au VimEnter * unmap <Leader>lj
+    au VimEnter * unmap <Leader>lg
+    au VimEnter * unmap <Leader>lr
+
+endif
 
 " Slimux key map
 map <Leader>s :SlimuxREPLSendLine<CR>
