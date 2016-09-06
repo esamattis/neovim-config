@@ -56,7 +56,13 @@ fi
 read -p "Name suffix> " name_suffix
 
 export TMPDIR="$output_dir"
-tmp="$(mktemp -p "$output_dir" -t ffmpegtrim.XXXXXX.mp4)"
+
+if [ "$(uname)" = "Darwin" ]; then
+    tmp="${output_dir}/ffmpegtrim.$(date +%s).mp4"
+else
+    tmp="$(mktemp -p "$output_dir" -t ffmpegtrim.XXXXXX.mp4)"
+fi
+
 ffmpeg_command="$ffmpeg_command -y $tmp"
 
 
