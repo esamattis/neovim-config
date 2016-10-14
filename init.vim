@@ -8,6 +8,8 @@ Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-surround'
 Plug 'ton/vim-bufsurf'
 Plug 'airblade/vim-gitgutter'
+Plug 'mattn/gist-vim'
+Plug 'mattn/webapi-vim' " required by gist-vim
 call plug#end()
 
 for plugin in keys(g:plugs)
