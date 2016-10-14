@@ -20,7 +20,7 @@ let s:ghc_mod_new = -1
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_haskell_ghc_mod_IsAvailable() dict
+function! SyntaxCheckers_haskell_ghc_mod_IsAvailable() dict " {{{1
     if !executable(self.getExec())
         return 0
     endif
@@ -30,28 +30,38 @@ function! SyntaxCheckers_haskell_ghc_mod_IsAvailable() dict
     " know the version in order to know how to find out the version. :)
 
     " Try "ghc-mod version".
-    let ver = filter(split(system(self.getExecEscaped() . ' version'), '\n'), 'v:val =~# ''\m\sversion''')
+    let version_output = split(syntastic#util#system(self.getExecEscaped() . ' version'), '\n', 1)
+    let ver = filter(copy(version_output), 'v:val =~# ''\m\sversion''')
     if !len(ver)
         " That didn't work.  Try "ghc-mod" alone.
-        let ver = filter(split(system(self.getExecEscaped()), '\n'), 'v:val =~# ''\m\sversion''')
+        let version_output = split(syntastic#util#system(self.getExecEscaped()), '\n', 1)
+        let ver = filter(copy(version_output), 'v:val =~# ''\m\sversion''')
     endif
+    let parsed_ver = len(ver) ? syntastic#util#parseVersion(ver[0]) : []
 
-    if len(ver)
+    if len(parsed_ver)
         " Encouraged by the great success in finding out the version, now we
         " need either a Vim that can handle NULs in system() output, or a
         " ghc-mod that has the "--boundary" option.
-        let parsed_ver = syntastic#util#parseVersion(ver[0])
         call self.setVersion(parsed_ver)
         let s:ghc_mod_new = syntastic#util#versionIsAtLeast(parsed_ver, [2, 1, 2])
     else
+        call syntastic#log#ndebug(g:_SYNTASTIC_DEBUG_LOCLIST, 'checker output:', version_output)
         call syntastic#log#error("checker haskell/ghc_mod: can't parse version string (abnormal termination?)")
         let s:ghc_mod_new = -1
     endif
 
-    return (s:ghc_mod_new >= 0) && (v:version >= 704 || s:ghc_mod_new)
-endfunction
+    " ghc-mod 5.4.0 wants to run in the root directory of the project;
+    " syntastic can't cope with the resulting complications
+    "
+    " References:
+    " https://hackage.haskell.org/package/ghc-mod-5.4.0.0/changelog
+    let s:ghc_mod_bailout = syntastic#util#versionIsAtLeast(parsed_ver, [5, 4])
 
-function! SyntaxCheckers_haskell_ghc_mod_GetLocList() dict
+    return (s:ghc_mod_new >= 0) && (v:version >= 704 || s:ghc_mod_new) && !s:ghc_mod_bailout
+endfunction " }}}1
+
+function! SyntaxCheckers_haskell_ghc_mod_GetLocList() dict " {{{1
     let makeprg = self.makeprgBuild({
         \ 'exe': self.getExecEscaped() . ' check' . (s:ghc_mod_new ? ' --boundary=""' : '') })
 
@@ -68,9 +78,10 @@ function! SyntaxCheckers_haskell_ghc_mod_GetLocList() dict
     return SyntasticMake({
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
+        \ 'preprocess': 'iconv',
         \ 'postprocess': ['compressWhitespace'],
         \ 'returns': [0] })
-endfunction
+endfunction " }}}1
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'haskell',

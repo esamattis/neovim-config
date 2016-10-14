@@ -11,7 +11,7 @@
 "
 "============================================================================
 
-if exists("g:loaded_syntastic_racket_racket_checker")
+if exists('g:loaded_syntastic_racket_racket_checker')
     finish
 endif
 let g:loaded_syntastic_racket_racket_checker=1
@@ -42,7 +42,8 @@ endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'racket',
-    \ 'name': 'racket'})
+    \ 'name': 'racket',
+    \ 'enable': 'enable_racket_racket_checker' })
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

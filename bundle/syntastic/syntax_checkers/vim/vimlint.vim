@@ -10,7 +10,7 @@
 "
 "============================================================================
 
-if exists("g:loaded_syntastic_vim_vimlint_checker")
+if exists('g:loaded_syntastic_vim_vimlint_checker')
     finish
 endif
 let g:loaded_syntastic_vim_vimlint_checker = 1
@@ -20,7 +20,7 @@ set cpo&vim
 
 function! SyntaxCheckers_vim_vimlint_GetHighlightRegex(item) " {{{1
     let term = matchstr(a:item['text'], '\m `\zs[^`]\+\ze`')
-    if term != ''
+    if term !=# ''
         let col = get(a:item, 'col', 0)
 
         if col && term[0:1] ==# 'l:'
@@ -40,7 +40,7 @@ function! SyntaxCheckers_vim_vimlint_IsAvailable() dict " {{{1
     let vimlint    = globpath(&runtimepath, 'autoload/vimlint.vim', 1)
     call self.log("globpath(&runtimepath, 'autoload/vimlparser.vim', 1) = " . string(vimlparser) . ', ' .
                 \ "globpath(&runtimepath, 'autoload/vimlint.vim', 1) = " .    string(vimlint))
-    return vimlparser != '' && vimlint != ''
+    return vimlparser !=# '' && vimlint !=# ''
 endfunction " }}}1
 
 function! SyntaxCheckers_vim_vimlint_GetLocList() dict " {{{1
@@ -67,12 +67,15 @@ function! SyntaxCheckers_vim_vimlint_GetLocList() dict " {{{1
         \ 'EVL204': 3,
         \ 'EVL205': 3 }
 
-    if exists('g:syntastic_vimlint_options')
-        if type(g:syntastic_vimlint_options) == type({})
-            let options = filter(copy(g:syntastic_vimlint_options), 'v:key =~# "\\m^EVL"')
+    if exists('g:syntastic_vimlint_options') || exists('b:syntastic_vimlint_options')
+        let opts = syntastic#util#var('vimlint_options')
+        if type(opts) == type({})
+            let options = filter(copy(opts), 'v:key =~# "\\m^EVL"')
             call extend(param, options, 'force')
         endif
     endif
+
+    call self.log('options =', param)
 
     return vimlint#vimlint(expand('%', 1), param)
 endfunction " }}}1
@@ -96,8 +99,7 @@ endfunction " }}}2
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
     \ 'filetype': 'vim',
-    \ 'name': 'vimlint',
-    \ 'exec': 'vim' })
+    \ 'name': 'vimlint' })
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

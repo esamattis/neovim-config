@@ -10,7 +10,7 @@
 "
 "============================================================================
 
-if exists("g:loaded_syntastic_haskell_hdevtools_checker")
+if exists('g:loaded_syntastic_haskell_hdevtools_checker')
     finish
 endif
 let g:loaded_syntastic_haskell_hdevtools_checker = 1
@@ -31,12 +31,12 @@ function! SyntaxCheckers_haskell_hdevtools_GetLocList() dict
 
     let errorformat =
         \ '%-Z %#,'.
-        \ '%W%f:%l:%v: Warning: %m,'.
-        \ '%W%f:%l:%v: Warning:,'.
-        \ '%E%f:%l:%v: %m,'.
-        \ '%E%>%f:%l:%v:,'.
+        \ '%W%\m%f:%l:%v%\%%(-%\d%\+%\)%\=: Warning: %m,'.
+        \ '%W%\m%f:%l:%v%\%%(-%\d%\+%\)%\=: Warning:,'.
+        \ '%E%\m%f:%l:%v%\%%(-%\d%\+%\)%\=: %m,'.
+        \ '%E%>%\m%f:%l:%v%\%%(-%\d%\+%\)%\=:,'.
         \ '%+C  %#%m,'.
-        \ '%W%>%f:%l:%v:,'.
+        \ '%W%>%\m%f:%l:%v%\%%(-%\d%\+%\)%\=:,'.
         \ '%+C  %#%tarning: %m,'
 
     return SyntasticMake({

@@ -10,16 +10,12 @@
 "
 "============================================================================
 
-if exists("g:loaded_syntastic_less_lessc_checker")
+if exists('g:loaded_syntastic_less_lessc_checker')
     finish
 endif
 let g:loaded_syntastic_less_lessc_checker = 1
 
-if !exists("g:syntastic_less_options")
-    let g:syntastic_less_options = ""
-endif
-
-if !exists("g:syntastic_less_use_less_lint")
+if !exists('g:syntastic_less_use_less_lint')
     let g:syntastic_less_use_less_lint = 0
 endif
 
@@ -34,13 +30,10 @@ function! SyntaxCheckers_less_lessc_IsAvailable() dict
 endfunction
 
 function! SyntaxCheckers_less_lessc_GetLocList() dict
-    if !exists('s:check_file')
-        let s:check_file = g:syntastic_less_use_less_lint ? s:node_file : self.getExecEscaped()
-    endif
+    call syntastic#log#deprecationWarn('less_options', 'less_lessc_args')
 
     let makeprg = self.makeprgBuild({
-        \ 'exe': s:check_file,
-        \ 'args': g:syntastic_less_options,
+        \ 'exe': (g:syntastic_less_use_less_lint ? s:node_file : self.getExecEscaped()),
         \ 'args_after': '--no-color',
         \ 'tail': '> ' . syntastic#util#DevNull() })
 
@@ -53,7 +46,7 @@ function! SyntaxCheckers_less_lessc_GetLocList() dict
         \ 'makeprg': makeprg,
         \ 'errorformat': errorformat,
         \ 'postprocess': ['guards'],
-        \ 'defaults': {'bufnr': bufnr(""), 'text': "Syntax error"} })
+        \ 'defaults': {'bufnr': bufnr(''), 'text': 'Syntax error'} })
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({

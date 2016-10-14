@@ -1,4 +1,4 @@
-if exists("g:loaded_syntastic_notifiers") || !exists("g:loaded_syntastic_plugin")
+if exists('g:loaded_syntastic_notifiers') || !exists('g:loaded_syntastic_plugin')
     finish
 endif
 let g:loaded_syntastic_notifiers = 1
@@ -23,7 +23,7 @@ function! g:SyntasticNotifiers.Instance() abort " {{{2
 endfunction " }}}2
 
 function! g:SyntasticNotifiers.refresh(loclist) abort " {{{2
-    if !a:loclist.isEmpty() && !a:loclist.isNewerThan([])
+    if !syntastic#util#bufIsActive(bufnr('')) || (!a:loclist.isEmpty() && !a:loclist.isNewerThan([]))
         " loclist not fully constructed yet
         return
     endif
