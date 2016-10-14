@@ -138,3 +138,8 @@ vmap <Space> mpy/<C-r>"<cr>
 " Join lines from below too. See :help J
 map K kJ
 
+" Easily resize split windows with Ctrl+hjkl
+nnoremap <C-j> <C-w>+
+nnoremap <C-k> <C-w>-
+nnoremap <C-h> <C-w><
+nnoremap <C-l> <C-w>>
