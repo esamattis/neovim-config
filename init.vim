@@ -6,6 +6,7 @@ Plug 'steelsojka/deoplete-flow'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-surround'
+Plug 'ton/vim-bufsurf'
 call plug#end()
 
 "" Leader mappings
@@ -42,6 +43,7 @@ imap jj <esc>
 
 autocmd! BufWritePost * Neomake
 let g:neomake_javascript_enabled_makers = ['flow', 'eslint']
+let g:neomake_jsx_enabled_makers = ['flow', 'eslint']
 
 " Write buffer (save)
 noremap <Leader>w :w<CR>
@@ -85,10 +87,19 @@ colorscheme molokai
 nnoremap <leader>m :b#<cr>
 nnoremap <leader>b :buffer<space>
 
+" Do toggle to netrw view
+let g:netrw_altfile = 1
+
 " Select another file from the directory of the current one
-nnoremap <leader>f :execute 'keepalt edit' expand("%:p:h")<cr>
+nnoremap <leader>f :execute 'edit' expand("%:p:h")<cr>
 
 noremap <Leader>w :w<CR>
+
+noremap <Up> :bNext<cr>
+noremap <Down> :brewind<cr>
+noremap <Left> :BufSurfBack<cr>
+noremap <Right> :BufSurfForward<cr>
+
 
 " Close current buffer
 noremap <Leader>d :bd<CR>
@@ -115,6 +126,8 @@ noremap  <Leader><Space> 'p \| :noh<cr>
 " Same for visual mode selection too
 vmap <Space> mpy/<C-r>"<cr>
 
+" Join lines from below too. See :help J
+map K kJ
 
 " Enable jsx for js files
 let g:jsx_ext_required = 0
