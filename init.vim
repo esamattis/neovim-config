@@ -1,0 +1,120 @@
+call plug#begin()
+Plug 'tpope/vim-sensible'
+Plug 'neomake/neomake'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'steelsojka/deoplete-flow'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'tpope/vim-surround'
+call plug#end()
+
+"" Leader mappings
+let mapleader = ","
+
+" Use deoplete.
+let g:deoplete#enable_at_startup = 1
+
+
+" Always disable paste mode when leaving insert mode
+au InsertLeave * set nopaste
+
+" Show trailing whitespace characters
+set list
+set listchars=tab:▸\ ,trail:·,extends:…,nbsp:␣
+" Show soft wrapped lines as …
+set showbreak=↳
+
+" Cooler tab completion for vim commands
+" http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
+set wildmode=longest,list
+
+" By default use 4 spaces as indentation
+set tabstop=4 shiftwidth=4 softtabstop=4
+set expandtab
+
+" Easier curly braces insertion
+imap § {
+imap ½ }
+imap ° }
+
+" Map escape key to jj -- much faster to exit insert mode
+imap jj <esc>
+
+autocmd! BufWritePost * Neomake
+let g:neomake_javascript_enabled_makers = ['flow', 'eslint']
+
+" Write buffer (save)
+noremap <Leader>w :w<CR>
+imap ,w <esc>:w<CR>
+
+" Resize splits when the window is resized
+au VimResized * exe "normal! \<c-w>="
+
+
+
+"" Extend navigation keys
+
+" First non whitespace character
+map ö ^
+
+" End of line
+map ä $
+
+" Begining of line
+map Ö 0
+
+" Last non space character
+map Ä g_
+
+" Same for visual mode
+vmap ö ^
+vmap ä $
+vmap Ö 0
+vmap Ä g_
+
+" hide buffers instead of closing them
+" Allows to change buffers with unsaved changes
+set hidden
+
+" The crossair
+set cursorline cursorcolumn
+
+colorscheme molokai
+
+" Toggle with last previous buffer
+nnoremap <leader>m :b#<cr>
+nnoremap <leader>b :buffer<space>
+
+" Select another file from the directory of the current one
+nnoremap <leader>f :execute 'keepalt edit' expand("%:p:h")<cr>
+
+noremap <Leader>w :w<CR>
+
+" Close current buffer
+noremap <Leader>d :bd<CR>
+
+" Make Y behave like other capitals. Yank to end of line.
+map Y y$
+
+" Use mouse only in visual mode
+set mouse=v
+
+" This turns off Vim’s crazy default regex characters and makes searches use
+" normal regexes.
+nnoremap / /\v
+vnoremap / /\v
+
+" Clear search hilights
+noremap  å :noh<cr><esc>
+
+" Word scouting
+" Hilight all words matching the one under the cursor and mark the position to
+" 'p'. Return to original word with <Leader><Space>
+noremap <Space> mp*N
+noremap  <Leader><Space> 'p \| :noh<cr>
+" Same for visual mode selection too
+vmap <Space> mpy/<C-r>"<cr>
+
+
+" Enable jsx for js files
+let g:jsx_ext_required = 0
