@@ -7,6 +7,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-surround'
 Plug 'ton/vim-bufsurf'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 "" Leader mappings
