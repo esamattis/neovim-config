@@ -10,15 +10,12 @@ Plug 'ton/vim-bufsurf'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
 
-function ReadPluginConfig(name)
-    execute 'source ' . '$HOME/.config/nvim/plugin.d/' . a:name . '.vim'
-endfunction
-
-call ReadPluginConfig('neomake')
-call ReadPluginConfig('deoplete')
-call ReadPluginConfig('bufsurf')
-call ReadPluginConfig('jsx')
-
+for plugin in keys(g:plugs)
+    let s:plugin_config = $HOME . '/.config/nvim/plugin.d/' . plugin . '.vim'
+    if filereadable(s:plugin_config)
+        execute 'source ' . s:plugin_config
+    endif
+endfor
 
 
 "" Leader mappings
