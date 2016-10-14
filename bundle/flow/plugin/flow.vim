@@ -5,12 +5,6 @@ if exists("g:loaded_flow")
 endif
 let g:loaded_flow = 1
 
-" Require the flow executable.
-if !executable('flow')
-  finish
-endif
-
-
 " Configuration switches:
 " - enable:     Typechecking is done on :w.
 " - autoclose:  Quickfix window closes automatically.
@@ -32,27 +26,57 @@ endif
 if !exists("g:flow#flowpath")
   let g:flow#flowpath = "flow"
 endif
+if !exists("g:flow#timeout")
+  let g:flow#timeout = 2
+endif
 
+" Require the flow executable.
+if !executable(g:flow#flowpath)
+  finish
+endif
 
 " flow error format.
 let s:flow_errorformat = '%EFile "%f"\, line %l\, characters %c-%.%#,%Z%m,'
+" flow from editor.
+let s:flow_from = '--from vim'
 
 
 " Call wrapper for flow.
-function! <SID>FlowClientCall(suffix)
+function! <SID>FlowClientCall(cmd, suffix)
   " Invoke typechecker. 
   " We also concatenate with the empty string because otherwise
   " cgetexpr complains about not having a String argument, even though
   " type(flow_result) == 1.
-  let command = g:flow#flowpath.' --timeout 2 --from vim '.expand('%:p').' '.a:suffix
+  let command = g:flow#flowpath.' '.a:cmd.' '.s:flow_from.' '.a:suffix
 
   let flow_result = system(command)
 
-  " Handle timeout
-  if v:shell_error == 3
+  " Handle the server still initializing
+  if v:shell_error == 1
+    echohl WarningMsg 
+    echomsg 'Flow server is still initializing...'
+    echohl None
+    cclose
     return 0
   endif
 
+  " Handle timeout
+  if v:shell_error == 3
+    echohl WarningMsg 
+    echomsg 'Flow timed out, please try again!'
+    echohl None
+    cclose
+    return 0
+  endif
+
+  return flow_result
+endfunction
+
+" Main interface functions.
+function! flow#typecheck()
+  " Flow current outputs errors to stderr and gets fancy with single character
+  " files
+  let flow_result = <SID>FlowClientCall('--timeout '.g:flow#timeout.' --retry-if-init false'.expand('%:p'), '2> /dev/null')
   let old_fmt = &errorformat
   let &errorformat = s:flow_errorformat
 
@@ -68,18 +92,6 @@ function! <SID>FlowClientCall(suffix)
     botright copen
   endif
   let &errorformat = old_fmt
-endfunction
-
-
-" Main interface functions.
-function! flow#typecheck()
-  " Flow current outputs errors to stderr and gets fancy with single character
-  " files
-  call <SID>FlowClientCall('2> /dev/null')
-endfunction
-
-function! flow#find_refs(fn)
-  call <SID>FlowClientCall('--find-refs '.a:fn.'| sed "s/[0-9]* total results//"')
 endfunction
 
 " Get the Flow type at the current cursor position.
@@ -101,14 +113,62 @@ function! flow#toggle()
   endif
 endfunction
 
+" Jump to Flow definition for the current cursor position
+function! flow#jump_to_def()
+  let pos = fnameescape(expand('%')).' '.line('.').' '.col('.')
+  let flow_result = <SID>FlowClientCall('get-def '.pos, '')
+  " Output format is:
+  "   File: "/path/to/file", line 1, characters 1-11
+
+  let parts = split(flow_result, ",")
+
+  " File: "/path/to/file" => /path/to/file
+  let file = substitute(substitute(parts[0], '"', '', 'g'), 'File ', '', '')
+
+  " line 1 => 1
+  let row = split(parts[1], " ")[1]
+
+  " characters 1-11 => 1
+  let col = split(split(parts[2], " ")[1], "-")[0]
+
+  if filereadable(file)
+    execute 'edit' file
+    call cursor(row, col)
+  end
+endfunction
+
+" Open importers of current file in quickfix window
+function! flow#get_importers()
+  let flow_result = <SID>FlowClientCall('get-importers '.expand('%').' --strip-root', '')
+  let importers = split(flow_result, '\n')[1:1000]
+
+  let l:flow_errorformat = '%f'
+  let old_fmt = &errorformat
+  let &errorformat = l:flow_errorformat
+
+  if g:flow#errjmp
+    cexpr importers
+  else
+    cgetexpr importers
+  endif
+
+  if g:flow#autoclose
+    botright cwindow
+  else
+    botright copen
+  endif
+  let &errorformat = old_fmt
+endfunction
+
 
 " Commands and auto-typecheck.
-command! FlowToggle call flow#toggle()
-command! FlowMake   call flow#typecheck()
-command! FlowType   call flow#get_type()
-command! -nargs=1 FlowFindRefs call flow#find_refs(<q-args>)
+command! FlowToggle       call flow#toggle()
+command! FlowMake         call flow#typecheck()
+command! FlowType         call flow#get_type()
+command! FlowJumpToDef    call flow#jump_to_def()
+command! FlowGetImporters call flow#get_importers()
 
-au BufWritePost *.js if g:flow#enable | call flow#typecheck() | endif
+au BufWritePost *.js,*.jsx if g:flow#enable | call flow#typecheck() | endif
 
 
 " Keep quickfix window at an adjusted height.

@@ -16,14 +16,14 @@ A vim plugin for [Flow][flow].
 ### [Pathogen][pathogen]
 
     cd ~/.vim/bundle
-    git clone git://github.com/facebook/vim-flow.git
+    git clone git://github.com/flowtype/vim-flow.git
 
 ### [NeoBundle][neobundle]
 
 Add this to your `~/.vimrc`
 
 ```VimL
-  NeoBundleLazy 'facebook/vim-flow', {
+  NeoBundleLazy 'flowtype/vim-flow', {
             \ 'autoload': {
             \     'filetypes': 'javascript'
             \ }}
@@ -32,7 +32,7 @@ Add this to your `~/.vimrc`
 #### With [Flow][flow] build step, using [flow-bin][flowbin]
 
 ```VimL
-  NeoBundleLazy 'facebook/vim-flow', {
+  NeoBundleLazy 'flowtype/vim-flow', {
             \ 'autoload': {
             \     'filetypes': 'javascript'
             \ },
@@ -43,7 +43,7 @@ Add this to your `~/.vimrc`
 ```
 ## Usage
 
-Unless [disabled manually][gflowenable], vim-flow will check JavaScript files on save.
+Unless [disabled manually][gflowenable], vim-flow will check JavaScript and JSX files on save.
 
 ## Commands
 
@@ -58,10 +58,6 @@ Turns automatic checks on save on or off.
 #### `FlowType` 
 
 Display the type of the variable under the cursor.
-
-#### `FlowFindRefs <arg>`
-
-Find the number of references to `<arg>` within the project.
 
 ## Configuration
 
@@ -99,11 +95,29 @@ a custom flow executable, set this like so:
 let g:flow#flowpath = /your/flow-path/flow
 ```
 
+#### `g:flow#omnifunc`
+
+By default `omnifunc` will be set to provide omni completion. To disable it
+(prevent overwriting an existed omnifunc), set this value to 0:
+
+```VimL
+let g:flow#omnifunc = 0
+```
+
+#### `g:flow#timeout`
+
+By default `timeout` will be set to 2 seconds. If you are working on a larger
+codebase, you may want to increase this to avoid errors when Flow initializes.
+
+```VimL
+let g:flow#timeout = 4
+```
+
 #### `g:flow#qfsize`
 
 Leave this as default to let the plugin decide on the quickfix window size.
 
-[gflowenable]: https://github.com/facebook/vim-flow#gflowenable
+[gflowenable]: https://github.com/flowtype/vim-flow#gflowenable
 [flow]: https://github.com/facebook/flow
 [flowbin]: https://github.com/sindresorhus/flow-bin
 [pathogen]: https://github.com/tpope/vim-pathogen
