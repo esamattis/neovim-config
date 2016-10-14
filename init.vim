@@ -116,6 +116,11 @@ set mouse=v
 nnoremap / /\v
 vnoremap / /\v
 
+" * Search & Replace
+" make searches case-insensitive, unless they contain upper-case letters:
+set ignorecase
+set smartcase
+
 " Clear search hilights
 noremap  å :noh<cr><esc>
 
