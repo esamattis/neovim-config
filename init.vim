@@ -10,11 +10,19 @@ Plug 'ton/vim-bufsurf'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
 
+function ReadPluginConfig(name)
+    execute 'source ' . '$HOME/.config/nvim/plugin.d/' . a:name . '.vim'
+endfunction
+
+call ReadPluginConfig('neomake')
+call ReadPluginConfig('deoplete')
+call ReadPluginConfig('bufsurf')
+call ReadPluginConfig('jsx')
+
+
+
 "" Leader mappings
 let mapleader = ","
-
-" Use deoplete.
-let g:deoplete#enable_at_startup = 1
 
 
 " Always disable paste mode when leaving insert mode
@@ -42,9 +50,7 @@ imap ° }
 " Map escape key to jj -- much faster to exit insert mode
 imap jj <esc>
 
-autocmd! BufWritePost * Neomake
-let g:neomake_javascript_enabled_makers = ['flow', 'eslint']
-let g:neomake_jsx_enabled_makers = ['flow', 'eslint']
+
 
 " Write buffer (save)
 noremap <Leader>w :w<CR>
@@ -98,8 +104,6 @@ noremap <Leader>w :w<CR>
 
 noremap <Up> :bNext<cr>
 noremap <Down> :brewind<cr>
-noremap <Left> :BufSurfBack<cr>
-noremap <Right> :BufSurfForward<cr>
 
 
 " Close current buffer
@@ -135,5 +139,3 @@ vmap <Space> mpy/<C-r>"<cr>
 " Join lines from below too. See :help J
 map K kJ
 
-" Enable jsx for js files
-let g:jsx_ext_required = 0
