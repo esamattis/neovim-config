@@ -11,6 +11,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim' " required by gist-vim
 Plug 'tpope/vim-fugitive'
+Plug 'vim-scripts/Rename'
 call plug#end()
 
 for plugin in keys(g:plugs)
