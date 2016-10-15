@@ -120,16 +120,14 @@ set mouse=v
 nnoremap / /\V
 vnoremap / /\V
 
-" * Search & Replace
-" make searches case-insensitive, unless they contain upper-case letters:
+" Make searches case-insensitive, unless they contain upper-case letters:
 set ignorecase
 set smartcase
 
-" Word scouting
 " Hilight all words matching the one under the cursor and mark the position to
 " 'p'. Return to original word with <Leader><Space>
-noremap <Space> mp*N
-noremap  <Leader><Space> 'p \| :noh<cr>
+noremap <Space> *N
+noremap  <Leader><Space> :noh<cr>
 
 " Search literal strings
 nnoremap <Leader>s :execute '/\V' . escape(input('/'), '\\/')<CR>
