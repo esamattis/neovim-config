@@ -176,3 +176,11 @@ map <F5> :redraw! \| :noh \| <cr><c-w>=
 " times
 vnoremap < <gv
 vnoremap > >gv
+
+for plugin in keys(g:plugs)
+    let s:plugin_config = $HOME . '/.config/nvim/plugin.d/' . plugin . '.after.vim'
+    if filereadable(s:plugin_config)
+        execute 'source ' . s:plugin_config
+    endif
+endfor
+
