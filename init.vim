@@ -151,3 +151,28 @@ nnoremap <C-l> <C-w>>
 
 " Show unsaved changes
 command ShowUnsaved w !diff -u % -
+
+" strip all trailing whitespace in the current file
+nnoremap <leader>W mz:%s/\s\+$//<cr>:let @/=''<cr>'z
+
+"  to reselect the text that was just pasted so I can perform commands (like
+"  indentation) on it
+nnoremap <leader>v V`]
+
+" Use Q for formatting the current paragraph (or selection).
+" Forces 80 character lines.
+vmap Q gq
+nmap Q gqap
+
+" Move by screen lines instead of file line. Nice with long lines.
+nnoremap j gj
+nnoremap k gk
+
+" Reset messed up Vim. Redraw screen, clear search hilights and balance window
+" splits
+map <F5> :redraw! \| :noh \| <cr><c-w>=
+
+" Reselect visual block after indent/outdent. Allow ident/outdent multiple
+" times
+vnoremap < <gv
+vnoremap > >gv
