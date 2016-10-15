@@ -29,6 +29,9 @@ let mapleader = ","
 " Always disable paste mode when leaving insert mode
 au InsertLeave * set nopaste
 
+" Enter paste mode with Ctrl+i
+map <C-i> :set paste<CR>i
+
 " Show trailing whitespace characters
 set list
 set listchars=tab:▸\ ,trail:·,extends:…,nbsp:␣
