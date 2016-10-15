@@ -116,10 +116,9 @@ map Y y$
 " Use mouse only in visual mode
 set mouse=v
 
-" This turns off Vim’s crazy default regex characters and makes searches use
-" normal regexes.
-nnoremap / /\v
-vnoremap / /\v
+" Turn magic off from search
+nnoremap / /\V
+vnoremap / /\V
 
 " * Search & Replace
 " make searches case-insensitive, unless they contain upper-case letters:
