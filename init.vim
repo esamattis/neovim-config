@@ -10,6 +10,7 @@ Plug 'ton/vim-bufsurf'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim' " required by gist-vim
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 for plugin in keys(g:plugs)
