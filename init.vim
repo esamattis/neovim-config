@@ -12,6 +12,7 @@ Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim' " required by gist-vim
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/Rename'
+Plug 'jeetsukumaran/vim-buffersaurus'
 call plug#end()
 
 for plugin in keys(g:plugs)
@@ -96,7 +97,6 @@ colorscheme molokai
 
 " Toggle with last previous buffer
 nnoremap <leader>m :b#<cr>
-nnoremap <leader>b :buffer<space>
 
 " Do toggle to netrw view
 let g:netrw_altfile = 1
