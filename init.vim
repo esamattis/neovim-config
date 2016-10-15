@@ -125,16 +125,19 @@ vnoremap / /\V
 set ignorecase
 set smartcase
 
-" Clear search hilights
-noremap  å :noh<cr><esc>
-
 " Word scouting
 " Hilight all words matching the one under the cursor and mark the position to
 " 'p'. Return to original word with <Leader><Space>
 noremap <Space> mp*N
 noremap  <Leader><Space> 'p \| :noh<cr>
-" Same for visual mode selection too
-vmap <Space> mpy/<C-r>"<cr>
+
+" Search literal strings
+nnoremap <Leader>s :execute '/\V' . escape(input('/'), '\\/')<CR>
+" Search what was last yanked
+nnoremap <Leader>S :execute '/\V' . escape(@", '\\/')<CR>
+" Start search from visual selection. The let thing is to restore what was
+" previously yanked to the unnamed register
+vnoremap <Space> "xy:execute '/\V' . escape(@x, '\\/')<CR>:let @" = @0<CR>
 
 " Join lines from below too. See :help J
 map K kJ
@@ -144,3 +147,4 @@ nnoremap <C-j> <C-w>+
 nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
+
