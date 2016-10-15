@@ -149,3 +149,5 @@ nnoremap <C-k> <C-w>-
 nnoremap <C-h> <C-w><
 nnoremap <C-l> <C-w>>
 
+" Show unsaved changes
+command ShowUnsaved w !diff -u % -
