@@ -124,14 +124,14 @@ vnoremap / /\V
 set ignorecase
 set smartcase
 
-" Hilight all words matching the one under the cursor and mark the position to
-" 'p'. Return to original word with <Leader><Space>
+" Hilight all words matching the one under the cursor
 noremap <Space> *N
+" Clear hilights
 noremap  <Leader><Space> :noh<cr>
 
 " Search literal strings
 nnoremap <Leader>s :execute '/\V' . escape(input('/'), '\\/')<CR>
-" Search what was last yanked
+" Search literallly what was last yanked
 nnoremap <Leader>S :execute '/\V' . escape(@", '\\/')<CR>
 " Start search from visual selection. The let thing is to restore what was
 " previously yanked to the unnamed register
