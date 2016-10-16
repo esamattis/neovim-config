@@ -98,7 +98,7 @@ colorscheme molokai
 " Toggle with last previous buffer
 nnoremap <leader>m :b#<cr>
 
-" Do toggle to netrw view
+" Do not toggle to netrw view
 let g:netrw_altfile = 1
 
 " Select another file from the directory of the current one
