@@ -134,9 +134,9 @@ noremap <Space> *N
 noremap  <Leader><Space> :noh<cr>
 
 " Search literal strings
-nnoremap <Leader>s :execute '/\V' . escape(input('/'), '\\/')<CR>
+nnoremap <Leader>S :execute '/\V' . escape(input('/'), '\\/')<CR>
 " Search literallly what was last yanked
-nnoremap <Leader>S :execute '/\V' . escape(@", '\\/')<CR>
+nnoremap <Leader>s :execute '/\V' . escape(@", '\\/')<CR>
 " Start search from visual selection. The let thing is to restore what was
 " previously yanked to the unnamed register
 vnoremap <Space> "xy:execute '/\V' . escape(@x, '\\/')<CR>:let @" = @0<CR>
