@@ -107,8 +107,9 @@ let g:netrw_altfile = 1
 "" DISABLED using ctrlp for this
 " Toggle with last previous buffer
 " nnoremap <leader>m :b#<cr>
+
 " Select another file from the directory of the current one
-"nnoremap <leader>f :execute 'edit' expand("%:p:h")<cr>
+nnoremap <leader>F :execute 'edit' expand("%:p:h")<cr>
 
 noremap <Leader>w :w<CR>
 
