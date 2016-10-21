@@ -17,6 +17,7 @@ Plug 'vim-scripts/Rename'
 Plug 'jeetsukumaran/vim-buffersaurus'
 Plug 'tomtom/tcomment_vim'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-repeat' " makes surround work with . (repeat)
 call plug#end()
 
 "" Leader mappings
