@@ -16,7 +16,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/Rename'
 Plug 'jeetsukumaran/vim-buffersaurus'
 Plug 'tomtom/tcomment_vim'
+Plug 'ctrlpvim/ctrlp.vim'
 call plug#end()
+
+"" Leader mappings
+let mapleader = ","
+
 
 for plugin in keys(g:plugs)
     let s:plugin_config = $HOME . '/.config/nvim/plugin.d/' . plugin . '.vim'
@@ -26,8 +31,6 @@ for plugin in keys(g:plugs)
 endfor
 
 
-"" Leader mappings
-let mapleader = ","
 
 
 " Always disable paste mode when leaving insert mode
@@ -98,14 +101,14 @@ set cursorline cursorcolumn
 
 colorscheme molokai
 
-" Toggle with last previous buffer
-nnoremap <leader>m :b#<cr>
-
 " Do not toggle to netrw view
 let g:netrw_altfile = 1
 
+"" DISABLED using ctrlp for this
+" Toggle with last previous buffer
+" nnoremap <leader>m :b#<cr>
 " Select another file from the directory of the current one
-nnoremap <leader>f :execute 'edit' expand("%:p:h")<cr>
+"nnoremap <leader>f :execute 'edit' expand("%:p:h")<cr>
 
 noremap <Leader>w :w<CR>
 
