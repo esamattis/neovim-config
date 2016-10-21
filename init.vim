@@ -178,6 +178,22 @@ map <F5> :redraw! \| :noh \| <cr><c-w>=
 vnoremap < <gv
 vnoremap > >gv
 
+
+" Some aliases for typoists
+command W w
+command Q q
+command WQ wq
+command Wq wq
+command Qa qa
+command QA qa
+command Wa wa
+command WA wa
+command E e
+nnoremap ; :
+vnoremap ; :
+nnoremap _ :
+vnoremap _ :
+
 for plugin in keys(g:plugs)
     let s:plugin_config = $HOME . '/.config/nvim/plugin.d/' . plugin . '.after.vim'
     if filereadable(s:plugin_config)
