@@ -8,7 +8,6 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'tpope/vim-surround'
-Plug 'ton/vim-bufsurf'
 Plug 'airblade/vim-gitgutter'
 Plug 'mattn/gist-vim'
 Plug 'mattn/webapi-vim' " required by gist-vim
@@ -113,10 +112,6 @@ let g:netrw_altfile = 1
 nnoremap <leader>F :execute 'edit' expand("%:p:h")<cr>
 
 noremap <Leader>w :w<CR>
-
-noremap <Up> :bNext<cr>
-noremap <Down> :brewind<cr>
-
 
 " Close current buffer
 noremap <Leader>d :bd<CR>
