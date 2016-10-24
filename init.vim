@@ -201,3 +201,7 @@ vnoremap _ :
 " isn’t closed properly. This can save you a lot of time.
 set nobackup
 set noswapfile
+
+au FocusGained,BufEnter * :silent! !
+au FocusLost,BufLeave * :silent! w
+
