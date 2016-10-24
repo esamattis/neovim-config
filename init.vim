@@ -18,6 +18,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-repeat' " makes surround work with . (repeat)
 Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'simnalamburt/vim-mundo'
 call plug#end()
 
 "" Leader mappings
