@@ -18,7 +18,7 @@ Plug 'tomtom/tcomment_vim'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-repeat' " makes surround work with . (repeat)
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'simnalamburt/vim-mundo'
+Plug 'simnalamburt/vim-mundo' " alt https://github.com/mbbill/undotree
 Plug 'vim-airline/vim-airline'
 call plug#end()
 
