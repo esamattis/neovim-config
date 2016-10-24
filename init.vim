@@ -196,3 +196,7 @@ vnoremap ; :
 nnoremap _ :
 vnoremap _ :
 
+" Vim’s defaults are awful messy, leaving .swp files everywhere if the editor
+" isn’t closed properly. This can save you a lot of time.
+set nobackup
+set noswapfile
