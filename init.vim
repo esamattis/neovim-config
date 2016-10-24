@@ -202,6 +202,14 @@ vnoremap _ :
 set nobackup
 set noswapfile
 
+" Autosave only when there is something to save. Always saving makes build
+" watchers crazy
+function! SaveIfUnsaved()
+    if &modified
+        :silent! w
+    endif
+endfunction
+
 au FocusGained,BufEnter * :silent! !
-au FocusLost,BufLeave * :silent! w
+au FocusLost,BufLeave * :call SaveIfUnsaved()
 
