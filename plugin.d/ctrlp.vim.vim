@@ -8,3 +8,6 @@ endif
 
 nnoremap <leader>f :CtrlP<CR>
 nnoremap <leader>m :CtrlPBuffer<CR>
+
+" Just disable the default ctrlp mapping. Going to use miniyank for it.
+let g:ctrlp_map = ''
