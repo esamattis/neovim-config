@@ -27,7 +27,12 @@ let mapleader = ","
 
 
 for plugin in keys(g:plugs)
-    let s:plugin_config = $HOME . '/.config/nvim/plugin.d/' . plugin . '.vim'
+    if has("win32")
+        let s:plugin_config = $HOME . '/AppData/Local/nvim/plugin.d/' . plugin . '.vim'
+    else
+        let s:plugin_config = $HOME . '/.config/nvim/plugin.d/' . plugin . '.vim'
+    endif
+
     if filereadable(s:plugin_config)
         execute 'source ' . s:plugin_config
     endif
