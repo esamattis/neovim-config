@@ -217,7 +217,12 @@ function! SaveIfUnsaved()
         :silent! w
     endif
 endfunction
-
-au FocusGained,BufEnter * :silent! !
 au FocusLost,BufLeave * :call SaveIfUnsaved()
+au FocusGained,BufEnter * :silent! ! " Read the file on focus/buffer enter
 
+
+" Assume json file type for these files
+augroup json
+    au!
+    au BufNewFile,BufRead .eslintrc,.babelrc setlocal filetype=json
+augroup END
