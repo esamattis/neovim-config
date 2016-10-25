@@ -218,7 +218,8 @@ function! SaveIfUnsaved()
     endif
 endfunction
 au FocusLost,BufLeave * :call SaveIfUnsaved()
-au FocusGained,BufEnter * :silent! ! " Read the file on focus/buffer enter
+" Read the file on focus/buffer enter
+au FocusGained,BufEnter * :silent! !
 
 
 " Assume json file type for these files
