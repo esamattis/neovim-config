@@ -27,7 +27,7 @@
   changed = green
   untracked = cyan
 [alias]
-  st = status
+  st = status -sb
   ci = commit
   l = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
   today = log --since="6am" --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'
