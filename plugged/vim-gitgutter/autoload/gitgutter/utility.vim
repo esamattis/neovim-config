@@ -190,19 +190,23 @@ endfunction
 
 function! gitgutter#utility#use_known_shell() abort
   if has('unix')
-    let s:shell = &shell
-    let s:shellcmdflag = &shellcmdflag
-    let s:shellredir = &shellredir
-    let &shell = 'sh'
-    set shellcmdflag=-c
-    set shellredir=>%s\ 2>&1
+    if &shell !=# 'sh'
+      let s:shell = &shell
+      let s:shellcmdflag = &shellcmdflag
+      let s:shellredir = &shellredir
+      let &shell = 'sh'
+      set shellcmdflag=-c
+      set shellredir=>%s\ 2>&1
+    endif
   endif
 endfunction
 
 function! gitgutter#utility#restore_shell() abort
   if has('unix')
-    let &shell = s:shell
-    let &shellcmdflag = s:shellcmdflag
-    let &shellredir = s:shellredir
+    if exists('s:shell')
+      let &shell = s:shell
+      let &shellcmdflag = s:shellcmdflag
+      let &shellredir = s:shellredir
+    endif
   endif
 endfunction
