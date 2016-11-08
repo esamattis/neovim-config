@@ -50,7 +50,6 @@ endfunction"}}}
 
 function! s:completion_begin(event) abort "{{{
   let context = deoplete#init#_context(a:event, [])
-
   if s:is_skip(a:event, context)
     return
   endif

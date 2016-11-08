@@ -5,7 +5,7 @@
 "=============================================================================
 
 function! deoplete#mapping#_init() abort "{{{
-  inoremap <silent> <Plug>(deoplete_start_complete)
+  inoremap <silent> <Plug>_
         \ <C-r>=deoplete#mapping#_do_complete(g:deoplete#_context)<CR>
   inoremap <silent> <Plug>(deoplete_auto_refresh)
         \ <C-r>=deoplete#refresh()<CR>
@@ -14,9 +14,6 @@ endfunction"}}}
 function! deoplete#mapping#_do_complete(context) abort "{{{
   if b:changedtick == get(a:context, 'changedtick', -1)
         \ && mode() ==# 'i'
-    if a:context.event ==# 'InsertEnter'
-      silent! undojoin
-    endif
     call complete(a:context.complete_position + 1, a:context.candidates)
   endif
 

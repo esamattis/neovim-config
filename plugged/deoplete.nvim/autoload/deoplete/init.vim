@@ -53,10 +53,11 @@ function! deoplete#init#_channel() abort "{{{
     endif
     call _deoplete()
   catch
-    call deoplete#util#print_error(
-          \ 'deoplete.nvim is not registered as Neovim remote plugins.')
-    call deoplete#util#print_error(
-          \ 'Please execute :UpdateRemotePlugins command and restart Neovim.')
+    call deoplete#util#print_error(printf(
+          \ 'deoplete failed to load: %s. '
+          \ .'Try the :UpdateRemotePlugins command and restart Neovim. '
+          \ .'See also :CheckHealth.',
+          \ v:exception))
     return 1
   endtry
 
@@ -110,7 +111,7 @@ function! deoplete#init#_variables() abort "{{{
   call deoplete#util#set_default(
         \ 'g:deoplete#enable_profile', 0)
   call deoplete#util#set_default(
-        \ 'g:deoplete#auto_complete_delay', 100)
+        \ 'g:deoplete#auto_complete_delay', 150)
   call deoplete#util#set_default(
         \ 'g:deoplete#auto_refresh_delay', 50)
   call deoplete#util#set_default(
@@ -215,7 +216,7 @@ function! deoplete#init#_context(event, sources) abort "{{{
         \ 'bufnr': bufnr('%'),
         \ 'bufname': bufname('%'),
         \ 'cwd': getcwd(),
-        \ 'start_complete': "\<Plug>(deoplete_start_complete)",
+        \ 'start_complete': "\<Plug>_",
         \ 'vars': filter(copy(g:), "stridx(v:key, 'deoplete#') == 0"),
         \ 'bufvars': filter(copy(b:), "stridx(v:key, 'deoplete_') == 0"),
         \ 'custom': deoplete#custom#get(),

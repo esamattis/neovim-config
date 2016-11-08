@@ -37,14 +37,22 @@ function! deoplete#util#get_simple_buffer_config(buffer_var, user_var) abort "{{
   return exists(a:buffer_var) ? {a:buffer_var} : {a:user_var}
 endfunction"}}}
 function! deoplete#util#print_error(string) abort "{{{
-  echohl Error | echomsg '[deoplete] ' . a:string | echohl None
+  echohl Error | echomsg '[deoplete] '
+        \ . deoplete#util#string(a:string) | echohl None
 endfunction"}}}
 function! deoplete#util#print_warning(string) abort "{{{
-  echohl WarningMsg | echomsg '[deoplete] ' . a:string | echohl None
+  echohl WarningMsg | echomsg '[deoplete] '
+        \ . deoplete#util#string(a:string) | echohl None
+endfunction"}}}
+function! deoplete#util#print_debug(string) abort "{{{
+  echomsg '[deoplete] ' . deoplete#util#string(a:string)
 endfunction"}}}
 
 function! deoplete#util#convert2list(expr) abort "{{{
   return type(a:expr) ==# type([]) ? a:expr : [a:expr]
+endfunction"}}}
+function! deoplete#util#string(expr) abort "{{{
+  return type(a:expr) ==# type('') ? a:expr : string(a:expr)
 endfunction"}}}
 
 function! deoplete#util#get_input(event) abort "{{{
@@ -158,6 +166,18 @@ function! deoplete#util#get_syn_names() abort "{{{
     " Ignore error
   endtry
   return names
+endfunction"}}}
+
+function! deoplete#util#exists_omnifunc(name) abort "{{{
+  if !exists('s:called_omnifuncs')
+    let s:called_omnifuncs = {}
+  endif
+
+  if !has_key(s:called_omnifuncs, a:name)
+    silent! call {a:name}(1, '')
+    let s:called_omnifuncs[a:name] = exists('*' . a:name)
+  endif
+  return s:called_omnifuncs[a:name]
 endfunction"}}}
 
 function! deoplete#util#neovim_version() abort "{{{
