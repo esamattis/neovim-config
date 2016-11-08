@@ -3,12 +3,16 @@ CDPATH:=
 
 test: testnvim testvim
 
+# This is expected in tests.
+export SHELL:=/bin/bash
+
 VADER:=Vader!
 VADER_ARGS:=tests/*.vader
 VIM_ARGS='+$(VADER) $(VADER_ARGS)'
 
-export TESTS_VADER_DIR:=$(abspath $(firstword $(wildcard tests/vim/plugins/vader.override) tests/vim/plugins/vader))
-$(TESTS_VADER_DIR):
+DEFAULT_VADER_DIR:=tests/vim/plugins/vader
+export TESTS_VADER_DIR:=$(abspath $(firstword $(wildcard tests/vim/plugins/vader.override) $(DEFAULT_VADER_DIR)))
+$(TESTS_VADER_DIR) $(DEFAULT_VADER_DIR):
 	mkdir -p $(dir $@)
 	git clone --depth=1 https://github.com/junegunn/vader.vim $@
 
@@ -28,7 +32,7 @@ testvim: TEST_VIM_PREFIX+=HOME=/dev/null
 testvim: _run_vim
 
 _REDIR_STDOUT:=>/dev/null
-_run_vim: $(TESTS_VADER_DIR)
+_run_vim: | build $(TESTS_VADER_DIR)
 _run_vim:
 	$(TEST_VIM_PREFIX) $(TEST_VIM) -u $(TEST_VIMRC) -i NONE $(VIM_ARGS) $(_REDIR_STDOUT)
 
@@ -66,14 +70,24 @@ tags:
 	ctags -R --langmap=vim:+.vader
 
 # Linters, called from .travis.yml.
-vint:
-	vint .
-vint-errors:
-	vint --error .
-vimlint:
-	sh /tmp/vimlint/bin/vimlint.sh -l /tmp/vimlint -p /tmp/vimlparser .
-vimlint-errors:
-	sh /tmp/vimlint/bin/vimlint.sh -E -l /tmp/vimlint -p /tmp/vimlparser .
+LINT_FILES:=./plugin ./autoload
+build/vint: | build
+	virtualenv $@
+	$@/bin/pip install vim-vint
+vint: build/vint
+	build/vint/bin/vint $(LINT_FILES)
+vint-errors: build/vint
+	build/vint/bin/vint --error $(LINT_FILES)
+
+# vimlint
+build/vimlint: | build
+	git clone --depth=1 https://github.com/syngan/vim-vimlint $@
+build/vimlparser: | build
+	git clone --depth=1 https://github.com/ynkdir/vim-vimlparser $@
+vimlint: build/vimlint build/vimlparser
+	build/vimlint/bin/vimlint.sh -l build/vimlint -p build/vimlparser $(LINT_FILES)
+vimlint-errors: build/vimlint build/vimlparser
+	build/vimlint/bin/vimlint.sh -E -l build/vimlint -p build/vimlparser $(LINT_FILES)
 
 build build/neovim-test-home:
 	mkdir $@
@@ -109,7 +123,7 @@ docker_image:
 docker_push:
 	docker push $(DOCKER_IMAGE)
 
-DOCKER_VIMS:=vim73 vim74-trusty vim74-xenial vim8000 vim-master
+DOCKER_VIMS:=vim73 vim74-trusty vim74-xenial vim8000 vim8027 vim-master
 _DOCKER_VIM_TARGETS:=$(addprefix docker_test-,$(DOCKER_VIMS))
 
 docker_test_all: $(_DOCKER_VIM_TARGETS)
@@ -119,10 +133,11 @@ $(_DOCKER_VIM_TARGETS):
 
 docker_test: DOCKER_VIM:=vim-master
 docker_test: DOCKER_STREAMS:=-a stderr
-docker_test: DOCKER_RUN:=$(DOCKER_VIM) '+$(VADER) tests/*.vader'
-docker_test: docker_run
+docker_test: DOCKER_MAKE_TARGET:=testvim TEST_VIM=/vim-build/bin/$(DOCKER_VIM) VIM_ARGS="$(VIM_ARGS)"
+docker_test: docker_make
 
-docker_run: $(TESTS_VADER_DIR)
+docker_run: TESTS_VADER_DIR:=$(DEFAULT_VADER_DIR)
+docker_run: $(DEFAULT_VADER_DIR)
 docker_run:
 	$(DOCKER) $(if $(DOCKER_RUN),$(DOCKER_RUN),bash)
 
