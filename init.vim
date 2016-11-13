@@ -210,6 +210,9 @@ vnoremap _ :
 abbreviate lenght length
 abbreviate lenghts lengths
 
+" Open git diff window when editing a commit message
+autocmd FileType gitcommit DiffGitCached | wincmd p
+
 
 " Vim’s defaults are awful messy, leaving .swp files everywhere if the editor
 " isn’t closed properly. This can save you a lot of time.
