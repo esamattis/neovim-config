@@ -1,13 +1,15 @@
 " Setup and helpers for all tests.
 
-Execute:
+Execute (Setup):
   function! s:wait_for_finished_jobs()
-    let max = 500
-    while len(neomake#GetJobs())
+    let max = 60
+    let filter = "!get(v:val, 'finished')"
+    while len(filter(copy(neomake#GetJobs()), filter))
       let max -= 1
-      sleep 10m
+      sleep 50m
       if max == 0
-        throw "Jobs did not finish after 5s."
+        let jobs = neomake#GetJobs()
+        throw "Jobs did not finish after 3s: ".string(jobs)
       endif
     endwhile
   endfunction
@@ -57,42 +59,74 @@ Execute:
 
   function! s:AssertNeomakeMessage(msg, ...)
     let level = a:0 ? a:1 : -1
-    let jobinfo = a:0 > 1 ? a:2 : -1
+    let jobinfo = a:0 > 1 ? copy(a:2) : -1
+    let found_but_before = 0
     let found_but_other_level = -1
     let r = 0
+    let idx = -1
     for [l, m, info] in g:neomake_test_messages
+      let idx += 1
       if m ==# a:msg
         if level == -1
           let r = 1
-          break
         else
           if l == level
             let r = 1
-            break
           else
             let found_but_other_level = l
           endif
         endif
       endif
+      if r
+        if idx > g:neomake_test_messages_last_idx
+          break
+        endif
+        let found_but_before = 1
+        let r = 0
+      endif
     endfor
     if r == 1
       if type(jobinfo) == type({})
+        " Only compare entries relevant for messages.
+        call filter(jobinfo, "index(['id', 'make_id'], v:key) != -1")
         let l:UNDEF = {}
         for [k, v] in items(info)
           let expected = get(jobinfo, k, l:UNDEF)
-          if expected isnot l:UNDEF && v !=# expected
-            throw printf("Got unexpected value for jobinfo.%s: "
-              \  ."expected '%s', but got '%s'.", k, string(expected), string(v))
+          if expected is l:UNDEF
+            throw printf("[%s] Missing value for jobinfo.%s: "
+                \  ."expected nothing, but got '%s'.", a:msg, k, string(v))
+          else
+            try
+              let same = (v ==# expected)
+            catch
+              throw printf(
+                \ "Could not compare jobinfo entries (expected: %s, actual: %s): %s",
+                \ string(expected), string(v), v:exception)
+            endtry
+            if !same
+              throw printf("Got unexpected value for jobinfo.%s: "
+                \  ."expected '%s', but got '%s'.", k, string(expected), string(v))
+            endif
           endif
+          unlet jobinfo[k]
           unlet v  " for old Vim
         endfor
+        for [k, expected] in items(jobinfo)
+          throw printf("[%s] Missing entry for jobinfo.%s: "
+            \  ."expected '%s', but got nothing.", a:msg, k, string(expected))
+
+        endfor
       endif
+      let g:neomake_test_messages_last_idx = idx
       return 1
     endif
     if found_but_other_level != -1
       throw "Message '".a:msg."' found, but for level ".found_but_other_level
     endif
-    throw "Message '".a:msg."' not found: ".string(g:neomake_test_messages)
+    if found_but_before
+      throw "Message '".a:msg."' was found _before_ last asserted one."
+    endif
+    throw "Message '".a:msg."' not found."
   endfunction
   command! -nargs=+ AssertNeomakeMessage call s:AssertNeomakeMessage(<args>)
 
@@ -124,7 +158,14 @@ Execute:
 
 Before:
   let g:neomake_test_messages = []
-  Assert !len(neomake#GetJobs()), 'There were jobs left from the previous test!'
+  let g:neomake_test_messages_last_idx = -1
 
 After:
   Restore
+  let jobs = copy(neomake#GetJobs())
+  if len(jobs)
+    for job_id in keys(jobs)
+      call neomake#CancelJob(job_id)
+    endfor
+    throw 'There were '.len(jobs).' jobs left: '.string(jobs)
+  endif

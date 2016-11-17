@@ -23,7 +23,7 @@ function! neomake#utils#LogMessage(level, msg, ...) abort
     let verbose = get(g:, 'neomake_verbose', 1)
     let logfile = get(g:, 'neomake_logfile')
 
-    if exists(':Log') != 2 && verbose < a:level && logfile is ''
+    if exists(':Log') != 2 && verbose < a:level && logfile is# ''
         return
     endif
 
@@ -43,7 +43,9 @@ function! neomake#utils#LogMessage(level, msg, ...) abort
         " Log is defined during Vader tests.
         let test_msg = '['.s:level_to_name[a:level].'] ['.s:timestr().']: '.msg
         call vader#log(test_msg)
-        let g:neomake_test_messages += [[a:level, a:msg, jobinfo]]
+        " Only keep jobinfo entries that are relevant for / used in the message.
+        let g:neomake_test_messages += [[a:level, a:msg,
+                    \ filter(copy(jobinfo), "index(['id', 'make_id'], v:key) != -1")]]
     endif
 
     if verbose >= a:level
@@ -181,6 +183,9 @@ function! neomake#utils#MakerIsAvailable(ft, maker_name) abort
     endif
     if !has_key(s:available_makers, a:maker_name)
         let maker = neomake#GetMaker(a:maker_name, a:ft)
+        if empty(maker)
+            return 0
+        endif
         let s:available_makers[a:maker_name] = executable(maker.exe)
     endif
     return s:available_makers[a:maker_name]
