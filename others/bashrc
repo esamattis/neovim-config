@@ -16,15 +16,15 @@ bind "set show-all-if-ambiguous on"
 export HISTIGNORE="&:[ ]*:exit:ls:bg:fg:history"
 
 # Useful timestamp format
-HISTTIMEFORMAT='%F %T '
+export HISTTIMEFORMAT='%F %T '
 
 # http://briancarper.net/blog/248/
 # Append to ~/.bash_history instead of overriding it
 shopt -s histappend
 
 # Huge history. Doesn't appear to slow things down, so why not?
-HISTSIZE=500000
-HISTFILESIZE=100000
+export HISTSIZE=500000
+export HISTFILESIZE=100000
 
 # tmux
 source $HOME/.vim/others/bash_completion_tmux.sh
