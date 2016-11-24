@@ -184,8 +184,7 @@ function prompt_func() {
 
   titlebar="${host} ${YELLOW}\w"
 
-  git rev-parse --git-dir > /dev/null 2>&1
-  if [ $? -eq 0 ]; then
+  if [ "$(git rev-parse --show-toplevel 2>/dev/null)" != "" ]; then
     # In Git repo
     git_bar="$(generate_git_bar)"
   else
