@@ -29,9 +29,6 @@ export HISTFILESIZE=100000
 # tmux
 source $HOME/.vim/others/bash_completion_tmux.sh
 
-export DEBFULLNAME="Esa-Matti Suuronen"
-export DEBEMAIL="esa-matti.suuronen@opinsys.fi"
-
 alias node_modules_to_path='export PATH="$(pwd)/node_modules/.bin":$PATH'
 
 if [ -d ~/.local/bin ] ; then
