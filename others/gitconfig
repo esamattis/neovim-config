@@ -5,9 +5,6 @@
   user = epeli
 [apply]
   whitespace = nowarn
-[branch]
-  autosetuprebase = always
-  autosetupmerge = always
 [color]
   branch = auto
   diff = auto
