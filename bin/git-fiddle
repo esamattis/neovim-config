@@ -1,0 +1,121 @@
+#!/bin/bash
+#
+# git-fiddle - edit commit meta information during an *interactive* rebase.
+#
+# `git-fiddle(1)' is a lightweight wrapper around `git-rebase(1)' that
+# annotates each commit with its *author* date, the author name, as well
+# as the commit message. Changes to any of these will then be applied
+# using an 'exec' script during the git-rebase sequence.
+#
+# Usage:
+#   git fiddle [options] [args...]
+#
+# Options:
+#   --[no-]fiddle
+#       Turn ON/OFF fiddeling. Useful to turn off all options and selectively
+#       enable some.
+#   --[no-]fiddle-author
+#       Do (not) edit author names. Note that the author *can* still be edited,
+#       but it is not pre-populated. [git config: fiddle.author]
+#   --[no-]fiddle-author-email
+#       Do not pre-populate the author's email. Refer to --[no-]fiddle-author.
+#       [git config: fiddle.author.email]
+#   --[no-]fiddle-author-date
+#       Do (not) edit author dates. Note that the author date *can* still be
+#       edited, but it is not pre-populated. [git config: fiddle.author.date]
+#   --[no-]fiddle-author-subject
+#       Do (not) commit subject lines. Note that the commit message *can* still
+#       be edited, but it is not pre-populated. [git config: fiddle.subject]
+#   --[no-]fiddle-author-body
+#       Do (not) the commit body. Note that the commit message *CANNOT* be edit
+#       if this option is turned OFF and might case `git-rebase` errors.
+#       [git config: fiddle.body]
+#   [args...] These arguments are passed verbatim to git-rebase.
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ORIGINAL_GIT_SEQUENCE_EDITOR="$GIT_SEQUENCE_EDITOR"
+
+# derive the help text from the first comment in a shell script
+function derive_help {
+	awk '
+	f && !NF { exit }
+	/^#/ && NR>2 { f=1; sub("^# ?", "", $0); print $0 }
+	' < "$1"
+}
+
+# print the help text, derived from this file
+function help { derive_help "${BASH_SOURCE[0]}"; }
+
+# stop here, if 'source'd
+if [ "$0" = "${BASH_SOURCE[0]}" ]; then
+
+# only capture '-h|--help' if it's first arg. let git-rebase handle it
+# otherwise.
+case "${1---help}" in
+	-h|--help) help; exit 0;;
+esac
+
+git_fiddle_author_date=
+git_fiddle_author=
+git_fiddle_author_email=
+git_fiddle_subject=
+git_fiddle_body=
+
+# check for a given key in `git-config`.
+# assigns the result to the given var name "$1"
+function check_config {
+	local -r var="$1"
+	local -r key="$2"
+	if eval "[ -z \"\$$var\" ]"; then
+		eval "$var=\"$(git config --get fiddle."$key")\""
+		if eval "[ -z \"\$$var\" ]"; then
+			eval "$var=true"
+		fi
+	fi
+}
+
+check_config git_fiddle_author       author
+check_config git_fiddle_author_date  author.date
+check_config git_fiddle_author_email author.email
+check_config git_fiddle_subject      subject
+check_config git_fiddle_body         body
+
+# strip args to `git-fiddle' from argv, so git-rebase won't reject them.
+declare -a git_rebase_args
+while [ $# -gt 0 ]; do
+	case "$1" in
+		--no-fiddle)
+			git_fiddle_author_date=false
+			git_fiddle_author=false
+			git_fiddle_author_email=false
+			git_fiddle_subject=false
+			git_fiddle_body=false
+			;;
+		--fiddle-author-date)     git_fiddle_author_date=true; ;;
+		--no-fiddle-author-date)  git_fiddle_author_date=false; ;;
+		--fiddle-author)          git_fiddle_author=true; ;;
+		--no-fiddle-author)       git_fiddle_author=false; ;;
+		--fiddle-author-email)    git_fiddle_author_email=true; ;;
+		--no-fiddle-author-email) git_fiddle_author_email=false; ;;
+		--fiddle-subject)         git_fiddle_subject=true; ;;
+		--no-fiddle-subject)      git_fiddle_subject=false; ;;
+		--fiddle-body)            git_fiddle_body=true; ;;
+		--no-fiddle-body)         git_fiddle_body=false; ;;
+		*) git_rebase_args+=("$1"); ;;
+	esac
+	shift
+done
+
+# invoke `git-rebase' using a custom editor, effectively wrapping the user's
+# actual editor choice, which will be invoked from the `git-fiddle` editor
+# itself.
+GIT_SEQUENCE_EDITOR="'${SCRIPT_DIR}/_fiddle_seq_editor'" \
+	GIT_FIDDLE_AUTHOR_DATE="$git_fiddle_author_date" \
+	GIT_FIDDLE_AUTHOR="$git_fiddle_author" \
+	GIT_FIDDLE_AUTHOR_EMAIL="$git_fiddle_author_email" \
+	GIT_FIDDLE_SUBJECT="$git_fiddle_subject" \
+	GIT_FIDDLE_BODY="$git_fiddle_body" \
+	GIT_FIDDLE_SEQUENCE_EDITOR="$ORIGINAL_GIT_SEQUENCE_EDITOR" \
+	git rebase -i "${git_rebase_args[@]}"
+
+fi
