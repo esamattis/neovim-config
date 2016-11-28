@@ -37,15 +37,6 @@ function be {
   bundle exec "$@"
 }
 
-## put to ~/.bashrc if in use
-# if [ -x $(which keychain) ] ; then
-#     keychain --nogui -q -Q id_rsa
-#         . ~/.keychain/`uname -n`-sh
-# fi
-
-# Restore keychain
-alias keychain-enable='keychain --nogui -q -Q id_rsa && . ~/.keychain/`uname -n`-sh'
-
 alias node_modules_to_path='export PATH="$(pwd)/node_modules/.bin":$PATH'
 
 if [ -d ~/.local/bin ] ; then
