@@ -62,7 +62,7 @@ function generate_nvm_info {
   local version=""
 
   if [ "$NVM_BIN" != "" ]; then
-    local version="sdaf"
+    local version="brokenbash"
     if [[ $NVM_BIN =~ ${version_pattern} ]]; then
       version="${BLUE}${BASH_REMATCH[1]}"
     fi
