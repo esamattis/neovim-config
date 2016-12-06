@@ -22,6 +22,7 @@ Plug 'simnalamburt/vim-mundo' " alt https://github.com/mbbill/undotree
 Plug 'vim-airline/vim-airline'
 Plug 'bfredl/nvim-miniyank'
 Plug 'Glench/Vim-Jinja2-Syntax'
+Plug 'machakann/vim-highlightedyank'
 call plug#end()
 
 "" Leader mappings
