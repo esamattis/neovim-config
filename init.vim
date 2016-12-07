@@ -48,12 +48,8 @@ endfor
 
 
 
-
-" Always disable paste mode when leaving insert mode
-au InsertLeave * set nopaste
-
-" Enter paste mode with Ctrl+i
-map <C-i> :set paste<CR>i
+" Legacy 'easy paste' helper
+map <C-i> :echo 'No need'<cr>
 
 " Show trailing whitespace characters
 set list
