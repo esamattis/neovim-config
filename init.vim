@@ -2,7 +2,12 @@ call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'neomake/neomake'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'steelsojka/deoplete-flow'
+
+call system('which flow')
+if  v:shell_error == 0
+    Plug 'steelsojka/deoplete-flow'
+endif
+
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'pangloss/vim-javascript'
