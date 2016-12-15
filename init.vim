@@ -11,6 +11,11 @@ if  v:shell_error == 0 || $PLUG_UPDATE == 1
     Plug 'steelsojka/deoplete-flow'
 endif
 
+" Breaks normal vim paste
+if has('nvim')
+    Plug 'bfredl/nvim-miniyank'
+endif
+
 Plug 'Shougo/neosnippet.vim'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'pangloss/vim-javascript'
@@ -28,7 +33,6 @@ Plug 'tpope/vim-repeat' " makes surround work with . (repeat)
 Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'simnalamburt/vim-mundo' " alt https://github.com/mbbill/undotree
 Plug 'vim-airline/vim-airline'
-Plug 'bfredl/nvim-miniyank'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'machakann/vim-highlightedyank'
 Plug 'tpope/vim-sleuth'
@@ -41,8 +45,10 @@ let mapleader = ","
 for plugin in keys(g:plugs)
     if has("win32")
         let s:plugin_config = $HOME . '/AppData/Local/nvim/plugin.d/' . plugin . '.vim'
-    else
+    elseif has('nvim')
         let s:plugin_config = $HOME . '/.config/nvim/plugin.d/' . plugin . '.vim'
+    else
+        let s:plugin_config = $HOME . '/.vim/plugin.d/' . plugin . '.vim'
     endif
 
     if filereadable(s:plugin_config)
