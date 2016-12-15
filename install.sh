@@ -73,8 +73,7 @@ cd $HOME/.vim
 git remote add sshorigin git@github.com:epeli/vimconfig.git
 
 chmod +x $HOME/.vim/bin/*
-ln -fs $HOME/.vim/vimrc $HOME/.vimrc
-vim -c 'call pathogen#helptags()' -c 'qa!'
+ln -fs $HOME/.vim/init.vim $HOME/.vimrc
 
 
 echo
