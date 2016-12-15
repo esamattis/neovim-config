@@ -1,10 +1,13 @@
+" PLUG_UPDATE=1 nvim -c 'PlugClean | PlugUpdate'
 call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'neomake/neomake'
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
+" Enable only when flow is in PATH otherwise it causes errors with Javascript
+" files
 call system('which flow')
-if  v:shell_error == 0
+if  v:shell_error == 0 || $PLUG_UPDATE == 1
     Plug 'steelsojka/deoplete-flow'
 endif
 
