@@ -14,13 +14,14 @@ function! neomake#makers#ft#vim#vint() abort
 
     return {
         \ 'args': l:args,
-        \ 'errorformat': '%f:%l:%c:%t%*[^:]:%m'
+        \ 'errorformat': '%I%f:%l:%c:style_problem:%m,%f:%l:%c:%t%*[^:]:%m'
         \ }
 endfunction
 
 function! neomake#makers#ft#vim#vimlint() abort
     return {
         \ 'args': ['-u'],
-        \ 'errorformat': '%f:%l:%c:%t{rror|arning}:%n:%m',
+        \ 'errorformat': '%f:%l:%c:%trror: EVL%n: %m,'
+        \   . '%f:%l:%c:%tarning: EVL%n: %m',
         \ }
 endfunction

@@ -1,4 +1,4 @@
-" Include: include/setup.vader
+Include: include/setup.vader
 
 " XXX: needs to come first / early for now.
 Include (Integration tests): integration.vader
@@ -88,12 +88,14 @@ Execute (neomake#CancelJob):
   if neomake#has_async_support()
     let job_id = neomake#Sh("sh -c 'while true; do sleep 0.1; done'")
     AssertEqual neomake#CancelJob(job_id), 1
+    AssertNeomakeMessage 'Stopping job: '.job_id
 
-    " The job is still in the table, therefore 'E900: Invalid job id'.
-    AssertThrows neomake#CancelJob(job_id)
+    AssertEqual neomake#CancelJob(job_id), 0
 
     NeomakeTestsWaitForFinishedJobs
+    let msg_count = len(g:neomake_test_messages)
     AssertEqual neomake#CancelJob(job_id), 0
+    AssertEqual msg_count, len(g:neomake_test_messages), "msg_count: ".msg_count
   endif
 
 Execute (Reports exit status: 7):
@@ -120,3 +122,13 @@ Execute (neomake#Sh: job_id):
   else
     Assert job_id == -1, 'Correct job_id for sync.'
   endif
+
+" NOTE: try/catch test, causing problems on vim8000.
+Execute (neomake#Make handles invalid cwd):
+  let maker = {
+      \ 'name': 'custom_maker',
+      \ 'cwd': '/doesnotexist',
+      \ }
+  call neomake#Make(1, [maker])
+  NeomakeTestsWaitForFinishedJobs
+  AssertNeomakeMessage "custom_maker: could not change to maker's cwd (/doesnotexist): Vim(cd):E344: Can't find directory \"/doesnotexist\" in cdpath", 0

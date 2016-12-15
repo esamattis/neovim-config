@@ -11,14 +11,22 @@ function! neomake#makers#ft#markdown#mdl() abort
 endfunction
 
 function! neomake#makers#ft#markdown#proselint() abort
-    return {
-                \ 'errorformat': '%f:%l:%c: %m'
-                \ }
+    return neomake#makers#ft#text#proselint()
 endfunction
 
 function! neomake#makers#ft#markdown#markdownlint() abort
     return {
                 \ 'errorformat':
                 \ '%f: %l: %m'
+                \ }
+endfunction
+
+function! neomake#makers#ft#markdown#alex() abort
+    return {
+                \ 'errorformat':
+                \ '%P%f,' .
+                \ '%-Q,' .
+                \ '%*[ ]%l:%c-%*\d:%n%*[ ]%tarning%*[ ]%m,' .
+                \ '%-G%.%#'
                 \ }
 endfunction

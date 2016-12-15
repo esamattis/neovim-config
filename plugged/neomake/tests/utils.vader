@@ -61,11 +61,18 @@ Execute (neomake#utils#GetSetting accepts lists):
 
 Execute (neomake#utils#GetSetting without name):
   let g:maker = {}
-  function! GetSetting()
-    return neomake#utils#GetSetting('args', g:maker, [],
+  function! GetSetting(key)
+    return neomake#utils#GetSetting(a:key, g:maker, [],
                                   \ ['myft'], bufnr('%'))
   endfunction
-  AssertEqual GetSetting(), []
+  AssertEqual GetSetting('args'), []
+
+  Save neomake_setting neomake_myft_setting
+  AssertEqual GetSetting('setting'), []
+  let neomake_setting = 42
+  AssertEqual GetSetting('setting'), 42
+  let neomake_myft_setting = {'custom': 1}
+  AssertEqual GetSetting('setting'), {'custom': 1}
 
 Execute(neomake#utils#redir):
   command! NeomakeTestCommand echo 1 | echo 2
@@ -81,29 +88,27 @@ Execute(neomake#utils#redir):
   AssertEqual neomake#utils#redir(['NeomakeTestCommand', 'echon 3']), "\n1\n23"
   AssertThrows neomake#utils#redir(['NeomakeTestCommand', 'echoerr 3'])
 
-Execute (Should expand arguments that start with %):
-  let param1 = '%'
-  let param2 = '%:h'
-  let param3 = '--param1=%:h'
-  let args = [param1, param2, param3]
-  let expected_args = [expand(param1), expand(param2), param3]
-  call neomake#utils#ExpandArgs(args)
-  AssertEqual expected_args, args
-
-Execute (Should expand arguments that start with escape char \):
-  let param1 = '\%'
-  let param2 = '\%:p'
-  let args = [param1, param2]
-  let expected_args = [expand(param1), expand(param2)]
-  call neomake#utils#ExpandArgs(args)
-  AssertEqual expected_args, args
-
-Execute (Should not expand arguments that start with double %):
-  let args = ['%%:h', '%%']
-  let expected_args = ['%%:h', '%%']
+Execute (neomake#utils#ExpandArgs):
+  file file1.ext
+  let args = ['%', '%:h', '%:rt', '--foo=%:h', '%s', '\%', '%%']
+  let expected_args = ['file1.ext', '.', 'file1', '--foo=%:h', '%s', '\%', '%%']
   call neomake#utils#ExpandArgs(args)
   AssertEqual expected_args, args
 
 Execute (neomake#utils#MakerIsAvailable):
+  AssertEqual neomake#utils#MakerIsAvailable('sh', 'makeprg'), 1
   AssertEqual neomake#utils#MakerIsAvailable('sh', 'sh'), 1
   AssertEqual neomake#utils#MakerIsAvailable('sh', 'doesnotexist'), 0
+
+  Save g:neomake_myft_mymaker_maker
+  let g:neomake_myft_mymaker_maker = {'exe': 'sh'}
+  AssertEqual neomake#utils#MakerIsAvailable('myft', 'mymaker'), 1
+
+Execute (TODO: neomake#utils#MakerIsAvailable picks up changes):
+  Save g:neomake_myft_sh_maker
+  let g:neomake_myft_sh_maker = {
+    \ 'exe': 'doesnotexist',
+    \ }
+  AssertEqual neomake#utils#MakerIsAvailable('myft', 'sh'), 0
+  let g:neomake_myft_sh_maker.exe = 'sh'
+  AssertEqual neomake#utils#MakerIsAvailable('myft', 'sh'), 1

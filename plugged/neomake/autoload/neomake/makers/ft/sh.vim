@@ -4,25 +4,33 @@ function! neomake#makers#ft#sh#EnabledMakers() abort
     return ['sh', 'shellcheck']
 endfunction
 
-" IDEA: could be detected once from "shellcheck --help" (since older versions
-" support zsh, and newer might do so again).
-let s:shellcheck_supported = ['sh', 'bash', 'dash', 'ksh']
-
 function! neomake#makers#ft#sh#shellcheck() abort
-    let args = ['-fgcc']
-    let shebang = matchstr(getline(1), '^#!\s*\zs.*$')
-    if !len(shebang)
-        if index(s:shellcheck_supported, &filetype) != -1
-            let args += ['-s', &filetype]
-        endif
-    endif
-    return {
-        \ 'args': args,
+    let ext = expand('%:e')
+    let maker = {
+        \ 'args': ['-fgcc'],
         \ 'errorformat':
             \ '%f:%l:%c: %trror: %m,' .
             \ '%f:%l:%c: %tarning: %m,' .
             \ '%I%f:%l:%c: Note: %m',
         \ }
+
+    if match(getline(1), '\v^#!.*<%(sh|dash|bash|ksh)') >= 0
+        " shellcheck reads the shebang by itself
+    elseif ext ==# 'ksh'
+        let maker.args += ['-s', 'ksh']
+    elseif ext ==# 'sh'
+        if exists('g:is_sh')
+            let maker.args += ['-s', 'sh']
+        elseif exists('g:is_posix') || exists('g:is_kornshell')
+            let maker.args += ['-s', 'ksh']
+        else
+            let maker.args += ['-s', 'bash']
+        endif
+    else
+        let maker.args += ['-s', 'bash']
+    endif
+
+    return maker
 endfunction
 
 function! neomake#makers#ft#sh#checkbashisms() abort

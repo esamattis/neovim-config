@@ -13,7 +13,7 @@ function! neomake#makers#ft#python#EnabledMakers() abort
         if executable('flake8')
             call add(makers, 'flake8')
         else
-            call extend(makers, ['pep257', 'pep8', 'pyflakes'])
+            call extend(makers, ['pyflakes', 'pep8', 'pydocstyle'])
         endif
 
         call add(makers, 'pylint')  " Last because it is the slowest
@@ -72,8 +72,17 @@ function! neomake#makers#ft#python#flake8() abort
 endfunction
 
 function! neomake#makers#ft#python#Flake8EntryProcess(entry) abort
-    if a:entry.type ==# 'F'  " PyFlake errors
-        let type = 'E'
+    if a:entry.type ==# 'F'  " pyflakes
+        " Ref: http://flake8.pycqa.org/en/latest/user/error-codes.html
+        if a:entry.nr > 400 && a:entry.nr < 500
+            if a:entry.nr == 407
+                let type = 'E'  " 'an undefined __future__ feature name was imported'
+            else
+                let type = 'W'
+            endif
+        else
+            let type = 'E'
+        endif
     elseif a:entry.type ==# 'E' && a:entry.nr >= 900  " PEP8 runtime errors (E901, E902)
         let type = 'E'
     elseif a:entry.type ==# 'E' || a:entry.type ==# 'W'  " PEP8 errors & warnings
@@ -85,6 +94,11 @@ function! neomake#makers#ft#python#Flake8EntryProcess(entry) abort
     else
         let type = ''
     endif
+    let l:token = matchstr(a:entry.text, "'.*'")
+    if strlen(l:token)
+        let a:entry.length = strlen(l:token) - 2 " subtract the quotes
+    endif
+
     let a:entry.text = a:entry.type . a:entry.nr . ' ' . a:entry.text
     let a:entry.type = type
     let a:entry.nr = ''  " Avoid redundancy in the displayed error message.
@@ -110,23 +124,50 @@ endfunction
 
 function! neomake#makers#ft#python#Pep8EntryProcess(entry) abort
     if a:entry.text =~# '^E9'  " PEP8 runtime errors (E901, E902)
-        let type = 'E'
+        let a:entry.type = 'E'
+    elseif a:entry.text =~# '^E113'  " unexpected indentation (IndentationError)
+        let a:entry.type = 'E'
     else  " Everything else is a warning
-        let type = 'W'
+        let a:entry.type = 'W'
     endif
-    let a:entry.type = type
 endfunction
 
-function! neomake#makers#ft#python#pep257() abort
-    return {
-        \ 'errorformat': '%f:%l %m,%m',
+function! neomake#makers#ft#python#pydocstyle() abort
+  if !exists('s:_pydocstyle_exe')
+    " Use the preferred exe to avoid deprecation warnings.
+    let s:_pydocstyle_exe = executable('pydocstyle') ? 'pydocstyle' : 'pep257'
+  endif
+  return {
+        \ 'exe': s:_pydocstyle_exe,
+        \ 'errorformat':
+        \   '%W%f:%l %.%#:,' .
+        \   '%+C        %m',
+        \ 'postprocess': function('neomake#utils#CompressWhitespace'),
         \ }
+endfunction
+
+" Note: pep257 has been renamed to pydocstyle, but is kept also as alias.
+function! neomake#makers#ft#python#pep257() abort
+    return neomake#makers#ft#python#pydocstyle()
+endfunction
+
+function! neomake#makers#ft#python#PylamaEntryProcess(entry) abort
+    if a:entry.type ==# 'C' && a:entry.text =~# '\v\[%(pycodestyle|pep8)\]$'
+        call neomake#makers#ft#python#Pep8EntryProcess(a:entry)
+    elseif a:entry.type ==# 'D'  " pydocstyle/pep257
+        let a:entry.type = 'W'
+    elseif a:entry.type ==# 'E901'  " mccabe
+        let a:entry.type = 'W'
+    elseif a:entry.type ==# 'R'  " Radon
+        let a:entry.type = 'W'
+    endif
 endfunction
 
 function! neomake#makers#ft#python#pylama() abort
     return {
-        \ 'args': ['--format', 'pep8'],
-        \ 'errorformat': '%f:%l:%c: %t%m',
+        \ 'args': ['--format', 'parsable'],
+        \ 'errorformat': '%f:%l:%c: [%t] %m',
+        \ 'postprocess': function('neomake#makers#ft#python#PylamaEntryProcess'),
         \ }
 endfunction
 
