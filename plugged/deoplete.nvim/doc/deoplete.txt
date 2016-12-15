@@ -195,6 +195,16 @@ g:deoplete#auto_refresh_delay
 
 		Default value: 50
 
+					*g:deoplete#skip_chars*
+g:deoplete#skip_chars
+		The list of skip characters in the auto completion.
+
+		Default value: []
+
+					*b:deoplete_skip_chars*
+b:deoplete_skip_chars
+		Buffer local variable of |g:deoplete#skip_chars|.
+
 						*g:deoplete#keyword_patterns*
 g:deoplete#keyword_patterns
 		This dictionary records keyword patterns to buffer completion.
@@ -523,8 +533,14 @@ EXAMPLES						*deoplete-examples*
 SOURCES							*deoplete-sources*
 
 buffer						*deoplete-source-buffer*
-		It collects keywords from current buffer and the buffers which
-		have same 'filetype'.
+		It collects keywords from current buffer and the opened
+		buffers which have same 'filetype'.
+
+		Note: It does not collect keywords from not loaded buffer.
+		For example, if you open file by "nvim A B".  A is already
+		loaded, but B is not loaded.  So buffer source cannot collect
+		the keywords in B until you switch to buffer B.
+
 		Note: It takes time to get the candidates in the first time if
 		you want to edit the large files(like Vim 22000 lines eval.c).
 
@@ -543,7 +559,8 @@ omni							*deoplete-source-omni*
 		Note: It is not asynchronous.
 
 dictionary					*deoplete-source-dictionary*
-		This source collects keywords from 'dictionary'.
+		This source collects |g:deoplete#keyword_patterns| keywords
+		from 'dictionary'.
 
 ==============================================================================
 FILTERS							*deoplete-filters*
@@ -776,8 +793,8 @@ on_post_filter
 
 					*deoplete-source-attribute-on_event*
 on_event	(Function)			(Optional)
-		It is called when |BufRead|, |BufNewFile|, |BufNew|,
-		|BufWritePost|.
+		It is called when |BufRead|, |BufNewFile|, |BufWritePost| or
+		deoplete is initialized.
 		It is useful to make cache.
 		It takes {self} and {context} as its parameter.
 
