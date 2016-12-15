@@ -57,9 +57,17 @@ for plugin in keys(g:plugs)
 endfor
 
 
+if has('nvim')
+    " Legacy 'easy paste' helper
+    map <C-i> :echo 'No need'<cr>
+else
+    " Enter paste mode with Ctrl+i
+    map <C-i> :set paste<CR>i
+endif
 
-" Legacy 'easy paste' helper
-map <C-i> :echo 'No need'<cr>
+" Always disable paste mode when leaving insert mode
+au InsertLeave * set nopaste
+
 
 " Show trailing whitespace characters
 set list
