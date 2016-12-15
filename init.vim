@@ -28,6 +28,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'bfredl/nvim-miniyank'
 Plug 'Glench/Vim-Jinja2-Syntax'
 Plug 'machakann/vim-highlightedyank'
+Plug 'tpope/vim-sleuth'
 call plug#end()
 
 "" Leader mappings
@@ -60,10 +61,6 @@ set showbreak=↳
 " Cooler tab completion for vim commands
 " http://stackoverflow.com/questions/526858/how-do-i-make-vim-do-normal-bash-like-tab-completion-for-file-names
 set wildmode=longest,list
-
-" By default use 4 spaces as indentation
-set tabstop=4 shiftwidth=4 softtabstop=4
-set expandtab
 
 " Easier curly braces insertion
 imap § {
