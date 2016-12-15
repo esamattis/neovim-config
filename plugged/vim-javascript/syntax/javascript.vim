@@ -37,16 +37,15 @@ syntax keyword jsBooleanTrue    true
 syntax keyword jsBooleanFalse   false
 
 " Modules
-syntax keyword jsModuleKeywords  contained import
-syntax keyword jsModuleKeywords  contained export skipwhite skipempty nextgroup=jsExportBlock,jsModuleDefault
-syntax keyword jsModuleOperators contained from
-syntax keyword jsModuleOperators contained as
-syntax region  jsModuleGroup     contained matchgroup=jsModuleBraces start=/{/ end=/}/ contains=jsModuleOperators,jsNoise,jsComment
-syntax match   jsModuleAsterisk  contained /*/
-syntax keyword jsModuleDefault   contained default skipwhite skipempty nextgroup=@jsExpression
-syntax region  jsImportContainer start=/\<import\> / end="\%(;\|$\)" contains=jsModuleKeywords,jsModuleOperators,jsComment,jsString,jsTemplateString,jsNoise,jsModuleGroup,jsModuleAsterisk
-syntax region  jsExportContainer start=/\<export\> / end="\%(;\|$\)" contains=jsModuleKeywords,jsModuleOperators,jsStorageClass,jsModuleDefault,@jsExpression
-syntax region  jsExportBlock     contained matchgroup=jsExportBraces start=/{/ end=/}/ contains=jsModuleOperators,jsNoise,jsComment
+syntax keyword jsImport                       import skipwhite skipempty nextgroup=jsModuleAsterisk,jsModuleKeyword,jsModuleGroup,jsFlowImportType
+syntax keyword jsExport                       export skipwhite skipempty nextgroup=@jsAll,jsModuleGroup,jsExportDefault,jsModuleAsterisk,jsModuleKeyword
+syntax match   jsModuleKeyword      contained /\k\+/ skipwhite skipempty nextgroup=jsModuleAs,jsFrom,jsModuleComma
+syntax keyword jsExportDefault      contained default skipwhite skipempty nextgroup=@jsExpression
+syntax keyword jsExportDefaultGroup contained default skipwhite skipempty nextgroup=jsModuleAs,jsFrom,jsModuleComma
+syntax match   jsModuleAsterisk     contained /\*/ skipwhite skipempty nextgroup=jsModuleKeyword,jsModuleAs,jsFrom
+syntax keyword jsModuleAs           contained as skipwhite skipempty nextgroup=jsModuleKeyword,jsExportDefaultGroup
+syntax keyword jsFrom               contained from skipwhite skipempty nextgroup=jsString
+syntax match   jsModuleComma        contained /,/ skipwhite skipempty nextgroup=jsModuleKeyword,jsModuleAsterisk,jsModuleGroup
 
 " Strings, Templates, Numbers
 syntax region  jsString           start=+"+  skip=+\\\("\|$\)+  end=+"\|$+  contains=jsSpecial,@Spell extend
@@ -135,14 +134,14 @@ syntax keyword jsDomNodeConsts  ELEMENT_NODE ATTRIBUTE_NODE TEXT_NODE CDATA_SECT
 syntax keyword jsHtmlEvents     onblur onclick oncontextmenu ondblclick onfocus onkeydown onkeypress onkeyup onmousedown onmousemove onmouseout onmouseover onmouseup onresize
 
 " Code blocks
-syntax region  jsBracket                      matchgroup=jsBrackets            start=/\[/ end=/\]/ contains=@jsExpression extend fold
+syntax region  jsBracket                      matchgroup=jsBrackets            start=/\[/ end=/\]/ contains=@jsExpression,jsSpreadExpression extend fold
 syntax region  jsParen                        matchgroup=jsParens              start=/(/  end=/)/  contains=@jsAll extend fold
 syntax region  jsParenDecorator     contained matchgroup=jsParensDecorator     start=/(/  end=/)/  contains=@jsAll skipwhite skipempty nextgroup=jsCommentMisc extend fold
 syntax region  jsParenIfElse        contained matchgroup=jsParensIfElse        start=/(/  end=/)/  contains=@jsAll skipwhite skipempty nextgroup=jsCommentMisc,jsIfElseBlock extend fold
 syntax region  jsParenRepeat        contained matchgroup=jsParensRepeat        start=/(/  end=/)/  contains=@jsAll skipwhite skipempty nextgroup=jsCommentMisc,jsRepeatBlock extend fold
 syntax region  jsParenSwitch        contained matchgroup=jsParensSwitch        start=/(/  end=/)/  contains=@jsAll skipwhite skipempty nextgroup=jsSwitchBlock extend fold
 syntax region  jsParenCatch         contained matchgroup=jsParensCatch         start=/(/  end=/)/  skipwhite skipempty nextgroup=jsTryCatchBlock extend fold
-syntax region  jsFuncArgs           contained matchgroup=jsFuncParens          start=/(/  end=/)/  contains=jsFuncArgCommas,jsComment,jsFuncArgExpression,jsDestructuringBlock,jsRestExpression,jsFlowArgumentDef skipwhite skipempty nextgroup=jsCommentFunction,jsFuncBlock,jsFlowReturn extend fold
+syntax region  jsFuncArgs           contained matchgroup=jsFuncParens          start=/(/  end=/)/  contains=jsFuncArgCommas,jsComment,jsFuncArgExpression,jsDestructuringBlock,jsDestructuringArray,jsRestExpression,jsFlowArgumentDef skipwhite skipempty nextgroup=jsCommentFunction,jsFuncBlock,jsFlowReturn extend fold
 syntax region  jsClassBlock         contained matchgroup=jsClassBraces         start=/{/  end=/}/  contains=jsClassFuncName,jsClassMethodType,jsArrowFunction,jsArrowFuncArgs,jsComment,jsGenerator,jsDecorator,jsClassProperty,jsClassPropertyComputed,jsClassStringKey,jsNoise extend fold
 syntax region  jsFuncBlock          contained matchgroup=jsFuncBraces          start=/{/  end=/}/  contains=@jsAll extend fold
 syntax region  jsIfElseBlock        contained matchgroup=jsIfElseBraces        start=/{/  end=/}/  contains=@jsAll extend fold
@@ -154,6 +153,7 @@ syntax region  jsRepeatBlock        contained matchgroup=jsRepeatBraces        s
 syntax region  jsDestructuringBlock contained matchgroup=jsDestructuringBraces start=/{/  end=/}/  contains=jsDestructuringProperty,jsDestructuringAssignment,jsDestructuringNoise,jsDestructuringPropertyComputed,jsSpreadExpression extend fold
 syntax region  jsDestructuringArray contained matchgroup=jsDestructuringBraces start=/\[/ end=/\]/ contains=jsDestructuringPropertyValue,jsNoise,jsDestructuringProperty,jsSpreadExpression extend fold
 syntax region  jsObject                       matchgroup=jsObjectBraces        start=/{/  end=/}/  contains=jsObjectKey,jsObjectKeyString,jsObjectKeyComputed,jsObjectSeparator,jsObjectFuncName,jsObjectMethodType,jsGenerator,jsComment,jsObjectStringKey,jsSpreadExpression,jsDecorator extend fold
+syntax region  jsModuleGroup        contained matchgroup=jsModuleBraces        start=/{/ end=/}/   contains=jsModuleKeyword,jsModuleComma,jsModuleAs,jsComment skipwhite skipempty nextgroup=jsFrom
 syntax region  jsTernaryIf                    matchgroup=jsTernaryIfOperator   start=/?/  end=/\%(:\|[\}]\@=\)/  contains=@jsExpression
 syntax region  jsSpreadExpression   contained matchgroup=jsSpreadOperator      start=/\.\.\./ end=/[,}\]]\@=/ contains=@jsExpression
 syntax region  jsRestExpression     contained matchgroup=jsRestOperator        start=/\.\.\./ end=/[,)]\@=/
@@ -173,12 +173,15 @@ syntax match   jsArrowFuncArgs  /([^()]*)\s*\(=>\)\@=/ contains=jsFuncArgs skipe
 
 exe 'syntax match jsFunction /\<function\>/ skipwhite skipempty nextgroup=jsGenerator,jsFuncName,jsFuncArgs skipwhite '.(exists('g:javascript_conceal_function')       ? 'conceal cchar='.g:javascript_conceal_function : '')
 exe 'syntax match jsArrowFunction /=>/      skipwhite skipempty nextgroup=jsFuncBlock,jsCommentFunction               '.(exists('g:javascript_conceal_arrow_function') ? 'conceal cchar='.g:javascript_conceal_arrow_function : '')
+exe 'syntax match jsArrowFunction /()\s*\(=>\)\@=/   skipwhite skipempty nextgroup=jsArrowFunction                    '.(exists('g:javascript_conceal_noarg_arrow_function') ? 'conceal cchar='.g:javascript_conceal_noarg_arrow_function : '')
+exe 'syntax match jsArrowFunction /_\s*\(=>\)\@=/    skipwhite skipempty nextgroup=jsArrowFunction                    '.(exists('g:javascript_conceal_underscore_arrow_function') ? 'conceal cchar='.g:javascript_conceal_underscore_arrow_function : '')
 
 " Classes
-syntax keyword jsClassKeywords          contained extends class
+syntax keyword jsClassKeyword           contained class
+syntax keyword jsExtendsKeyword         contained extends skipwhite skipempty nextgroup=@jsExpression
 syntax match   jsClassNoise             contained /\./
 syntax match   jsClassMethodType        contained /\%(get\|set\|static\|async\)\%( \k\+\)\@=/ skipwhite skipempty nextgroup=jsFuncName,jsClassProperty
-syntax match   jsClassDefinition        /\<class\>\%( [a-zA-Z_$][0-9a-zA-Z_$ \n.]*\)*/ contains=jsClassKeywords,jsClassNoise skipwhite skipempty nextgroup=jsCommentClass,jsClassBlock,jsFlowClassGroup
+syntax region  jsClassDefinition                  start=/\<class\>/ end=/\(\<extends\>\s\+\)\@<!{\@=/ contains=jsClassKeyword,jsExtendsKeyword,jsClassNoise,@jsExpression skipwhite skipempty nextgroup=jsCommentClass,jsClassBlock,jsFlowClassGroup
 syntax match   jsClassProperty          contained /\<[0-9a-zA-Z_$]*\>\(\s*=\)\@=/ skipwhite skipempty nextgroup=jsClassValue
 syntax region  jsClassValue             contained start=/=/ end=/\%(;\|}\|\n\)\@=/ contains=@jsExpression
 syntax region  jsClassPropertyComputed  contained matchgroup=jsBrackets start=/\[/ end=/]/ contains=@jsExpression skipwhite skipempty nextgroup=jsFuncArgs,jsClassValue extend
@@ -228,7 +231,7 @@ if exists("javascript_plugin_flow")
 endif
 
 syntax cluster jsExpression  contains=jsBracket,jsParen,jsObject,jsBlock,jsTernaryIf,jsTaggedTemplate,jsTemplateString,jsString,jsRegexpString,jsNumber,jsFloat,jsOperator,jsBooleanTrue,jsBooleanFalse,jsNull,jsFunction,jsArrowFunction,jsGlobalObjects,jsExceptions,jsFutureKeys,jsDomErrNo,jsDomNodeConsts,jsHtmlEvents,jsFuncCall,jsUndefined,jsNan,jsPrototype,jsBuiltins,jsNoise,jsClassDefinition,jsArrowFunction,jsArrowFuncArgs,jsParensError,jsComment,jsArguments,jsThis,jsSuper,jsDo
-syntax cluster jsAll         contains=@jsExpression,jsExportContainer,jsImportContainer,jsStorageClass,jsConditional,jsRepeat,jsReturn,jsStatement,jsException,jsTry,jsAsyncKeyword
+syntax cluster jsAll         contains=@jsExpression,jsStorageClass,jsConditional,jsRepeat,jsReturn,jsStatement,jsException,jsTry,jsAsyncKeyword
 
 " Define the default highlighting.
 " For version 5.7 and earlier: only when not done already
@@ -290,7 +293,8 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jsOperator             Operator
   HiLink jsOf                   Operator
   HiLink jsStorageClass         StorageClass
-  HiLink jsClassKeywords        Keyword
+  HiLink jsClassKeyword         Keyword
+  HiLink jsExtendsKeyword       Keyword
   HiLink jsThis                 Special
   HiLink jsSuper                Constant
   HiLink jsNan                  Number
@@ -317,7 +321,6 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jsFinallyBraces        jsBraces
   HiLink jsRepeatBraces         jsBraces
   HiLink jsSwitchBraces         jsBraces
-  HiLink jsExportBraces         jsBraces
   HiLink jsSpecial              Special
   HiLink jsTemplateVar          Special
   HiLink jsTemplateBraces       jsBraces
@@ -325,14 +328,18 @@ if version >= 508 || !exists("did_javascript_syn_inits")
   HiLink jsGlobalNodeObjects    Constant
   HiLink jsExceptions           Constant
   HiLink jsBuiltins             Constant
-  HiLink jsModuleKeywords       Include
-  HiLink jsModuleOperators      Include
-  HiLink jsModuleDefault        Include
+  HiLink jsImport               Include
+  HiLink jsExport               Include
+  HiLink jsExportDefault        StorageClass
+  HiLink jsExportDefaultGroup   jsExportDefault
+  HiLink jsModuleAs             Include
+  HiLink jsModuleComma          jsNoise
+  HiLink jsModuleAsterisk       Noise
+  HiLink jsFrom                 Include
   HiLink jsDecorator            Special
   HiLink jsDecoratorFunction    Function
   HiLink jsParensDecorator      jsParens
   HiLink jsFuncArgOperator      jsFuncArgs
-  HiLink jsModuleAsterisk       Noise
   HiLink jsClassProperty        jsObjectKey
   HiLink jsSpreadOperator       Operator
   HiLink jsRestOperator         Operator
