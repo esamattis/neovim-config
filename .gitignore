@@ -1,12 +1,2 @@
-*.swp
 .netrwhist
-.VimballRecord
-view/
-bundle/*/doc/tags
-bundle/*/doc/tags-ja
-spell/*.spl
-*~
-.git
-tmp/*
-localrc
-yankring_history_v2.txt
+plugged/deoplete-flow/rplugin/python3/deoplete/sources/__pycache__
