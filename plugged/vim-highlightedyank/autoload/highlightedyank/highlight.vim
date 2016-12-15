@@ -4,6 +4,9 @@
 " null valiables
 let s:null_pos = [0, 0, 0, 0]
 
+" constants
+let s:maxcol = 2147483647
+
 " types
 let s:type_list = type([])
 
@@ -41,6 +44,7 @@ let s:highlight = {
       \   'region': {},
       \   'motionwise': '',
       \   'bufnr': 0,
+      \   'winid': 0,
       \ }
 "}}}
 function! s:highlight.order(region, motionwise) dict abort  "{{{
@@ -58,26 +62,37 @@ function! s:highlight.order(region, motionwise) dict abort  "{{{
   let self.motionwise = a:motionwise
 endfunction
 "}}}
-function! s:highlight.show(hi_group) dict abort "{{{
+function! s:highlight.show(...) dict abort "{{{
   if self.order_list == []
     return 0
   endif
 
-  if self.status && a:hi_group !=# self.group
-    call self.quench()
+  if a:0 < 1
+    if self.group ==# ''
+      return 0
+    else
+      let hi_group = self.group
+    endif
+  else
+    let hi_group = a:1
   endif
 
   if self.status
-    return 0
+    if hi_group ==# self.group
+      return 0
+    else
+      call self.quench()
+    endif
   endif
 
   for order in self.order_list
-    let self.id += s:matchaddpos(a:hi_group, order)
+    let self.id += s:matchaddpos(hi_group, order)
   endfor
   call filter(self.id, 'v:val > 0')
   let self.status = 1
-  let self.group = a:hi_group
+  let self.group = hi_group
   let self.bufnr = bufnr('%')
+  let self.winid = win_getid()
   let self.text  = s:get_buf_text(self.region, self.motionwise)
   return 1
 endfunction
@@ -87,10 +102,9 @@ function! s:highlight.quench() dict abort "{{{
     return 0
   endif
 
-  let tabnr = tabpagenr()
-  let winnr = winnr()
+  let winid = win_getid()
   let view = winsaveview()
-  if s:is_highlight_exists(self.id)
+  if win_getid() == self.winid
     call map(self.id, 'matchdelete(v:val)')
     call filter(self.id, 'v:val > 0')
     let succeeded = 1
@@ -103,44 +117,35 @@ function! s:highlight.quench() dict abort "{{{
       augroup END
       let succeeded = 0
     else
-      if s:search_highlighted_window(self.id) != [0, 0]
+      if win_gotoid(self.winid)
         call map(self.id, 'matchdelete(v:val)')
         call filter(self.id, 'v:val > 0')
       else
         call filter(self.id, 0)
       endif
       let succeeded = 1
-      call s:goto_window(winnr, tabnr, view)
+      call win_gotoid(winid)
+      call winrestview(view)
     endif
   endif
 
   if succeeded
     let self.status = 0
-    let self.group = ''
   endif
   return succeeded
 endfunction
 "}}}
-function! s:highlight.scheduled_quench(time, ...) dict abort  "{{{
-  let id = get(a:000, 0, -1)
-  if id < 0
-    let id = timer_start(a:time, s:SID . 'scheduled_quench')
-  endif
-
-  if !has_key(s:quench_table, id)
-    let s:quench_table[id] = []
-  endif
-  let s:quench_table[id] += [self]
+function! s:highlight.quench_timer(time) dict abort "{{{
+  let id = timer_start(a:time, s:SID . 'scheduled_quench')
+  let s:quench_table[id] = self
+  call s:set_autocmds(id)
   return id
 endfunction
 "}}}
-function! s:highlight.persist(...) dict abort  "{{{
-  let id = a:0 > 0 ? a:1 : s:get_pid()
-
-  if !has_key(s:quench_table, id)
-    let s:quench_table[id] = []
-  endif
-  let s:quench_table[id] += [self]
+function! s:highlight.persist() dict abort  "{{{
+  let id = s:get_pid()
+  call s:set_autocmds(id)
+  let s:quench_table[id] = self
   return id
 endfunction
 "}}}
@@ -155,14 +160,12 @@ let s:obsolete_augroup = []
 function! s:scheduled_quench(id) abort  "{{{
   let options = s:shift_options()
   try
-    for highlight in s:quench_table[a:id]
-      call highlight.quench()
-    endfor
+    let highlight = s:quench_table[a:id]
+    call highlight.quench()
   catch /^Vim\%((\a\+)\)\=:E523/
     " NOTE: TextYankPost event sets "textlock"
-    for highlight in s:quench_table[a:id]
-      call highlight.scheduled_quench(1)
-    endfor
+    let highlight = s:quench_table[a:id]
+    call highlight.quench_timer(50)
     return 1
   finally
     unlet s:quench_table[a:id]
@@ -186,19 +189,19 @@ function! highlightedyank#highlight#cancel(...) abort "{{{
 endfunction
 "}}}
 function! highlightedyank#highlight#get(id) abort "{{{
-  return get(s:quench_table, a:id, [])
+  return get(s:quench_table, a:id, {})
 endfunction
 "}}}
 function! s:metabolize_augroup(id) abort  "{{{
   " clean up autocommands in the current augroup
-  execute 'augroup highlightedyank-highlight-cancel-' . a:id
+  execute 'augroup highlightedyank-highlight-' . a:id
     autocmd!
   augroup END
 
   " clean up obsolete augroup
   call filter(s:obsolete_augroup, 'v:val != a:id')
   for id in s:obsolete_augroup
-    execute 'augroup! highlightedyank-highlight-cancel-' . id
+    execute 'augroup! highlightedyank-highlight-' . id
   endfor
   call filter(s:obsolete_augroup, 0)
 
@@ -304,7 +307,11 @@ endfunction
 function! s:highlight_order_blockwise(region) abort "{{{
   let view = winsaveview()
   let vcol_head = virtcol(a:region.head[1:2])
-  let vcol_tail = virtcol(a:region.tail[1:2])
+  if a:region.blockwidth == s:maxcol
+    let vcol_tail = a:region.blockwidth
+  else
+    let vcol_tail = vcol_head + a:region.blockwidth - 1
+  endif
   let order = []
   let order_list = []
   let n = 0
@@ -358,36 +365,6 @@ function! s:is_equal_or_ahead(pos1, pos2) abort  "{{{
   return a:pos1[1] > a:pos2[1] || (a:pos1[1] == a:pos2[1] && a:pos1[2] >= a:pos2[2])
 endfunction
 "}}}
-function! s:goto_window(winnr, ...) abort "{{{
-  if a:0 > 0
-    if !s:goto_tab(a:1)
-      return 0
-    endif
-  endif
-
-
-  try
-    if a:winnr != winnr()
-      execute printf('noautocmd %swincmd w', a:winnr)
-    endif
-  catch /^Vim\%((\a\+)\)\=:E16/
-    return 0
-  endtry
-
-  if a:0 > 1
-    call winrestview(a:2)
-  endif
-
-  return 1
-endfunction
-"}}}
-function! s:goto_tab(tabnr) abort  "{{{
-  if a:tabnr != tabpagenr()
-    execute 'noautocmd tabnext ' . a:tabnr
-  endif
-  return tabpagenr() == a:tabnr ? 1 : 0
-endfunction
-"}}}
 " function! s:is_in_cmdline_window() abort  "{{{
 if s:has_patch_7_4_392
   function! s:is_in_cmdline_window() abort
@@ -432,50 +409,6 @@ function! s:restore_options(options) abort "{{{
   endif
 endfunction
 "}}}
-function! s:search_highlighted_window(id) abort  "{{{
-  if a:id == []
-    return [0, 0]
-  endif
-
-  " check the windows in the current tab
-  let current_tabnr = tabpagenr()
-  let winnr = s:scan_windows(a:id)
-  if winnr != 0
-    return [current_tabnr, winnr]
-  endif
-  " check all tabs
-  for tabnr in filter(range(1, tabpagenr('$')), 'v:val != current_tabnr')
-    let winnr = s:scan_windows(a:id, tabnr)
-    if winnr != 0
-      return [tabnr, winnr]
-    endif
-  endfor
-  return [0, 0]
-endfunction
-"}}}
-function! s:scan_windows(id, ...) abort "{{{
-  if a:0 > 0 && !s:goto_tab(a:1)
-    return 0
-  endif
-
-  for winnr in range(1, winnr('$'))
-    if s:goto_window(winnr) && s:is_highlight_exists(a:id)
-      return winnr
-    endif
-  endfor
-  return 0
-endfunction
-"}}}
-function! s:is_highlight_exists(id) abort "{{{
-  if a:id != []
-    let id = a:id[0]
-    if filter(getmatches(), 'v:val.id == id') != []
-      return 1
-    endif
-  endif
-  return 0
-endfunction
-"}}}
 function! s:get_buf_text(region, type) abort  "{{{
   " NOTE: Do *not* use operator+textobject in another textobject!
   "       For example, getting a text with the command is not appropriate.
@@ -485,19 +418,19 @@ function! s:get_buf_text(region, type) abort  "{{{
   let text = ''
   let visual = [getpos("'<"), getpos("'>")]
   let modified = [getpos("'["), getpos("']")]
-  let reg = ['"', getreg('"'), getregtype('"')]
+  let registers = s:saveregisters()
   let view = winsaveview()
   try
     call setpos('.', a:region.head)
     execute 'normal! ' . s:v(a:type)
     call setpos('.', a:region.tail)
-    silent normal! ""y
+    silent noautocmd normal! ""y
     let text = @@
 
     " NOTE: This line is required to reset v:register.
     normal! :
   finally
-    call call('setreg', reg)
+    call s:restoreregisters(registers)
     call setpos("'<", visual[0])
     call setpos("'>", visual[1])
     call setpos("'[", modified[0])
@@ -505,6 +438,43 @@ function! s:get_buf_text(region, type) abort  "{{{
     call winrestview(view)
     return text
   endtry
+endfunction
+"}}}
+function! s:saveregisters() abort "{{{
+  let registers = {}
+  let registers['0'] = s:getregister('0')
+  let registers['1'] = s:getregister('1')
+  let registers['2'] = s:getregister('2')
+  let registers['3'] = s:getregister('3')
+  let registers['4'] = s:getregister('4')
+  let registers['5'] = s:getregister('5')
+  let registers['6'] = s:getregister('6')
+  let registers['7'] = s:getregister('7')
+  let registers['8'] = s:getregister('8')
+  let registers['9'] = s:getregister('9')
+  let registers['"'] = s:getregister('"')
+  if &clipboard =~# 'unnamed'
+    let registers['*'] = s:getregister('*')
+  endif
+  if &clipboard =~# 'unnamedplus'
+    let registers['+'] = s:getregister('+')
+  endif
+  return registers
+endfunction
+"}}}
+function! s:restoreregisters(registers) abort "{{{
+  for [register, contains] in items(a:registers)
+    call s:setregister(register, contains)
+  endfor
+endfunction
+"}}}
+function! s:getregister(register) abort "{{{
+  return [getreg(a:register), getregtype(a:register)]
+endfunction
+"}}}
+function! s:setregister(register, contains) abort "{{{
+  let [value, options] = a:contains
+  return setreg(a:register, value, options)
 endfunction
 "}}}
 function! s:v(v) abort  "{{{
@@ -520,7 +490,46 @@ function! s:v(v) abort  "{{{
   return v
 endfunction
 "}}}
-
+function! s:set_autocmds(id) abort "{{{
+  execute 'augroup highlightedyank-highlight-' . a:id
+    autocmd!
+    execute printf('autocmd TextChanged <buffer> call s:cancel_highlight(%s, "TextChanged")', a:id)
+    execute printf('autocmd InsertEnter <buffer> call s:cancel_highlight(%s, "InsertEnter")', a:id)
+    execute printf('autocmd BufUnload <buffer> call s:cancel_highlight(%s, "BufUnload")', a:id)
+    execute printf('autocmd BufEnter * call s:switch_highlight(%s)', a:id)
+  augroup END
+endfunction
+"}}}
+function! s:cancel_highlight(id, event) abort  "{{{
+  let highlight = highlightedyank#highlight#get(a:id)
+  if highlight != {} && s:highlight_off_by_{a:event}(highlight)
+    call highlightedyank#highlight#cancel(a:id)
+  endif
+endfunction
+"}}}
+function! s:highlight_off_by_InsertEnter(highlight) abort  "{{{
+  return 1
+endfunction
+"}}}
+function! s:highlight_off_by_TextChanged(highlight) abort  "{{{
+  return !a:highlight.is_text_identical()
+endfunction
+"}}}
+function! s:highlight_off_by_BufUnload(highlight) abort  "{{{
+  return 1
+endfunction
+"}}}
+function! s:switch_highlight(id) abort "{{{
+  let highlight = highlightedyank#highlight#get(a:id)
+  if highlight != {} && highlight.winid == win_getid()
+    if highlight.bufnr == bufnr('%')
+      call highlight.show()
+    else
+      call highlight.quench()
+    endif
+  endif
+endfunction
+"}}}
 
 " vim:set foldmethod=marker:
 " vim:set commentstring="%s:

@@ -5,7 +5,10 @@
 " variables "{{{
 " null valiables
 let s:null_pos = [0, 0, 0, 0]
-let s:null_region = {'head': copy(s:null_pos), 'tail': copy(s:null_pos)}
+let s:null_region = {'head': copy(s:null_pos), 'tail': copy(s:null_pos), 'blockwidth': 0}
+
+" constants
+let s:maxcol = 2147483647
 
 " types
 let s:type_num  = type(0)
@@ -51,6 +54,7 @@ function! s:default_register() abort  "{{{
 endfunction
 "}}}
 function! s:yank_normal(count, register) abort "{{{
+  let view = winsaveview()
   let options = s:shift_options()
   try
     let [input, region, motionwise] = s:query(a:count)
@@ -60,20 +64,28 @@ function! s:yank_normal(count, register) abort "{{{
       call feedkeys(keyseq, 'it')
     endif
   finally
+    call winrestview(view)
     call s:restore_options(options)
   endtry
 endfunction
 "}}}
 function! s:yank_visual(register) abort "{{{
-  let region = {'head': getpos("'<"), 'tail': getpos("'>")}
+  let view = winsaveview()
+  let region = deepcopy(s:null_region)
+  let region.head = getpos("'<")
+  let region.tail = getpos("'>")
   if s:is_equal_or_ahead(region.tail, region.head)
     let motionwise = visualmode()
+    if motionwise ==# "\<C-v>"
+      let region.blockwidth = s:is_extended() ? s:maxcol : virtcol(region.tail[1:2]) - virtcol(region.head[1:2]) + 1
+    endif
     let options = s:shift_options()
     try
       call s:highlight_yanked_region(region, motionwise)
       let keyseq = printf('%s%s%s', s:normal['gv'], a:register, s:normal['y'])
       call feedkeys(keyseq, 'it')
     finally
+      call winrestview(view)
       call s:restore_options(options)
     endtry
   endif
@@ -198,8 +210,7 @@ function! s:persist(highlight, hi_group) abort  "{{{
   call highlightedyank#highlight#cancel()
 
   if a:highlight.show(a:hi_group)
-    let id = a:highlight.persist()
-    call s:cancel_if_edited(id)
+    call a:highlight.persist()
   endif
   return ''
 endfunction
@@ -216,10 +227,8 @@ endfunction
 function! s:glow(highlight, hi_group, duration) abort "{{{
   " highlight off: limit the number of highlighting region to one explicitly
   call highlightedyank#highlight#cancel()
-
   if a:highlight.show(a:hi_group)
-    let id = a:highlight.scheduled_quench(a:duration)
-    call s:cancel_if_edited(id)
+    call a:highlight.quench_timer(a:duration)
   endif
   return ''
 endfunction
@@ -248,36 +257,6 @@ function! s:wait_for_input(highlight, duration) abort  "{{{
   endif
 
   return c
-endfunction
-"}}}
-function! s:cancel_if_edited(id) abort "{{{
-  execute 'augroup highlightedyank-highlight-cancel-' . a:id
-    autocmd!
-    execute printf('autocmd TextChanged <buffer> call %scancel_highlight(%s, "TextChanged")', s:SID, a:id)
-    execute printf('autocmd InsertEnter <buffer> call %scancel_highlight(%s, "InsertEnter")', s:SID, a:id)
-  augroup END
-endfunction
-"}}}
-function! s:cancel_highlight(id, event) abort  "{{{
-  let highlightlist = highlightedyank#highlight#get(a:id)
-  let bufnrlist = map(deepcopy(highlightlist), 'v:val.bufnr')
-  let currentbuf = bufnr('%')
-  if filter(bufnrlist, 'v:val == currentbuf') != []
-    for highlight in highlightlist
-      if s:highlight_off_by_{a:event}(highlight)
-        call highlightedyank#highlight#cancel(a:id)
-        break
-      endif
-    endfor
-  endif
-endfunction
-"}}}
-function! s:highlight_off_by_InsertEnter(highlight) abort  "{{{
-  return 1
-endfunction
-"}}}
-function! s:highlight_off_by_TextChanged(highlight) abort  "{{{
-  return !a:highlight.is_text_identical()
 endfunction
 "}}}
 function! s:shift_options() abort "{{{
@@ -318,6 +297,15 @@ function! s:escape(string) abort  "{{{
   return escape(a:string, '~"\.^$[]*')
 endfunction
 "}}}
+function! s:is_extended() abort "{{{
+  " NOTE: This function should be used only when you are sure that the
+  "       keymapping is used in visual mode.
+  normal! gv
+  let extended = winsaveview().curswant == s:maxcol
+  execute "normal! \<Esc>"
+  return extended
+endfunction
+"}}}
 
 " for neovim
 function! highlightedyank#autocmd_highlight() abort "{{{
@@ -331,16 +319,18 @@ function! highlightedyank#autocmd_highlight() abort "{{{
   if motionwise !=# ''
     call s:modify_region(region)
     call s:highlight_yanked_region(region, motionwise)
+    call winrestview(view)
   endif
 endfunction
 "}}}
 function! s:derive_region(motionwise, regcontents) abort "{{{
-  if a:motionwise ==# 'char' || a:motionwise ==# 'v'
+  if a:motionwise ==# 'v'
     let region = s:derive_region_char(a:regcontents)
-  elseif a:motionwise ==# 'line' || a:motionwise ==# 'V'
+  elseif a:motionwise ==# 'V'
     let region = s:derive_region_line(a:regcontents)
-  elseif a:motionwise ==# 'block' || a:motionwise[0] ==# "\<C-v>"
-    let region = s:derive_region_block(a:regcontents)
+  elseif a:motionwise[0] ==# "\<C-v>"
+    let width = str2nr(a:motionwise[1:])
+    let region = s:derive_region_block(a:regcontents, width)
   else
     let region = deepcopy(s:null_region)
   endif
@@ -370,20 +360,22 @@ function! s:derive_region_line(regcontents) abort "{{{
   return region
 endfunction
 "}}}
-function! s:derive_region_block(regcontents) abort "{{{
+function! s:derive_region_block(regcontents, width) abort "{{{
   let len = len(a:regcontents)
-  if len == 0
-    let region = deepcopy(s:null_region)
-  else
+  let region = deepcopy(s:null_region)
+  let region.blockwidth = a:width
+  if len > 0
     let curpos = getpos('.')
-    let region = {}
     let region.head = getpos("'[")
     call setpos('.', region.head)
     if len > 1
-      execute 'normal! ' . (len - 1) . 'j'
+      execute printf('normal! %sj', len - 1)
     endif
-    call search(s:escape(a:regcontents[-1]), 'ce')
+    execute printf('normal! %s|', virtcol('.') + a:width - 1)
     let region.tail = getpos('.')
+    if strdisplaywidth(getline('.')) < a:width
+      let region.blockwidth = s:maxcol
+    endif
     call setpos('.', curpos)
   endif
   return region
